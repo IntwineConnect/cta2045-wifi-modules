@@ -63,7 +63,7 @@
     // DEVCFG2.FPLLIDIV     PLL input divider bits
     // DEVCFG2.FPLLMUL      PLL multiplier bits
     // DEVCFG2.FPLLODIV    Default postscalar for PLL bits
-    #pragma config FNOSC = FRCPLL, FPLLIDIV = DIV_2, FPLLMUL = MUL_20, FPLLODIV = DIV_2, FPBDIV = DIV_1, FWDTEN = OFF, POSCMOD = OFF, FSOSCEN = OFF, CP = OFF
+    // #pragma config FNOSC = FRCPLL, FPLLIDIV = DIV_2, FPLLMUL = MUL_20, FPLLODIV = DIV_2, FPBDIV = DIV_1, FWDTEN = OFF, POSCMOD = OFF, FSOSCEN = OFF, CP = OFF
 #endif
 
 #define GetSystemClock()        (40000000ul)                // 8MHz/FPLLIDIV*FPLLMUL/FPLLODIV

@@ -109,8 +109,8 @@ void WF_Connect(void)
           /* Wifi comm demo SSID : MCHP_xxxx                                                */
           /* Wifi G demo        SSID : MCHP_G_xxxx                                            */
           /************************************************************/
-          sprintf((char *)AppConfig.MySSID,"MCHP_G_%02x%02x", AppConfig.MyMACAddr.v[4], AppConfig.MyMACAddr.v[5]);
-          sprintf((char *)AppConfig.NetBIOSName,"%s%02x%02x", MY_DEFAULT_HOST_NAME, AppConfig.MyMACAddr.v[4], AppConfig.MyMACAddr.v[5]);
+          sprintf((char *)AppConfig.MySSID,"%s%02x%02x%02x", MY_DEFAULT_SSID_NAME, AppConfig.MyMACAddr.v[3], AppConfig.MyMACAddr.v[4], AppConfig.MyMACAddr.v[5]);
+          sprintf((char *)AppConfig.NetBIOSName,"%s%02x%02x%02x", MY_DEFAULT_SSID_NAME, AppConfig.MyMACAddr.v[3], AppConfig.MyMACAddr.v[4], AppConfig.MyMACAddr.v[5]);
     }
     AppConfig.SsidLength =  strlen((char*)(AppConfig.MySSID));
 

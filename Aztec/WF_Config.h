@@ -114,7 +114,7 @@
 #define MY_DEFAULT_LIST_RETRY_COUNT_INFRASTRUCTURE  WF_RETRY_FOREVER
 #define RETRY_COUNT    (3)
 
-#define MY_DEFAULT_SSID_NAME				"MCHP_G_xxxx"
+#define MY_DEFAULT_SSID_NAME				"Intwine"
 
 /*--------------------------------------------*/
 /* Default settings for softAP mode                             */

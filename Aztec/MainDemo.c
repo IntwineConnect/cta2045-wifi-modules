@@ -23,9 +23,9 @@
  *      digital signal controller product ("Device") which is
  *      integrated into Licensee's product; or
  * (ii) ONLY the Software driver source files ENC28J60.c, ENC28J60.h,
- *	ENCX24J600.c and ENCX24J600.h ported to a non-Microchip device
- *	used in conjunction with a Microchip ethernet controller for
- *	the sole purpose of interfacing with the ethernet controller.
+ *  ENCX24J600.c and ENCX24J600.h ported to a non-Microchip device
+ *  used in conjunction with a Microchip ethernet controller for
+ *  the sole purpose of interfacing with the ethernet controller.
  *
  * You should refer to the license agreement accompanying this
  * Software for additional information regarding your rights and
@@ -61,25 +61,32 @@
 #if defined( WF_CONSOLE )
 #include "TCPIP Stack/WFConsole.h"
 #include "IperfApp.h"
-#endif 
+#endif
 
-//
-// Differences to wifi comm demo board (MRF24WB0MA) :
-//        Wifi comm demo board is centered on variable CPElements.
-//        Wifi comm demo SSID : MCHP_xxxx	
-//        SW0 functions : On powerup initiates self test.
-//
-//        Wifi G demo board is centered on variable AppConfig, since this is the generic approach adopted by 
-//        TCPIP demo/ezconsole/ezconfig apps.
-//        Wifi G demo	  SSID : MCHP_G_xxxx											
-//        SW0 functions : On powerup initiates self test.
-//                                When running, initiates reboot to factory default conditions.
-//
+    #pragma config CP = OFF             //Prevents boot and program Flash memory from being read or modified by an external programming device.
+    #pragma config BWP = OFF            //Prevents boot Flash memory from being modified during code execution.
+    #pragma config PWP = OFF            //Prevents selected program Flash memory pages from being modified during code execution. The PWP bits represent the 1’s complement of the number of write-protected program Flash memory pages.
+    #pragma config WDTPS = PS8192       //Allows the WDT module to be controlled by software
+    #pragma config FPBDIV = DIV_1       //Peripheral Bus Clock Divisor Default Value bits
+    #pragma config POSCMOD = HS         //Primary Oscillator Configuration bits (set to HIGH SPEED)
+    #pragma config UPLLEN = ON          //USB PLL Enable bit
+    #pragma config UPLLIDIV = DIV_6     //PLL Input Divider bits for 24MHz
 
-//
-//  Wifi G Demo Web Pages
-//  Generate a WifiGDemoMPFSImg.c file using the MPFS utility (refer to Convert WebPages to MPFS.bat)
-//  that gets compiled into source code and programmed into the flash of the uP.
+// Intwine source crystal is 24MHz
+    #pragma config FPLLIDIV = DIV_6     // 24MHz / 6 = 4MHz (in the desired range for PLL)
+    #pragma config FPLLMUL = MUL_20     // times 20 = 80MHz
+    #pragma config FPLLODIV = DIV_2     // divide by 2 = 40MHz
+
+// Set up for Two-Speed Start-Up (Section 6.3.5)
+    #pragma config FNOSC = PRIPLL       //Oscillator Selection bits - set to Primary Oscillator (POSC) with PLL module (XT+PLL, HS+PLL, EC+PLL)
+    #pragma config IESO = ON            //Internal External Switchover bit ON
+    #pragma config FCKSM = CSECME       //Clock Switching Enabled, Clock Monitoring Enabled
+
+    #ifdef __DEBUG
+        #pragma config FWDTEN = OFF         //Allows the WDT module to be controlled by software
+    #else
+        #pragma config FWDTEN = ON          //Allows the WDT module to be controlled by software
+    #endif
 
 APP_CONFIG AppConfig;
 
@@ -90,7 +97,7 @@ UINT8 g_scan_done = 0;        // WF_PRESCAN   This will be set wheneven event sc
 UINT8 g_prescan_waiting = 1;  // WF_PRESCAN   This is used only to allow POR prescan once.
 
 // Private helper functions.
-static void InitAppConfig(void); 
+static void InitAppConfig(void);
 static void InitializeBoard(void);
 static void SelfTest(void);
 extern void WF_Connect(void);
@@ -101,7 +108,7 @@ void UARTTxBuffer(char *buffer, UINT32 size);
 // Used for re-directing printf and UART statements to the Telnet daemon
 void _mon_putc(char c)
 {
-	TelnetPut(c);
+    TelnetPut(c);
 }
 #endif
 
@@ -111,8 +118,9 @@ void _mon_putc(char c)
 // by having too many local variables or parameters declared.
 void _general_exception_handler(unsigned cause, unsigned status)
 {
-	Nop();
-	Nop();
+    Nop();
+    Nop();
+    while(1);       // Watchdog reset
 }
 
 // ************************************************************
@@ -120,15 +128,15 @@ void _general_exception_handler(unsigned cause, unsigned status)
 // ************************************************************
 int main(void)
 {
-    static DWORD t = 0;	
+    static DWORD t = 0;
     static DWORD dwLastIP = 0;
 #if defined (EZ_CONFIG_STORE)
     static DWORD ButtonPushStart = 0;
 #endif
     UINT8         channelList[] = MY_DEFAULT_CHANNEL_LIST_PRESCAN;  // WF_PRESCAN
     tWFScanResult bssDesc;
-#if 0	
-    INT8 TxPower;   // Needed to change MRF24WG transmit power. 
+#if 0
+    INT8 TxPower;   // Needed to change MRF24WG transmit power.
 #endif
 
     // Initialize application specific hardware
@@ -139,28 +147,28 @@ int main(void)
 
     #if defined(STACK_USE_MPFS2)
     // Initialize the MPFS File System
-	// Generate a WifiGDemoMPFSImg.c file using the MPFS utility (refer to Convert WebPages to MPFS.bat)
-	// that gets compiled into source code and programmed into the flash of the uP.
+    // Generate a WifiGDemoMPFSImg.c file using the MPFS utility (refer to Convert WebPages to MPFS.bat)
+    // that gets compiled into source code and programmed into the flash of the uP.
     MPFSInit();
     #endif
     // Init Flash
     // TCP/IP Stack only inits this if MPFS_USE_SPI_FLASH is defined
-	SPIFlashInit();
-	
+    SPIFlashInit();
+
     // Initialize Stack and application related NV variables into AppConfig.
-    InitAppConfig(); 
+    InitAppConfig();
 
     // Initialize core stack layers (MAC, ARP, TCP, UDP) and
     // application modules (HTTP, SNMP, etc.)
     StackInit();
 
-#if 0	
-    // Below is used to change MRF24WG transmit power. 
-    // This has been verified to be functional (Jan 2013) 
+#if 0
+    // Below is used to change MRF24WG transmit power.
+    // This has been verified to be functional (Jan 2013)
     if (AppConfig.networkType == WF_SOFT_AP)
     {
-        WF_TxPowerGetMax(&TxPower);                       
-        WF_TxPowerSetMax(TxPower);       
+        WF_TxPowerGetMax(&TxPower);
+        WF_TxPowerSetMax(TxPower);
     }
 #endif
 
@@ -185,24 +193,24 @@ int main(void)
     // Initialize WiFi Scan State Machine NV variables
     WFInitScan();
     #endif
-	
-    // WF_PRESCAN: Pre-scan before starting up as SoftAP mode  
+
+    // WF_PRESCAN: Pre-scan before starting up as SoftAP mode
     WF_CASetScanType(MY_DEFAULT_SCAN_TYPE);
     WF_CASetChannelList(channelList, sizeof(channelList));
-		
+
     if (WFStartScan() == WF_SUCCESS) {
        SCAN_SET_DISPLAY(SCANCXT.scanState);
        SCANCXT.displayIdx = 0;
     }
-	
-    // Needed to trigger g_scan_done		
-    WFRetrieveScanResult(0, &bssDesc);		
-  	
+
+    // Needed to trigger g_scan_done
+    WFRetrieveScanResult(0, &bssDesc);
+
     #if defined(STACK_USE_ZEROCONF_LINK_LOCAL)
     // Initialize Zeroconf Link-Local state-machine, regardless of network type.
     ZeroconfLLInitialize();
     #endif
-	
+
     #if defined(STACK_USE_ZEROCONF_MDNS_SD)
     // Initialize DNS Host-Name from TCPIPConfig.h, regardless of network type.
     mDNSInitialize(MY_DEFAULT_HOST_NAME);
@@ -210,7 +218,7 @@ int main(void)
             // (const char *) AppConfig.NetBIOSName,        // base name of the service. Ensure uniformity with CheckHibernate().
             (const char *) "DemoWebServer",          // base name of the service. Ensure uniformity with CheckHibernate().
             "_http._tcp.local",                      // type of the service
-            80,	                                     // TCP or UDP port, at which this service is available
+            80,                                      // TCP or UDP port, at which this service is available
             ((const BYTE *)"path=/index.htm"),       // TXT info
             1,                                       // auto rename the service when if needed
             NULL,                                    // no callback function
@@ -218,7 +226,7 @@ int main(void)
             );
     mDNSMulticastFilterRegister();
     #endif
-	
+
     #if defined(WF_CONSOLE)
     // Initialize the WiFi Console App
     WFConsoleInit();
@@ -235,8 +243,11 @@ int main(void)
     // job.
     // If a task needs very long time to do its job, it must be broken
     // down into smaller pieces so that other tasks can have CPU time.
+
     while(1)
     {
+        ClearWDT();
+
          if (AppConfig.networkType == WF_SOFT_AP || AppConfig.networkType == WF_INFRASTRUCTURE) {
             if (g_scan_done) {
                 if (g_prescan_waiting) {
@@ -244,7 +255,7 @@ int main(void)
                      while (IS_SCAN_STATE_DISPLAY(SCANCXT.scanState)) {
                          WFDisplayScanMgr();
                      }
-				
+
                      #if defined(WF_CS_TRIS)
                      WF_Connect();
                      #endif
@@ -253,21 +264,23 @@ int main(void)
                 }
             }
          }
-		 
+
         #if defined (EZ_CONFIG_STORE)
         // Hold SW0 for 4 seconds to reset to defaults.
         if (SW0_IO == 0u) {  // Button is pressed
             if (ButtonPushStart == 0)  //Just pressed
                 ButtonPushStart = TickGet();
             else
-                if(TickGet() - ButtonPushStart > 4*TICK_SECOND)
+                if(TickGet() - ButtonPushStart > 4*TICK_SECOND) {
+                    printf("Restoring defaults and reset\r\n");
                     RestoreWifiConfig();
-        } 
-        else 
+                }
+        }
+        else
         {
             ButtonPushStart = 0; //Button release reset the clock
         }
-		
+
         if (AppConfig.saveSecurityInfo)
         {
             // set true by WF_ProcessEvent after connecting to a new network
@@ -282,18 +295,18 @@ int main(void)
                 UINT8 connID;
                 WF_CMGetConnectionState(&connState, &connID);
                 WF_CPGetElements(connID, &profile);
-                
+
                 memcpy((char*)AppConfig.SecurityKey, (char*)profile.securityKey, 32);
                 AppConfig.SecurityMode--; // the calc psk is exactly one below for each passphrase option
-                AppConfig.SecurityKeyLength = 32;                
+                AppConfig.SecurityKeyLength = 32;
 
                 SaveAppConfig(&AppConfig);
             }
-            
+
             AppConfig.saveSecurityInfo = FALSE;
         }
         #endif // EZ_CONFIG_STORE
-		
+
         // Blink LED0 twice per sec when unconfigured, once per sec after config
         if((TickGet() - t >= TICK_SECOND/(4ul - (CFGCXT.isWifiDoneConfigure*2ul))))
         {
@@ -309,7 +322,7 @@ int main(void)
         // This task invokes each of the core stack application tasks
         StackApplications();
 
-        // Enable WF_USE_POWER_SAVE_FUNCTIONS 
+        // Enable WF_USE_POWER_SAVE_FUNCTIONS
         WiFiTask();
 
         #if defined(STACK_USE_ZEROCONF_LINK_LOCAL)
@@ -319,31 +332,31 @@ int main(void)
         #if defined(STACK_USE_ZEROCONF_MDNS_SD)
         mDNSProcess();
         #endif
-		
+
         // Process application specific tasks here.
         // Any custom modules or processing you need to do should
         // go here.
         #if defined(WF_CONSOLE)
-		WFConsoleProcess();
-		WFConsoleProcessEpilogue();
-		#endif
+        WFConsoleProcess();
+        WFConsoleProcessEpilogue();
+        #endif
 
-		// If the local IP address has changed (ex: due to DHCP lease change)
-		// write the new IP address to the LCD display, UART, and Announce 
-		// service
-		if(dwLastIP != AppConfig.MyIPAddr.Val) 
-		{
-			dwLastIP = AppConfig.MyIPAddr.Val;	
-			DisplayIPValue(AppConfig.MyIPAddr);			
-		
-			#if defined(STACK_USE_ANNOUNCE)
-			AnnounceIP();
-	 		#endif
-		
-			#if defined(STACK_USE_ZEROCONF_MDNS_SD)
-			mDNSFillHostRecord();
-	 		#endif
-		}
+        // If the local IP address has changed (ex: due to DHCP lease change)
+        // write the new IP address to the LCD display, UART, and Announce
+        // service
+        if(dwLastIP != AppConfig.MyIPAddr.Val)
+        {
+            dwLastIP = AppConfig.MyIPAddr.Val;
+            DisplayIPValue(AppConfig.MyIPAddr);
+
+            #if defined(STACK_USE_ANNOUNCE)
+            AnnounceIP();
+            #endif
+
+            #if defined(STACK_USE_ZEROCONF_MDNS_SD)
+            mDNSFillHostRecord();
+            #endif
+        }
 
     }
 }
@@ -380,7 +393,7 @@ static void InitializeBoard(void)
     SYSTEMConfigPerformance(GetSystemClock());
 
     // Use 1:1 CPU Core:Peripheral clocks
-    mOSCSetPBDIV(OSC_PB_DIV_1);     
+    mOSCSetPBDIV(OSC_PB_DIV_1);
 
     // Disable JTAG port so we get our I/O pins back, but first
     // wait 50ms so if you want to reprogram the part with
@@ -406,23 +419,23 @@ static void InitializeBoard(void)
     TRISBCLR = BIT_9;   // WP#
     LATBSET = BIT_9;
 
-#if defined(STACK_USE_UART) 
-    UARTTX_TRIS = 0; 
-    UARTRX_TRIS = 1; 
-    UMODE = 0x8000;   // Set UARTEN.  Note: this must be done before setting UTXEN 
-    USTA = 0x00001400;  // RXEN set, TXEN set 
+#if defined(STACK_USE_UART)
+    UARTTX_TRIS = 0;
+    UARTRX_TRIS = 1;
+    UMODE = 0x8000;   // Set UARTEN.  Note: this must be done before setting UTXEN
+    USTA = 0x00001400;  // RXEN set, TXEN set
     #define BAUD_RATE   19200
-    #define CLOSEST_UBRG_VALUE ((GetPeripheralClock()+8ul*BAUD_RATE)/16/BAUD_RATE-1) 
-    #define BAUD_ACTUAL (GetPeripheralClock()/16/(CLOSEST_UBRG_VALUE+1)) 
-    #define BAUD_ERROR ((BAUD_ACTUAL > BAUD_RATE) ? BAUD_ACTUAL-BAUD_RATE : BAUD_RATE-BAUD_ACTUAL) 
-    #define BAUD_ERROR_PRECENT ((BAUD_ERROR*100+BAUD_RATE/2)/BAUD_RATE) 
-    #if (BAUD_ERROR_PRECENT > 3) 
-            #warning UART frequency error is worse than 3% 
-    #elif (BAUD_ERROR_PRECENT > 2) 
-            #warning UART frequency error is worse than 2% 
-    #endif 
-        UBRG = CLOSEST_UBRG_VALUE; 
-#endif 
+    #define CLOSEST_UBRG_VALUE ((GetPeripheralClock()+8ul*BAUD_RATE)/16/BAUD_RATE-1)
+    #define BAUD_ACTUAL (GetPeripheralClock()/16/(CLOSEST_UBRG_VALUE+1))
+    #define BAUD_ERROR ((BAUD_ACTUAL > BAUD_RATE) ? BAUD_ACTUAL-BAUD_RATE : BAUD_RATE-BAUD_ACTUAL)
+    #define BAUD_ERROR_PRECENT ((BAUD_ERROR*100+BAUD_RATE/2)/BAUD_RATE)
+    #if (BAUD_ERROR_PRECENT > 3)
+            #warning UART frequency error is worse than 3%
+    #elif (BAUD_ERROR_PRECENT > 2)
+            #warning UART frequency error is worse than 2%
+    #endif
+        UBRG = CLOSEST_UBRG_VALUE;
+#endif
 
 putrsUART("\r\nAztec Init Complete\r\n");
 }
@@ -447,67 +460,67 @@ static ROM BYTE SerializedMACAddress[6] = {MY_DEFAULT_MAC_BYTE1, MY_DEFAULT_MAC_
 static void InitAppConfig(void)
 {
 #if defined(SPIFLASH_CS_TRIS)
-		unsigned char vNeedToSaveDefaults = 0;
+        unsigned char vNeedToSaveDefaults = 0;
 #endif
-		
-		while(1)
-		{
-			// Start out zeroing all AppConfig bytes to ensure all fields are 
-			// deterministic for checksum generation
-			memset((void*)&AppConfig, 0x00, sizeof(AppConfig));
-			
-			AppConfig.Flags.bIsDHCPEnabled = TRUE;
-			AppConfig.Flags.bInConfigMode = TRUE;
-			memcpypgm2ram((void*)&AppConfig.MyMACAddr, (ROM void*)SerializedMACAddress, sizeof(AppConfig.MyMACAddr));
-	//		{
-	//			_prog_addressT MACAddressAddress;
-	//			MACAddressAddress.next = 0x157F8;
-	//			_memcpy_p2d24((char*)&AppConfig.MyMACAddr, MACAddressAddress, sizeof(AppConfig.MyMACAddr));
-	//		}
-	
 
-			// SoftAP on certain setups with IP 192.168.1.1 has problem with DHCP client assigning new IP address on redirection.
-			// 192.168.1.1 is a common IP address with most APs. This is still under investigation.
-			// For now, assign this as 192.168.1.3
+        while(1)
+        {
+            // Start out zeroing all AppConfig bytes to ensure all fields are
+            // deterministic for checksum generation
+            memset((void*)&AppConfig, 0x00, sizeof(AppConfig));
 
-			AppConfig.MyIPAddr.Val = 192ul | 168ul<<8ul | 1ul<<16ul | 214ul<<24ul;
-			AppConfig.DefaultIPAddr.Val = AppConfig.MyIPAddr.Val;
-			AppConfig.MyMask.Val = 255ul | 255ul<<8ul | 0ul<<16ul | 0ul<<24ul;
-			AppConfig.DefaultMask.Val = AppConfig.MyMask.Val;
-			AppConfig.MyGateway.Val = AppConfig.MyIPAddr.Val;
-			AppConfig.PrimaryDNSServer.Val = AppConfig.MyIPAddr.Val;
-			AppConfig.SecondaryDNSServer.Val = AppConfig.MyIPAddr.Val;
-				
-			// Load the default NetBIOS Host Name
-			memcpypgm2ram(AppConfig.NetBIOSName, (ROM void*)MY_DEFAULT_HOST_NAME, 16);
-			FormatNetBIOSName(AppConfig.NetBIOSName);
-		
-		#if defined(WF_CS_TRIS)
-			// Load the default SSID Name
-			WF_ASSERT(sizeof(MY_DEFAULT_SSID_NAME)-1 <= sizeof(AppConfig.MySSID));
-			memcpypgm2ram(AppConfig.MySSID, (ROM void*)MY_DEFAULT_SSID_NAME, sizeof(MY_DEFAULT_SSID_NAME));
-			AppConfig.SsidLength = sizeof(MY_DEFAULT_SSID_NAME) - 1;
-			AppConfig.SecurityMode = MY_DEFAULT_WIFI_SECURITY_MODE;
-			if (AppConfig.SecurityMode == WF_SECURITY_WEP_40)
-			{
-				AppConfig.WepKeyIndex  = MY_DEFAULT_WEP_KEY_INDEX;
-				memcpypgm2ram(AppConfig.SecurityKey, (ROM void*)MY_DEFAULT_WEP_KEYS_40, sizeof(MY_DEFAULT_WEP_KEYS_40) - 1);
-				AppConfig.SecurityKeyLength = sizeof(MY_DEFAULT_WEP_KEYS_40) - 1;
-			}
-			else if (AppConfig.SecurityMode == WF_SECURITY_WEP_104)
-			{
-				AppConfig.WepKeyIndex  = MY_DEFAULT_WEP_KEY_INDEX;
-				memcpypgm2ram(AppConfig.SecurityKey, (ROM void*)MY_DEFAULT_WEP_KEYS_104, sizeof(MY_DEFAULT_WEP_KEYS_104) - 1);
-				AppConfig.SecurityKeyLength = sizeof(MY_DEFAULT_WEP_KEYS_104) - 1;
-			}
-			AppConfig.networkType = MY_DEFAULT_NETWORK_TYPE;
-			AppConfig.dataValid = 0;
-		#endif
-	
-			// Compute the checksum of the AppConfig defaults as loaded from ROM
-			wOriginalAppConfigChecksum = CalcIPChecksum((BYTE*)&AppConfig, sizeof(AppConfig));
+            AppConfig.Flags.bIsDHCPEnabled = TRUE;
+            AppConfig.Flags.bInConfigMode = TRUE;
+            memcpypgm2ram((void*)&AppConfig.MyMACAddr, (ROM void*)SerializedMACAddress, sizeof(AppConfig.MyMACAddr));
+    //      {
+    //          _prog_addressT MACAddressAddress;
+    //          MACAddressAddress.next = 0x157F8;
+    //          _memcpy_p2d24((char*)&AppConfig.MyMACAddr, MACAddressAddress, sizeof(AppConfig.MyMACAddr));
+    //      }
 
-#if defined(SPIFLASH_CS_TRIS) 
+
+            // SoftAP on certain setups with IP 192.168.1.1 has problem with DHCP client assigning new IP address on redirection.
+            // 192.168.1.1 is a common IP address with most APs. This is still under investigation.
+            // For now, assign this as 192.168.1.3
+
+            AppConfig.MyIPAddr.Val = 192ul | 168ul<<8ul | 1ul<<16ul | 3ul<<24ul;
+            AppConfig.DefaultIPAddr.Val = AppConfig.MyIPAddr.Val;
+            AppConfig.MyMask.Val = 255ul | 255ul<<8ul | 0ul<<16ul | 0ul<<24ul;
+            AppConfig.DefaultMask.Val = AppConfig.MyMask.Val;
+            AppConfig.MyGateway.Val = AppConfig.MyIPAddr.Val;
+            AppConfig.PrimaryDNSServer.Val = AppConfig.MyIPAddr.Val;
+            AppConfig.SecondaryDNSServer.Val = AppConfig.MyIPAddr.Val;
+
+            // Load the default NetBIOS Host Name
+            memcpypgm2ram(AppConfig.NetBIOSName, (ROM void*)MY_DEFAULT_HOST_NAME, 16);
+            FormatNetBIOSName(AppConfig.NetBIOSName);
+
+        #if defined(WF_CS_TRIS)
+            // Load the default SSID Name
+            WF_ASSERT(sizeof(MY_DEFAULT_SSID_NAME)-1 <= sizeof(AppConfig.MySSID));
+            memcpypgm2ram(AppConfig.MySSID, (ROM void*)MY_DEFAULT_SSID_NAME, sizeof(MY_DEFAULT_SSID_NAME));
+            AppConfig.SsidLength = sizeof(MY_DEFAULT_SSID_NAME) - 1;
+            AppConfig.SecurityMode = MY_DEFAULT_WIFI_SECURITY_MODE;
+            if (AppConfig.SecurityMode == WF_SECURITY_WEP_40)
+            {
+                AppConfig.WepKeyIndex  = MY_DEFAULT_WEP_KEY_INDEX;
+                memcpypgm2ram(AppConfig.SecurityKey, (ROM void*)MY_DEFAULT_WEP_KEYS_40, sizeof(MY_DEFAULT_WEP_KEYS_40) - 1);
+                AppConfig.SecurityKeyLength = sizeof(MY_DEFAULT_WEP_KEYS_40) - 1;
+            }
+            else if (AppConfig.SecurityMode == WF_SECURITY_WEP_104)
+            {
+                AppConfig.WepKeyIndex  = MY_DEFAULT_WEP_KEY_INDEX;
+                memcpypgm2ram(AppConfig.SecurityKey, (ROM void*)MY_DEFAULT_WEP_KEYS_104, sizeof(MY_DEFAULT_WEP_KEYS_104) - 1);
+                AppConfig.SecurityKeyLength = sizeof(MY_DEFAULT_WEP_KEYS_104) - 1;
+            }
+            AppConfig.networkType = MY_DEFAULT_NETWORK_TYPE;
+            AppConfig.dataValid = 0;
+        #endif
+
+            // Compute the checksum of the AppConfig defaults as loaded from ROM
+            wOriginalAppConfigChecksum = CalcIPChecksum((BYTE*)&AppConfig, sizeof(AppConfig));
+
+#if defined(SPIFLASH_CS_TRIS)
             NVM_VALIDATION_STRUCT NVMValidationStruct;
 
             // Check to see if we have a flag set indicating that we need to
@@ -549,19 +562,19 @@ static void InitAppConfig(void)
             // use the contents loaded from EEPROM/Flash.
             break;
 #endif
-			break;
-	
-		}
-	
-	
+            break;
+
+        }
+
+
     #if defined (EZ_CONFIG_STORE)
-		// Set configuration for ZG from NVM
-		/* Set security type and key if necessary, convert from app storage to ZG driver */
-	
-		if (AppConfig.dataValid)
-			CFGCXT.isWifiDoneConfigure = 1;
-	
-		AppConfig.saveSecurityInfo = FALSE;
+        // Set configuration for ZG from NVM
+        /* Set security type and key if necessary, convert from app storage to ZG driver */
+
+        if (AppConfig.dataValid)
+            CFGCXT.isWifiDoneConfigure = 1;
+
+        AppConfig.saveSecurityInfo = FALSE;
     #endif // EZ_CONFIG_STORE
 
 }
@@ -614,7 +627,7 @@ static void SelfTest(void)
 
         // Print the label
         UARTTxBuffer("\f",1);
-        
+
         // Toggle LED's
         while(1)
         {
@@ -699,15 +712,15 @@ void UARTTxBuffer(char *buffer, UINT32 size)
   ***************************************************************************/
 void DisplayIPValue(IP_ADDR IPVal)
 {
-	printf("%u.%u.%u.%u\r\n", IPVal.v[0], IPVal.v[1], IPVal.v[2], IPVal.v[3]);
+    printf("%u.%u.%u.%u\r\n", IPVal.v[0], IPVal.v[1], IPVal.v[2], IPVal.v[3]);
 }
 
 /****************************************************************************
   Function:
-	void SaveAppConfig(const APP_CONFIG *ptrAppConfig)
+    void SaveAppConfig(const APP_CONFIG *ptrAppConfig)
 
   Description:
-    This routine saves the AppConfig into EEPROM. 
+    This routine saves the AppConfig into EEPROM.
 
   Precondition:
     None
@@ -742,10 +755,10 @@ void SaveAppConfig(const APP_CONFIG *ptrAppConfig)
 #if defined (EZ_CONFIG_STORE)
 /****************************************************************************
   Function:
-	void RestoreWifiConfig(void)
+    void RestoreWifiConfig(void)
 
   Description:
-    This routine performs reboot when SW0 is pressed.  
+    This routine performs reboot when SW0 is pressed.
 
   Precondition:
     None
@@ -769,6 +782,7 @@ void RestoreWifiConfig(void)
     // reboot here...
     //LED_PUT(0x00);
     while(SW0_IO == 0u);
-    Reset();
+    while(1);       // Watchdog reset
+//    Reset();
 }
 #endif // EZ_CONFIG_STORE
