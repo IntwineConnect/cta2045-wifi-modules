@@ -1,16 +1,13 @@
 /*********************************************************************
  *
  *  Main Application Entry Point
- *   -Demonstrates how to call and use the Microchip WiFi Module and
- *    TCP/IP stack
- *   -Reference: Microchip TCP/IP Stack Help (TCPIP Stack Help.chm)
  *
  *********************************************************************
- * FileName:           MainDemo.c
- * Dependencies:    TCPIP.h
- * Processor:          PIC32MX695F512H
- * Compiler:           Microchip  XC32 Compiler
- * Company:          Microchip Technology, Inc.
+ * FileName:        Main.c
+ * Dependencies:    Compiler.h
+ * Processor:       PIC32MX575F512L
+ * Compiler:        Microchip  XC32 Compiler
+ * Company:         Intwine Connect, LLC
  *
  * Software License Agreement
  *
@@ -62,31 +59,6 @@
 #include "TCPIP Stack/WFConsole.h"
 #include "IperfApp.h"
 #endif
-
-    #pragma config CP = OFF             //Prevents boot and program Flash memory from being read or modified by an external programming device.
-    #pragma config BWP = OFF            //Prevents boot Flash memory from being modified during code execution.
-    #pragma config PWP = OFF            //Prevents selected program Flash memory pages from being modified during code execution. The PWP bits represent the 1’s complement of the number of write-protected program Flash memory pages.
-    #pragma config WDTPS = PS8192       //Allows the WDT module to be controlled by software
-    #pragma config FPBDIV = DIV_1       //Peripheral Bus Clock Divisor Default Value bits
-    #pragma config POSCMOD = HS         //Primary Oscillator Configuration bits (set to HIGH SPEED)
-    #pragma config UPLLEN = ON          //USB PLL Enable bit
-    #pragma config UPLLIDIV = DIV_6     //PLL Input Divider bits for 24MHz
-
-// Intwine source crystal is 24MHz
-    #pragma config FPLLIDIV = DIV_6     // 24MHz / 6 = 4MHz (in the desired range for PLL)
-    #pragma config FPLLMUL = MUL_20     // times 20 = 80MHz
-    #pragma config FPLLODIV = DIV_2     // divide by 2 = 40MHz
-
-// Set up for Two-Speed Start-Up (Section 6.3.5)
-    #pragma config FNOSC = PRIPLL       //Oscillator Selection bits - set to Primary Oscillator (POSC) with PLL module (XT+PLL, HS+PLL, EC+PLL)
-    #pragma config IESO = ON            //Internal External Switchover bit ON
-    #pragma config FCKSM = CSECME       //Clock Switching Enabled, Clock Monitoring Enabled
-
-    #ifdef __DEBUG
-        #pragma config FWDTEN = OFF         //Allows the WDT module to be controlled by software
-    #else
-        #pragma config FWDTEN = ON          //Allows the WDT module to be controlled by software
-    #endif
 
 APP_CONFIG AppConfig;
 

@@ -117,7 +117,6 @@ file_089=.
 file_090=.
 file_091=.
 file_092=Configs
-file_093=Configs
 [GENERATED_FILES]
 file_000=no
 file_001=no
@@ -212,7 +211,6 @@ file_089=no
 file_090=no
 file_091=no
 file_092=no
-file_093=no
 [OTHER_FILES]
 file_000=no
 file_001=no
@@ -307,9 +305,8 @@ file_089=no
 file_090=no
 file_091=no
 file_092=no
-file_093=no
 [FILE_INFO]
-file_000=MainDemo.c
+file_000=Main.c
 file_001=CustomHTTPApp.c
 file_002=WF_Config.c
 file_003=WifiGDemoMPFSImg.c
@@ -401,8 +398,7 @@ file_088=HardwareProfile.h
 file_089=HTTPPrint.h
 file_090=TCPIPConfig.h
 file_091=WF_Config.h
-file_092=Configs\HWP MRF24W XC32.h
-file_093=Configs\TCPIP MRF24W.h
+file_092=Configs\TCPIP MRF24W.h
 [SUITE_INFO]
 suite_guid={14495C23-81F8-43F3-8A44-859C583D7760}
 suite_state=
