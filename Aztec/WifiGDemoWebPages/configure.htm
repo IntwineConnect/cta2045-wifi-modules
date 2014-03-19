@@ -2,20 +2,19 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<title>WiFi-G Demo Board</title>
+	<title>Intwine Connect</title>
 	<link href="css/mchp.css" rel="stylesheet" type="text/css" />
 	<script src="javascript/mchp.js" type="text/javascript"></script>
 </head>
 
-<body>
+<body onload="newAJAXCommand('status.xml');">
 <div id="container">
-<div id="logo_banner"><img src="images/mchp.gif" alt="Microchip" /></div>
-<div id="title"><div class="text">WiFi-G Demo Application</div></div>
+<div id="logo_banner"><img src="./images/IntwineLogo.png" alt="Intwine"></div>
+<div id="title"><div class="text">Intwine Connect Configurator</div></div>
 <div id="main_content">
     <div id="menu">
-        <a href="/index.htm">Welcome!</a>
-        <a href="/mrf24wg0ma.htm">MRF24WG0MA</a>
-        <a href="/configure.htm">Configure Network</a>
+        <a href="./index.htm">Home</a>
+        <a href="./configure.htm">Configure Network</a>
     </div>
     
 <div id="content">
@@ -34,46 +33,6 @@
     			<td colspan="4">
     				<input id="rescan" type="button" style="width:25em"
     				  value="Scan for Wireless Networks ... coming soon" onclick="rescanNetwork();"></input>
-    			</td>
-    		</tr>
-    	</tbody>
-        <tbody>
-    		<tr>
-    			<td colspan="4">
-    				<input id="wps_button" type="button" style="width:25em"
-    				  value="WPS Push Button (WPS-PBC)... coming soon" onclick="userSelectWPSButton();"></input>
-    			</td>
-    		</tr>
-    	</tbody>
-     	<tbody>
-    		<tr>
-    			<td colspan="4">
-    				<input id="wps_pin" type="button" style="width:25em"
-    				  value="WPS PIN (WPS-PIN) ... coming soon" onclick="userSelectWPSPin();"></input>
-    			</td>
-    		</tr>
-    	</tbody>
-     	<tbody>
-    		<tr>
-    			<td colspan="4">
-    				<input id="ad_hoc" type="button" style="width:25em"
-    				  value="Ad-Hoc ... coming soon" onclick="userSelectStartUpAdHoc();"></input>
-    			</td>
-    		</tr>
-    	</tbody>
-     	<tbody>
-    		<tr>
-    			<td colspan="4">
-    				<input id="soft_ap" type="button" style="width:25em"
-    				  value="Soft AP ... coming soon" onclick="userSelectStartUpSoftAP();"></input>
-    			</td>
-    		</tr>
-    	</tbody>
-     	<tbody>
-    		<tr>
-    			<td colspan="4">
-    				<input id="wifi_direct" type="button" style="width:25em"
-    				  value="WiFi Direct (group client role)... coming soon " onclick="userSelectStartUpWiFiDirect();"></input>
     			</td>
     		</tr>
     	</tbody>
@@ -96,7 +55,7 @@
     </form>
 </div> <!--content-->
 </div> <!--main_content-->
-<div id="footer">Copyright &copy; 2013 Microchip Technology, Inc.</div>
+<div id="footer">Copyright &copy; 2014 Intwine Connect, LLC</div>
 </div> <!--container-->
 </body>
 </html>

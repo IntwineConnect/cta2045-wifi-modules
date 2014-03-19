@@ -54,6 +54,7 @@
 #define THIS_IS_STACK_APPLICATION
 
 #include "MainDemo.h"
+#include "i2c_master.h"
 
 #if defined( WF_CONSOLE )
 #include "TCPIP Stack/WFConsole.h"
@@ -76,13 +77,15 @@ extern void WF_Connect(void);
 void UARTTxBuffer(char *buffer, UINT32 size);
 
 
-#ifdef STACK_USE_TELNET_SERVER
-// Used for re-directing printf and UART statements to the Telnet daemon
+// Used for re-directing printf when uart 2 is used by CEA2045
+// Remap UART in HardwareProfile.h
 void _mon_putc(char c)
 {
-    TelnetPut(c);
+    unsigned int ci;
+    ci = (unsigned int) c;
+    putcUART(ci);
 }
-#endif
+
 
 // Exception Handlers
 // If your code gets here, you either tried to read or write
@@ -111,8 +114,29 @@ int main(void)
     INT8 TxPower;   // Needed to change MRF24WG transmit power.
 #endif
 
+    UINT8 Si7005ID, si7005Reg, Si7005Data[2] = {0,0};
+    INT16 Temp;
+    
     // Initialize application specific hardware
     InitializeBoard();
+
+    // Read ID register
+    si7005Reg = 17;
+    ReadI2C( I2C_BUS, SI7005_ADDRESS, si7005Reg, Si7005Data, 1);
+//    SI7005_IO = 1;      // Si7005 CS inactive. Power down
+//    SI7005_IO = 0;
+//    DelayMs(15);
+//    ReadI2C( I2C_BUS, SI7005_ADDRESS, si7005Reg, &Si7005Data[1], 1);
+//    // Start temp conversion
+//    SI7005_IO = 1;      // Si7005 CS inactive. Power down
+//    SI7005_IO = 0;
+//    si7005Reg = 3;
+//    Si7005Data[0] = 0x10 | 0x01;
+//    DelayMs(15);
+//    WriteI2CByte( I2C_BUS, SI7005_ADDRESS, si7005Reg, Si7005Data[0]);
+//    DelayMs(40);
+//    ReadI2C( I2C_BUS, SI7005_ADDRESS, 1, Si7005Data, 2);
+//    Temp = Si7005Data[0] << 8 + Si7005Data[1];
 
     // Initialize TCP/IP stack timer
     TickInit();
@@ -356,6 +380,13 @@ int main(void)
   ***************************************************************************/
 static void InitializeBoard(void)
 {
+    // Si7005 Temp/Humidity on I2C2
+    SI7005_TRIS = 0;
+    SI7005_IO = 1;      // Pulse Si7005 CS inactive per data sheet.
+    SI7005_IO = 0;
+    SI7005_IO = 1;      // Si7005 CS inactive. Power down
+    InitI2C( I2C_BUS, I2C_CLOCK_FREQ );
+
     // Note: WiFi Module hardware Initialization handled by StackInit() Library Routine
 
     // Enable multi-vectored interrupts
@@ -409,7 +440,10 @@ static void InitializeBoard(void)
         UBRG = CLOSEST_UBRG_VALUE;
 #endif
 
-putrsUART("\r\nAztec Init Complete\r\n");
+    SI7005_IO = 0;  // Enable Si7005 and delay 15 ms
+    DelayMs(15);
+
+    putrsUART("\r\n\r\n\r\nAztec Init Complete\r\n");
 }
 
 static ROM BYTE SerializedMACAddress[6] = {MY_DEFAULT_MAC_BYTE1, MY_DEFAULT_MAC_BYTE2, MY_DEFAULT_MAC_BYTE3, MY_DEFAULT_MAC_BYTE4, MY_DEFAULT_MAC_BYTE5, MY_DEFAULT_MAC_BYTE6};

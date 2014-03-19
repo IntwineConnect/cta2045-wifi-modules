@@ -23,7 +23,7 @@ body {
 
 #title {
 	width: auto;
-	background: #c00;
+	background: #0c0;
 	padding: 4px;
 	font-weight: bold;
 	color: #fff;
@@ -50,7 +50,7 @@ body {
 #menu a {
 	width: 145px;
 	display: block;
-	background: #c00;
+	background: #0c0;
 	color: white;
 	padding: 5px;
 	font-weight: bold;
@@ -59,7 +59,7 @@ body {
 }
 
 #menu a:hover {
-	background: #d33;
+	background: #33d;
 }
 
 #content {
@@ -70,7 +70,7 @@ body {
 }
 
 #content a {
-	color: #c00;
+	color: #0c0;
 	text-decoration: none;
 }
 

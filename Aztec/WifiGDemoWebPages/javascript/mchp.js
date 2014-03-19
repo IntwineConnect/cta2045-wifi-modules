@@ -41,7 +41,7 @@
  ********************************************************************/
 
 // Determines when a request is considered "timed out"
-var timeOutMS = 5000; //ms
+var timeOutMS = 10000; //ms
  
 // Stores a queue of AJAX events to process
 var ajaxList = new Array();

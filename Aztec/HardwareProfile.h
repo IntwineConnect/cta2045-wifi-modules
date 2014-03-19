@@ -66,6 +66,15 @@
 
 
 //----------------------------
+// I2C Si7005 Constants
+//----------------------------
+#define I2C_BUS             I2C2
+#define I2C_CLOCK_FREQ      100000ul
+#define SI7005_TRIS         (TRISEbits.TRISE3)
+#define SI7005_IO           (PORTEbits.RE3)
+#define SI7005_ADDRESS      0x40
+
+//----------------------------
 // LED and Button I/O pins
 //----------------------------
 #define LED0_TRIS           (TRISEbits.TRISE2)  // Ref E2 Green
@@ -197,10 +206,11 @@
 #define UMODE    U2MODE 
 #define USTA    U2STA 
 #define BusyUART()          BusyUART2() 
-#define putcUART            do{while(BusyUART()); WriteUART(a); while(BusyUART()); }while(0) 
+#define putcUART(a)         do{while(BusyUART()); WriteUART(a); while(BusyUART()); }while(0) 
 #define putrsUART(a)        putrsUART2(a) 
 #define putsUART(a)         putsUART2(a) 
-#define DataRdyUART()      DataRdyUART2() 
-#define ReadUART()         ReadUART2()
+#define DataRdyUART()       DataRdyUART2() 
+#define ReadUART()          ReadUART2()
+#define WriteUART(a)        WriteUART2(a)
 
 #endif // #ifndef HARDWARE_PROFILE_H

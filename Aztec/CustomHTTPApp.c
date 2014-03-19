@@ -57,6 +57,7 @@
 #include "TCPIP Stack/TCPIP.h"
 #include "TCPIP Stack/WFConsoleMsgHandler.h"
 #include "MainDemo.h"        // Needed for SaveAppConfig() prototype
+#include "UpgradeClient.h"   // Firmware version stored here
 
 
 // Differences to wifi comm demo board (MRF24WB0MA) :
@@ -1015,7 +1016,10 @@ void HTTPPrint_nextWLAN(void)
 // ==========================
 void HTTPPrint_Demoversion(void)
 {
-    TCPPutROMString(sktHTTP, (ROM void*)DEMO_VERSION);
+    char FWver[16];
+
+    sprintf(FWver,"%u.%u.%u", APP_FW_MAJOR, APP_FW_MINOR, APP_FW_BUILD);
+    TCPPutString(sktHTTP, (BYTE *)FWver);
 }
 
 // ==============================================
