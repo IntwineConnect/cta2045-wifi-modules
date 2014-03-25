@@ -53,8 +53,13 @@
   */
 #define THIS_IS_STACK_APPLICATION
 
+#include "HardwareProfile.h"
 #include "MainDemo.h"
 #include "i2c_master.h"
+#include "app.h"
+#include "INTiAPI.h"
+#include "UARTiAPI.h"
+#include "Device_ICO_ICL.h"
 
 #if defined( WF_CONSOLE )
 #include "TCPIP Stack/WFConsole.h"
@@ -72,7 +77,6 @@ UINT8 g_prescan_waiting = 1;  // WF_PRESCAN   This is used only to allow POR pre
 // Private helper functions.
 static void InitAppConfig(void);
 static void InitializeBoard(void);
-static void SelfTest(void);
 extern void WF_Connect(void);
 void UARTTxBuffer(char *buffer, UINT32 size);
 
@@ -95,7 +99,7 @@ void _general_exception_handler(unsigned cause, unsigned status)
 {
     Nop();
     Nop();
-    while(1);       // Watchdog reset
+    while(1);       // Watchdog will reset
 }
 
 // ************************************************************
@@ -119,6 +123,8 @@ int main(void)
     
     // Initialize application specific hardware
     InitializeBoard();
+
+    AppTaskInit();
 
     // Read ID register
     si7005Reg = 17;
@@ -167,22 +173,6 @@ int main(void)
         WF_TxPowerSetMax(TxPower);
     }
 #endif
-
-    // Run Self Test if SW0 pressed on startup
-    if(SW0_IO == 0)
-        SelfTest();
-
-    #ifdef STACK_USE_TELNET_SERVER
-        // Initialize Telnet and
-        // Put Remote client in Remote Character Echo Mode
-        TelnetInit();
-        putc(0xff, stdout);     // IAC = Interpret as Command
-        putc(0xfe, stdout);     // Type of Operation = DONT
-        putc(0x22, stdout);     // Option = linemode
-        putc(0xff, stdout);     // IAC = Interpret as Command
-        putc(0xfb, stdout);     // Type of Operation = DO
-        putc(0x01, stdout);     // Option = echo
-    #endif
 
 
     #if defined ( EZ_CONFIG_SCAN )
@@ -387,7 +377,37 @@ static void InitializeBoard(void)
     SI7005_IO = 1;      // Si7005 CS inactive. Power down
     InitI2C( I2C_BUS, I2C_CLOCK_FREQ );
 
+
+    // Note: Interrupt priority, 1 is lowest priority to 7 which is highest priority
+
+    // Enable the interrupt sources
+    // IPL5 = UART2 (AC_CEA2045)
+    // IPL4 = SPI3 (AC_CEA2045)
+    // IPL3 = SPI1 (MRF24WG) See StackInit()
+    // IPL2 = Timer1 See TickInit()
+    // IPL1 = UART5 (TBD)
     // Note: WiFi Module hardware Initialization handled by StackInit() Library Routine
+    // Note: Timer1 Initialization handled by TickInit() Library Routine
+
+    IFS0CLR = 0xffffffff;
+    IFS1CLR = 0xffffffff;
+    IFS0CLR = 0xffffffff;
+
+    INTSetVectorPriority(INT_UART_2_VECTOR, INT_PRIORITY_LEVEL_5);
+    INTSetVectorSubPriority(INT_UART_2_VECTOR,    INT_SUB_PRIORITY_LEVEL_0);
+#if defined(AC_CEA2045)
+    INTEnable(INT_SOURCE_UART_RX(UART2), INT_ENABLED);
+#endif
+
+    INTSetVectorPriority(INT_SPI_3_VECTOR, INT_PRIORITY_LEVEL_4);  
+    INTSetVectorSubPriority(INT_SPI_3_VECTOR, INT_SUB_PRIORITY_LEVEL_0);    
+#if defined(INTWINE_CONNECTED_OUTLET) || defined(INTWINE_CONNECTED_LOAD_CONTROL)
+    SPI3EnableInterrupts();
+#endif
+
+    INTSetVectorPriority(INT_UART_5_VECTOR, INT_PRIORITY_LEVEL_1);
+    INTSetVectorSubPriority(INT_UART_5_VECTOR,    INT_SUB_PRIORITY_LEVEL_0);
+//    INTEnable(INT_SOURCE_UART_RX(UART5), INT_ENABLED);
 
     // Enable multi-vectored interrupts
     INTEnableSystemMultiVectoredInt();
@@ -422,23 +442,74 @@ static void InitializeBoard(void)
     TRISBCLR = BIT_9;   // WP#
     LATBSET = BIT_9;
 
-#if defined(STACK_USE_UART)
-    UARTTX_TRIS = 0;
-    UARTRX_TRIS = 1;
-    UMODE = 0x8000;   // Set UARTEN.  Note: this must be done before setting UTXEN
-    USTA = 0x00001400;  // RXEN set, TXEN set
-    #define BAUD_RATE   19200
-    #define CLOSEST_UBRG_VALUE ((GetPeripheralClock()+8ul*BAUD_RATE)/16/BAUD_RATE-1)
-    #define BAUD_ACTUAL (GetPeripheralClock()/16/(CLOSEST_UBRG_VALUE+1))
-    #define BAUD_ERROR ((BAUD_ACTUAL > BAUD_RATE) ? BAUD_ACTUAL-BAUD_RATE : BAUD_RATE-BAUD_ACTUAL)
-    #define BAUD_ERROR_PRECENT ((BAUD_ERROR*100+BAUD_RATE/2)/BAUD_RATE)
-    #if (BAUD_ERROR_PRECENT > 3)
-            #warning UART frequency error is worse than 3%
-    #elif (BAUD_ERROR_PRECENT > 2)
-            #warning UART frequency error is worse than 2%
-    #endif
-        UBRG = CLOSEST_UBRG_VALUE;
+    AD1PCFG = 0xFFFF;   // all PORTB = Digital (as opposed to analog)
+
+    // Shutdown Change Notice?? Can't really find good documentation on this
+    CNEN = 0x00000000;
+    CNCON = 0x00000000;
+
+    UARTiConfigure(UART5, 19200);
+    UARTiConfigure(UART2, 19200);
+
+/****************************************************************************
+ Bits RF4 and RF4 are multifunction:
+ 1. UART2 on AC_CEA2045
+ 2. RED and GREEN LEDs on ICO
+ 3. Tri-stated on TSTAT
+****************************************************************************/
+
+#ifdef AC_CEA2045
+    // Set RS-485 DE enable to inactive low
+    LATDCLR = BIT_14;
+    TRISDCLR = BIT_14;
+    // TX inactive high
+    TRISFCLR = BIT_5;
+    LATFSET = BIT_5;
 #endif
+
+#ifdef INTWINE_CONNECTED_OUTLET
+    ICO_LED_RED_TRIS = 0;
+    ICO_RED_OFF();
+    ICO_LED_GRN_TRIS = 0;
+    ICO_GRN_OFF();
+#endif
+
+#ifdef INTWINE_PROGRAMMABLE_THERMOSTAT
+    TRISFSET = BIT_4 | BIT_5;    // Tri-state the F4 and F5 pins (set as input) so as not to interfere with thermostat
+#endif
+
+#ifdef INTWINE_CONNECTED_LOAD_CONTROL
+    // Since some coil control is RS232 based, set default after board setup and UART setup
+    EntekInitialize();      // Enable spi and setup GPIO
+#endif
+#if defined(INTWINE_CONNECTED_OUTLET) || defined(INTWINE_CONNECTED_LOAD_CONTROL)
+    // quick coil switching seems to cause problem with EEPROM
+    PlugStripRestoreState();
+    #ifdef INTWINE_CONNECTED_OUTLET
+        TRISBCLR = BIT_2;
+        PlugStripOneTimeSetup();
+
+        TRISEbits.TRISE8 = 1;   // RE8 - set as input for user push button (logic low = button pressed)
+    #endif
+#endif
+
+//#if defined(STACK_USE_UART)
+//    UARTTX_TRIS = 0;
+//    UARTRX_TRIS = 1;
+//    UMODE = 0x8000;   // Set UARTEN.  Note: this must be done before setting UTXEN
+//    USTA = 0x00001400;  // RXEN set, TXEN set
+//    #define BAUD_RATE   19200
+//    #define CLOSEST_UBRG_VALUE ((GetPeripheralClock()+8ul*BAUD_RATE)/16/BAUD_RATE-1)
+//    #define BAUD_ACTUAL (GetPeripheralClock()/16/(CLOSEST_UBRG_VALUE+1))
+//    #define BAUD_ERROR ((BAUD_ACTUAL > BAUD_RATE) ? BAUD_ACTUAL-BAUD_RATE : BAUD_RATE-BAUD_ACTUAL)
+//    #define BAUD_ERROR_PRECENT ((BAUD_ERROR*100+BAUD_RATE/2)/BAUD_RATE)
+//    #if (BAUD_ERROR_PRECENT > 3)
+//            #warning UART frequency error is worse than 3%
+//    #elif (BAUD_ERROR_PRECENT > 2)
+//            #warning UART frequency error is worse than 2%
+//    #endif
+//        UBRG = CLOSEST_UBRG_VALUE;
+//#endif
 
     SI7005_IO = 0;  // Enable Si7005 and delay 15 ms
     DelayMs(15);
@@ -587,118 +658,6 @@ static void InitAppConfig(void)
 
 /****************************************************************************
   Function:
-    void SelfTest()
-
-  Description:
-    This routine performs a self test of the hardware.
-
-  Precondition:
-    None
-
-  Parameters:
-    None - None
-
-  Returns:
-    None
-
-  Remarks:
-    None
-  ***************************************************************************/
-static void SelfTest(void)
-{
-    char value = 0;
-    char* buf[32];
-
-    // Configure Sensor Serial Port
-    UARTConfigure(SENSOR_UART, UART_ENABLE_PINS_TX_RX_ONLY);
-    UARTSetFifoMode(SENSOR_UART, UART_INTERRUPT_ON_TX_NOT_FULL | UART_INTERRUPT_ON_RX_NOT_EMPTY);
-    UARTSetLineControl(SENSOR_UART, UART_DATA_SIZE_8_BITS | UART_PARITY_NONE | UART_STOP_BITS_1);
-    UARTSetDataRate(SENSOR_UART, GetPeripheralClock(), BAUD_RATE);
-    UARTEnable(SENSOR_UART, UART_ENABLE_FLAGS(UART_PERIPHERAL | UART_RX | UART_TX));
-
-    // Verify MRF24WB/G0MA MAC Address
-    if(AppConfig.MyMACAddr.v[0] == 0x00 && AppConfig.MyMACAddr.v[1] == 0x1E)
-    {
-        //********************************************************************
-        // Prints a label using ESC/P commands to a Brother PT-9800PCN printer
-        //********************************************************************
-        // Send ESC/P Commands to setup printer
-        UARTTxBuffer("\033ia\000\033@\033X\002",9); // ESC i a 0 = Put Printer in ESC/P Mode
-                                                    // ESC @ = Reset Printer to Default settings
-                                                    // ESC X 2 = Specify Character Size
-        // Send the Info to Print for the MAC Address label
-        UARTTxBuffer("MRF24WB0MA\r",11);
-        sprintf((char *)buf,"MAC: %02X%02X%02X%02X%02X%02X",AppConfig.MyMACAddr.v[0],AppConfig.MyMACAddr.v[1],AppConfig.MyMACAddr.v[2],AppConfig.MyMACAddr.v[3],AppConfig.MyMACAddr.v[4], AppConfig.MyMACAddr.v[5]);
-        UARTTxBuffer((char *)buf, strlen((const char *)buf));
-
-        // Print the label
-        UARTTxBuffer("\f",1);
-
-        // Toggle LED's
-        while(1)
-        {
-            LED0_IO = value;
-            LED1_IO = value >> 1;
-            LED2_IO = value >> 2;
-
-            DelayMs(400);
-
-            if(value == 8)
-                value = 0;
-            else
-                value++;
-
-        }
-    }
-    else    // MRF24WG0MA Failure
-    {
-        while(1)
-        {
-            LEDS_ON();
-            DelayMs(700);
-            LEDS_OFF();
-            DelayMs(700);
-        }
-    }
-}
-
-/****************************************************************************
-  Function:
-    void UARTTxBuffer(char *buffer, UINT32 size)
-
-  Description:
-    This routine sends data out the Sensor UART port.
-
-  Precondition:
-    None
-
-  Parameters:
-    None - None
-
-  Returns:
-    None
-
-  Remarks:
-    None
-  ***************************************************************************/
-void UARTTxBuffer(char *buffer, UINT32 size)
-{
-    while(size)
-    {
-        while(!UARTTransmitterIsReady(SENSOR_UART))
-            ;
-
-        UARTSendDataByte(SENSOR_UART, *buffer);
-
-        buffer++;
-        size--;
-    }
-
-    while(!UARTTransmissionHasCompleted(SENSOR_UART));
-}
-
-/****************************************************************************
-  Function:
     void DisplayIPValue(IP_ADDR IPVal)
 
   Description:
@@ -788,7 +747,7 @@ void RestoreWifiConfig(void)
     // reboot here...
     //LED_PUT(0x00);
     while(SW0_IO == 0u);
-    while(1);       // Watchdog reset
+    while(1);       // Watchdog will reset
 //    Reset();
 }
 #endif // EZ_CONFIG_STORE

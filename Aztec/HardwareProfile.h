@@ -25,6 +25,17 @@
 #include "GenericTypeDefs.h"
 #include "Compiler.h"
 
+#define INTWINE_CONNECTED_OUTLET
+#define REPORT_POWER_MEASUREMENT
+//#define INTWINE_CONNECTED_LOAD_CONTROL
+//#define INTWINE_PROGRAMMABLE_THERMOSTAT
+#define USER_BUTTON_SCENARIO_2
+
+//#define AC_CEA2045
+//#define DC_CEA2045
+
+//#define DFW                         // Enable downloadable firmware
+
 #define MRF24WG
 
 // Set configuration fuses (but only in Main.c where THIS_IS_STACK_APPLICATION is defined)
@@ -77,6 +88,17 @@
 //----------------------------
 // LED and Button I/O pins
 //----------------------------
+#define ICO_LED_RED_TRIS    (TRISFbits.TRISF4)  // ICO Red F4
+#define ICO_LED_RED_IO      (LATFbits.LATF4)
+#define ICO_LED_GRN_TRIS    (TRISFbits.TRISF5)  // ICO Green F5
+#define ICO_LED_GRN_IO      (LATFbits.LATF5)
+#define ICO_RED_ON()        LATFSET = BIT_4;
+#define ICO_RED_OFF()       LATFCLR = BIT_4;
+#define ICO_RED_INV()       LATFINV = BIT_4;
+#define ICO_GRN_ON()        LATFSET = BIT_5;
+#define ICO_GRN_OFF()       LATFCLR = BIT_5;
+#define ICO_GRN_INV()       LATFINV = BIT_5;
+
 #define LED0_TRIS           (TRISEbits.TRISE2)  // Ref E2 Green
 #define LED0_IO             (LATEbits.LATE2)
 #define LED1_TRIS           (TRISEbits.TRISE0)  // Ref E0 Yellow
@@ -191,11 +213,6 @@
 //#define putsUART(a)         fputs((const char*)a,(FILE *)stdout)
 //#define DataRdyUART()       TelnetInChars()
 //#define ReadUART()          TelnetGet()
-
-//----------------------------
-// Sensor Port Mapping
-//----------------------------
-#define SENSOR_UART         UART2
 
 //modified for UART support on Wifi-Comm Demo Board (for use of (STACK_USE_UART)-macro) 
 #define UARTTX_TRIS   (TRISFbits.TRISF5) 
