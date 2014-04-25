@@ -69,7 +69,6 @@
 APP_CONFIG AppConfig;
 
 static unsigned short wOriginalAppConfigChecksum;    // Checksum of the ROM defaults for AppConfig
-extern unsigned char TelnetPut(unsigned char c);
 
 UINT8 g_scan_done = 0;        // WF_PRESCAN   This will be set wheneven event scan results are ready.
 UINT8 g_prescan_waiting = 1;  // WF_PRESCAN   This is used only to allow POR prescan once.

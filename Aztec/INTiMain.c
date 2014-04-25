@@ -109,7 +109,7 @@ void __ISR(_SPI_3_VECTOR, ipl4) SPI3InterruptServiceRoutine(void)
         count = 2;
 
         // Ruff!, mwn - add recovery for this
-        ASRT_INT(0, "SPI3 error", WATCHDOG_SPI3_ERROR);
+//        ASRT_INT(0, "SPI3 error", WATCHDOG_SPI3_ERROR);
         while(1);
     }
     if(INTGetFlag(INT_SPI3TX))

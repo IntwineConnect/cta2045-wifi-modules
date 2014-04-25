@@ -46,3 +46,42 @@ void UARTiDisable(UART_MODULE iUART)
 	UARTEnable(iUART, UART_DISABLE_FLAGS(UART_PERIPHERAL | UART_RX | UART_TX)); 
 
 }
+
+/*
+*	Function Name:	void UARTiWriteString(void)
+*	Description:	Writes a full string out the selected uart.
+*	Initiator: 		Robert Scaccia
+*	Date: 			10/19/2011
+*/
+void UARTiWriteString(const char *ccpString, UART_MODULE iUART)
+{
+    static int ready_high_water = 0, completed_high_water = 0;
+    int ready_count = 0, completed_count = 0;
+    while(*ccpString != '\0')
+    {
+        while(!UARTTransmitterIsReady(iUART)) ready_count++;
+        UARTSendDataByte(iUART, *ccpString);
+        ccpString++;
+        while(!UARTTransmissionHasCompleted(iUART)) completed_count++;
+    }
+
+    if(ready_count     > ready_high_water)     ready_high_water     = ready_count;
+    if(completed_count > completed_high_water) completed_high_water = completed_count;
+}
+
+/*
+*	Function Name:	void UARTiWriteBinaryData(void)
+*	Description:	Writes a block of binary data to he selected uart.
+*	Initiator: 		Keith Suhoza
+*	Date: 			01/23/2012
+*/
+void UARTiWriteBinaryData(unsigned char *data_block, int length, UART_MODULE iUART)
+{
+  while( length)
+  {
+      while(!UARTTransmitterIsReady(iUART));
+      UARTSendDataByte(iUART, *data_block++);
+      while(!UARTTransmissionHasCompleted(iUART));
+      length--;
+  }
+}

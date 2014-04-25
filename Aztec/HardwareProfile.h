@@ -25,13 +25,13 @@
 #include "GenericTypeDefs.h"
 #include "Compiler.h"
 
-#define INTWINE_CONNECTED_OUTLET
-#define REPORT_POWER_MEASUREMENT
+//#define INTWINE_CONNECTED_OUTLET
+//#define REPORT_POWER_MEASUREMENT
 //#define INTWINE_CONNECTED_LOAD_CONTROL
 //#define INTWINE_PROGRAMMABLE_THERMOSTAT
-#define USER_BUTTON_SCENARIO_2
+//#define USER_BUTTON_SCENARIO_2
 
-//#define AC_CEA2045
+#define AC_CEA2045
 //#define DC_CEA2045
 
 //#define DFW                         // Enable downloadable firmware

@@ -198,7 +198,7 @@ void TimeMonitorUpdate(void)
 
     if((tmTimeMonitorClock & 0xFFFF0000) == 0xFFFF0000)
     {
-        ASRT_INT(0, "Timer overflow", WATCHDOG_TIME_MONITOR_OVERFLOW);
+//        ASRT_INT(0, "Timer overflow", WATCHDOG_TIME_MONITOR_OVERFLOW);
     }
 
     // Steps to processing a callback
