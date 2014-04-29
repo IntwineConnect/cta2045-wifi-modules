@@ -2379,168 +2379,168 @@ LOAD c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.
  .debug_pubnames
                 0x0000458e       0x20 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(_ashldi3.o)
 
-.debug_info     0x00000000    0x82943
+.debug_info     0x00000000    0x8286e
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000     0x3989 obj-tmp\Main.o
  .debug_info    0x00003989     0x2a7b obj-tmp\CustomHTTPApp.o
  .debug_info    0x00006404     0x1e07 obj-tmp\WF_Config.o
  .debug_info    0x0000820b      0xf42 obj-tmp\WifiGDemoMPFSImg.o
- .debug_info    0x0000914d     0x19ff obj-tmp\Announce.o
- .debug_info    0x0000ab4c      0xf15 obj-tmp\ARCFOUR.o
- .debug_info    0x0000ba61     0x1bda obj-tmp\ARP.o
- .debug_info    0x0000d63b      0xf14 obj-tmp\AutoIP.o
- .debug_info    0x0000e54f      0xf19 obj-tmp\BerkeleyAPI.o
- .debug_info    0x0000f468      0xf14 obj-tmp\BigInt.o
- .debug_info    0x0001037c      0xfab obj-tmp\Delay.o
- .debug_info    0x00011327     0x1c55 obj-tmp\DNS.o
- .debug_info    0x00012f7c     0x1a42 obj-tmp\DNSs.o
- .debug_info    0x000149be      0xf14 obj-tmp\DynDNS.o
- .debug_info    0x000158d2      0xf18 obj-tmp\FileSystem.o
- .debug_info    0x000167ea      0xf11 obj-tmp\FTP.o
- .debug_info    0x000176fb      0xf14 obj-tmp\Hashes.o
- .debug_info    0x0001860f     0x2256 obj-tmp\Helpers.o
- .debug_info    0x0001a865     0x20c7 obj-tmp\HTTP2.o
- .debug_info    0x0001c92c     0x150a obj-tmp\ICMP.o
- .debug_info    0x0001de36     0x1a49 obj-tmp\IP.o
- .debug_info    0x0001f87f      0xf19 obj-tmp\LCDBlocking.o
- .debug_info    0x00020798     0x16eb obj-tmp\MPFS2.o
- .debug_info    0x00021e83     0x1b7a obj-tmp\NBNS.o
- .debug_info    0x000239fd      0xf14 obj-tmp\Random.o
- .debug_info    0x00024911     0x18fa obj-tmp\Reboot.o
- .debug_info    0x0002620b      0xf11 obj-tmp\RSA.o
- .debug_info    0x0002711c      0xf12 obj-tmp\SMTP.o
- .debug_info    0x0002802e      0xf12 obj-tmp\SNMP.o
- .debug_info    0x00028f40      0xf14 obj-tmp\SNMPv3.o
- .debug_info    0x00029e54      0xf17 obj-tmp\SNMPv3USM.o
- .debug_info    0x0002ad6b      0xf12 obj-tmp\SNTP.o
- .debug_info    0x0002bc7d      0xf17 obj-tmp\SPIEEPROM.o
- .debug_info    0x0002cb94     0x1bb5 obj-tmp\SPIFlash.o
- .debug_info    0x0002e749      0xf14 obj-tmp\SPIRAM.o
- .debug_info    0x0002f65d      0xf11 obj-tmp\SSL.o
- .debug_info    0x0003056e     0x1911 obj-tmp\StackTsk.o
- .debug_info    0x00031e7f     0x313f obj-tmp\TCP.o
- .debug_info    0x00034fbe      0xf20 obj-tmp\TCPPerformanceTest.o
- .debug_info    0x00035ede      0xf14 obj-tmp\Telnet.o
- .debug_info    0x00036df2      0xf13 obj-tmp\TFTPc.o
- .debug_info    0x00037d05     0x1a60 obj-tmp\Tick.o
- .debug_info    0x00039765      0xf1c obj-tmp\UART2TCPBridge.o
- .debug_info    0x0003a681     0x20a4 obj-tmp\UDP.o
- .debug_info    0x0003c725      0xf20 obj-tmp\UDPPerformanceTest.o
- .debug_info    0x0003d645      0xfdd obj-tmp\ZeroconfHelper.o
- .debug_info    0x0003e622     0x1e44 obj-tmp\ZeroconfLinkLocal.o
- .debug_info    0x00040466     0x32b6 obj-tmp\ZeroconfMulticastDNS.o
- .debug_info    0x0004371c     0x1e2f obj-tmp\WF_Eint.o
- .debug_info    0x0004554b     0x19c4 obj-tmp\WF_pbkdf2.o
- .debug_info    0x00046f0f     0x24db obj-tmp\WFConnectionAlgorithm.o
- .debug_info    0x000493ea     0x1ab5 obj-tmp\WFConnectionManager.o
- .debug_info    0x0004ae9f     0x2283 obj-tmp\WFConnectionProfile.o
- .debug_info    0x0004d122      0xf1c obj-tmp\WFConsole.o
- .debug_info    0x0004e03e      0xf24 obj-tmp\WFConsoleIfconfig.o
- .debug_info    0x0004ef62      0xf24 obj-tmp\WFConsoleIwconfig.o
- .debug_info    0x0004fe86      0xf22 obj-tmp\WFConsoleIwpriv.o
- .debug_info    0x00050da8     0x1054 obj-tmp\WFConsoleMsgHandler.o
- .debug_info    0x00051dfc     0x14e9 obj-tmp\WFConsoleMsgs.o
- .debug_info    0x000532e5      0xf1d obj-tmp\WFDataTxRx.o
- .debug_info    0x00054202     0x2039 obj-tmp\WFDebugStrings.o
- .debug_info    0x0005623b     0x1e51 obj-tmp\WFEasyConfig.o
- .debug_info    0x0005808c     0x14dc obj-tmp\WFEventHandler.o
- .debug_info    0x00059568     0x1a53 obj-tmp\WFInit.o
- .debug_info    0x0005afbb     0x1a30 obj-tmp\WFPowerSave.o
- .debug_info    0x0005c9eb     0x157c obj-tmp\WFScan.o
- .debug_info    0x0005df67     0x16d7 obj-tmp\WFTxPower.o
- .debug_info    0x0005f63e     0x1a98 obj-tmp\WF_Spi.o
- .debug_info    0x000610d6     0x2880 obj-tmp\WFDriverCom_24G.o
- .debug_info    0x00063956     0x1b8f obj-tmp\WFDriverRaw_24G.o
- .debug_info    0x000654e5     0x2594 obj-tmp\WFMac_24G.o
- .debug_info    0x00067a79     0x1595 obj-tmp\WFMgmtMsg_24G.o
- .debug_info    0x0006900e     0x246d obj-tmp\WFParamMsg_24G.o
- .debug_info    0x0006b47b     0x2010 obj-tmp\DHCP.o
- .debug_info    0x0006d48b     0x2261 obj-tmp\DHCPs.o
- .debug_info    0x0006f6ec     0x1b1b obj-tmp\i2c_master.o
- .debug_info    0x00071207     0x37e3 obj-tmp\OpenADRClient.o
- .debug_info    0x000749ea     0x16a1 obj-tmp\INTiMain.o
- .debug_info    0x0007608b     0x18ba obj-tmp\UARTiMain.o
- .debug_info    0x00077945     0x2170 obj-tmp\TimeMonitor.o
- .debug_info    0x00079ab5     0x198a obj-tmp\EPRI_UARTLayer.o
- .debug_info    0x0007b43f     0x12c2 obj-tmp\app_UCM.o
- .debug_info    0x0007c701      0xfe9 obj-tmp\Assert.o
- .debug_info    0x0007d6ea      0x783 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(_udivdi3.o)
- .debug_info    0x0007de6d      0x7c0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(_umoddi3.o)
- .debug_info    0x0007e62d      0x188 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(floatunsisf.o)
- .debug_info    0x0007e7b5       0xcd c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(atoi.o)
- .debug_info    0x0007e882       0xcd c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(atol.o)
- .debug_info    0x0007e94f      0x126 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(ctime.o)
- .debug_info    0x0007ea75        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(ctype.o)
- .debug_info    0x0007ea75      0x11c c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(mktime.o)
- .debug_info    0x0007eb91       0xe1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(puts.o)
- .debug_info    0x0007ec72       0xd1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcat.o)
- .debug_info    0x0007ed43       0xd1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strchr.o)
- .debug_info    0x0007ee14       0xd3 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strncmp.o)
- .debug_info    0x0007eee7       0xd3 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strncpy.o)
- .debug_info    0x0007efba       0xd3 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strrchr.o)
- .debug_info    0x0007f08d       0xd1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strstr.o)
- .debug_info    0x0007f15e       0xd1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strtok.o)
- .debug_info    0x0007f22f       0xe3 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(printf_cdnopsuxX.eo)
- .debug_info    0x0007f312       0xe5 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(sprintf_cdnopsuxX.eo)
- .debug_info    0x0007f3f7       0xe4 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(sscanf_cdfFnopuxX.eo)
- .debug_info    0x0007f4db      0x106 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-bootstrap-exception-handler.o)
- .debug_info    0x0007f5e1       0xe0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-reset.o)
- .debug_info    0x0007f6c1       0xe8 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-bootstrap.o)
- .debug_info    0x0007f7a9        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(_iob.o)
- .debug_info    0x0007f7a9       0xd6 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(_fputc_simple.o)
- .debug_info    0x0007f87f       0xd3 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcspn.o)
- .debug_info    0x0007f952       0xd1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strspn.o)
- .debug_info    0x0007fa23       0xe6 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(doprnt_cdnopsuxX.eo)
- .debug_info    0x0007fb09      0x10c c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(doscan_cdfFnopuxX.eo)
- .debug_info    0x0007fc15      0x10a c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(doscan_cdnopuxX.eo)
- .debug_info    0x0007fd1f       0xd1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(write.o)
- .debug_info    0x0007fdf0       0xd9 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(_flsbuf_simple.o)
- .debug_info    0x0007fec9       0xcf c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(fgetc.o)
- .debug_info    0x0007ff98      0x235 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(ctypef.o)
- .debug_info    0x000801cd       0xff c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strtof.o)
- .debug_info    0x000802cc      0x100 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strtod.o)
- .debug_info    0x000803cc       0xd1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(ungetc.o)
- .debug_info    0x0008049d       0xd2 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(filbuf.o)
- .debug_info    0x0008056f       0xd1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(fflush.o)
- .debug_info    0x00080640       0xcf c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(read.o)
- .debug_info    0x0008070f        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(c32_uart.o)
- .debug_info    0x0008070f       0xd4 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libm.a(w_sqrtf.o)
- .debug_info    0x000807e3        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libm.a(s_lib_ver.o)
- .debug_info    0x000807e3       0xe3 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_strtod.o)
- .debug_info    0x000808c6       0xe3 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_strtof.o)
- .debug_info    0x000809a9      0x106 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_divdf3.o)
- .debug_info    0x00080aaf      0x106 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_muldf3.o)
- .debug_info    0x00080bb5       0xe4 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_negdf2.o)
- .debug_info    0x00080c99      0x11d c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_adddf3.o)
- .debug_info    0x00080db6       0xde c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_floatsidf.o)
- .debug_info    0x00080e94       0xef c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_ldexp.o)
- .debug_info    0x00080f83       0xf0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_ldexpf.o)
- .debug_info    0x00081073       0xc7 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(soft_reset_lib.o)
- .debug_info    0x0008113a       0xd4 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(pcache.o)
- .debug_info    0x0008120e       0xcb c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(int_disable_interrupts_lib.o)
- .debug_info    0x000812d9       0xcb c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(int_restore_interrupts_lib.o)
- .debug_info    0x000813a4       0xd1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(int_enable_mv_int_lib.o)
- .debug_info    0x00081475      0x1ab c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(int_tbl_lib.o)
- .debug_info    0x00081620      0x18a c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(uart_lib.o)
- .debug_info    0x000817aa       0xb9 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(idle_i2c2_lib_legacy.o)
- .debug_info    0x00081863        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CPrivate.o)
- .debug_info    0x00081863       0xb5 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CBusIsIdle.o)
- .debug_info    0x00081918       0xc9 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CByteWasAcknowledged.o)
- .debug_info    0x000819e1       0xaf c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CEnable.o)
- .debug_info    0x00081a90       0xb1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CGetByte.o)
- .debug_info    0x00081b41       0xb5 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CGetStatus.o)
- .debug_info    0x00081bf6       0xd1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CReceivedDataIsAvailable.o)
- .debug_info    0x00081cc7       0xbf c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CReceiverEnable.o)
- .debug_info    0x00081d86       0xb9 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CRepeatStart.o)
- .debug_info    0x00081e3f       0xbb c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CSetFrequency.o)
- .debug_info    0x00081efa       0xad c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CStart.o)
- .debug_info    0x00081fa7       0xab c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CStop.o)
- .debug_info    0x00082052       0xd3 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CTransmissionHasCompleted.o)
- .debug_info    0x00082125       0xc7 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CTransmitterIsReady.o)
- .debug_info    0x000821ec       0xc9 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(int_enable_interrupts_lib.o)
- .debug_info    0x000822b5        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(errno.o)
- .debug_info    0x000822b5      0x349 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(_lshrdi3.o)
- .debug_info    0x000825fe      0x345 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(_ashldi3.o)
+ .debug_info    0x0000914d     0x19fc obj-tmp\Announce.o
+ .debug_info    0x0000ab49      0xf12 obj-tmp\ARCFOUR.o
+ .debug_info    0x0000ba5b     0x1bd7 obj-tmp\ARP.o
+ .debug_info    0x0000d632      0xf11 obj-tmp\AutoIP.o
+ .debug_info    0x0000e543      0xf16 obj-tmp\BerkeleyAPI.o
+ .debug_info    0x0000f459      0xf11 obj-tmp\BigInt.o
+ .debug_info    0x0001036a      0xfa8 obj-tmp\Delay.o
+ .debug_info    0x00011312     0x1c52 obj-tmp\DNS.o
+ .debug_info    0x00012f64     0x1a3f obj-tmp\DNSs.o
+ .debug_info    0x000149a3      0xf11 obj-tmp\DynDNS.o
+ .debug_info    0x000158b4      0xf15 obj-tmp\FileSystem.o
+ .debug_info    0x000167c9      0xf0e obj-tmp\FTP.o
+ .debug_info    0x000176d7      0xf11 obj-tmp\Hashes.o
+ .debug_info    0x000185e8     0x2253 obj-tmp\Helpers.o
+ .debug_info    0x0001a83b     0x20c4 obj-tmp\HTTP2.o
+ .debug_info    0x0001c8ff     0x1507 obj-tmp\ICMP.o
+ .debug_info    0x0001de06     0x1a46 obj-tmp\IP.o
+ .debug_info    0x0001f84c      0xf16 obj-tmp\LCDBlocking.o
+ .debug_info    0x00020762     0x16e8 obj-tmp\MPFS2.o
+ .debug_info    0x00021e4a     0x1b77 obj-tmp\NBNS.o
+ .debug_info    0x000239c1      0xf11 obj-tmp\Random.o
+ .debug_info    0x000248d2     0x18f7 obj-tmp\Reboot.o
+ .debug_info    0x000261c9      0xf0e obj-tmp\RSA.o
+ .debug_info    0x000270d7      0xf0f obj-tmp\SMTP.o
+ .debug_info    0x00027fe6      0xf0f obj-tmp\SNMP.o
+ .debug_info    0x00028ef5      0xf11 obj-tmp\SNMPv3.o
+ .debug_info    0x00029e06      0xf14 obj-tmp\SNMPv3USM.o
+ .debug_info    0x0002ad1a      0xf0f obj-tmp\SNTP.o
+ .debug_info    0x0002bc29      0xf14 obj-tmp\SPIEEPROM.o
+ .debug_info    0x0002cb3d     0x1bb2 obj-tmp\SPIFlash.o
+ .debug_info    0x0002e6ef      0xf11 obj-tmp\SPIRAM.o
+ .debug_info    0x0002f600      0xf0e obj-tmp\SSL.o
+ .debug_info    0x0003050e     0x190e obj-tmp\StackTsk.o
+ .debug_info    0x00031e1c     0x313c obj-tmp\TCP.o
+ .debug_info    0x00034f58      0xf1d obj-tmp\TCPPerformanceTest.o
+ .debug_info    0x00035e75      0xf11 obj-tmp\Telnet.o
+ .debug_info    0x00036d86      0xf10 obj-tmp\TFTPc.o
+ .debug_info    0x00037c96     0x1a5d obj-tmp\Tick.o
+ .debug_info    0x000396f3      0xf19 obj-tmp\UART2TCPBridge.o
+ .debug_info    0x0003a60c     0x20a1 obj-tmp\UDP.o
+ .debug_info    0x0003c6ad      0xf1d obj-tmp\UDPPerformanceTest.o
+ .debug_info    0x0003d5ca      0xfda obj-tmp\ZeroconfHelper.o
+ .debug_info    0x0003e5a4     0x1e41 obj-tmp\ZeroconfLinkLocal.o
+ .debug_info    0x000403e5     0x32b3 obj-tmp\ZeroconfMulticastDNS.o
+ .debug_info    0x00043698     0x1e2c obj-tmp\WF_Eint.o
+ .debug_info    0x000454c4     0x19c1 obj-tmp\WF_pbkdf2.o
+ .debug_info    0x00046e85     0x24d8 obj-tmp\WFConnectionAlgorithm.o
+ .debug_info    0x0004935d     0x1ab2 obj-tmp\WFConnectionManager.o
+ .debug_info    0x0004ae0f     0x2280 obj-tmp\WFConnectionProfile.o
+ .debug_info    0x0004d08f      0xf19 obj-tmp\WFConsole.o
+ .debug_info    0x0004dfa8      0xf21 obj-tmp\WFConsoleIfconfig.o
+ .debug_info    0x0004eec9      0xf21 obj-tmp\WFConsoleIwconfig.o
+ .debug_info    0x0004fdea      0xf1f obj-tmp\WFConsoleIwpriv.o
+ .debug_info    0x00050d09     0x1051 obj-tmp\WFConsoleMsgHandler.o
+ .debug_info    0x00051d5a     0x14e6 obj-tmp\WFConsoleMsgs.o
+ .debug_info    0x00053240      0xf1a obj-tmp\WFDataTxRx.o
+ .debug_info    0x0005415a     0x2036 obj-tmp\WFDebugStrings.o
+ .debug_info    0x00056190     0x1e4e obj-tmp\WFEasyConfig.o
+ .debug_info    0x00057fde     0x14d9 obj-tmp\WFEventHandler.o
+ .debug_info    0x000594b7     0x1a50 obj-tmp\WFInit.o
+ .debug_info    0x0005af07     0x1a2d obj-tmp\WFPowerSave.o
+ .debug_info    0x0005c934     0x1579 obj-tmp\WFScan.o
+ .debug_info    0x0005dead     0x16d4 obj-tmp\WFTxPower.o
+ .debug_info    0x0005f581     0x1a95 obj-tmp\WF_Spi.o
+ .debug_info    0x00061016     0x287d obj-tmp\WFDriverCom_24G.o
+ .debug_info    0x00063893     0x1b8c obj-tmp\WFDriverRaw_24G.o
+ .debug_info    0x0006541f     0x2591 obj-tmp\WFMac_24G.o
+ .debug_info    0x000679b0     0x1592 obj-tmp\WFMgmtMsg_24G.o
+ .debug_info    0x00068f42     0x246a obj-tmp\WFParamMsg_24G.o
+ .debug_info    0x0006b3ac     0x200d obj-tmp\DHCP.o
+ .debug_info    0x0006d3b9     0x225e obj-tmp\DHCPs.o
+ .debug_info    0x0006f617     0x1b1b obj-tmp\i2c_master.o
+ .debug_info    0x00071132     0x37e3 obj-tmp\OpenADRClient.o
+ .debug_info    0x00074915     0x16a1 obj-tmp\INTiMain.o
+ .debug_info    0x00075fb6     0x18ba obj-tmp\UARTiMain.o
+ .debug_info    0x00077870     0x2170 obj-tmp\TimeMonitor.o
+ .debug_info    0x000799e0     0x198a obj-tmp\EPRI_UARTLayer.o
+ .debug_info    0x0007b36a     0x12c2 obj-tmp\app_UCM.o
+ .debug_info    0x0007c62c      0xfe9 obj-tmp\Assert.o
+ .debug_info    0x0007d615      0x783 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(_udivdi3.o)
+ .debug_info    0x0007dd98      0x7c0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(_umoddi3.o)
+ .debug_info    0x0007e558      0x188 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(floatunsisf.o)
+ .debug_info    0x0007e6e0       0xcd c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(atoi.o)
+ .debug_info    0x0007e7ad       0xcd c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(atol.o)
+ .debug_info    0x0007e87a      0x126 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(ctime.o)
+ .debug_info    0x0007e9a0        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(ctype.o)
+ .debug_info    0x0007e9a0      0x11c c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(mktime.o)
+ .debug_info    0x0007eabc       0xe1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(puts.o)
+ .debug_info    0x0007eb9d       0xd1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcat.o)
+ .debug_info    0x0007ec6e       0xd1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strchr.o)
+ .debug_info    0x0007ed3f       0xd3 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strncmp.o)
+ .debug_info    0x0007ee12       0xd3 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strncpy.o)
+ .debug_info    0x0007eee5       0xd3 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strrchr.o)
+ .debug_info    0x0007efb8       0xd1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strstr.o)
+ .debug_info    0x0007f089       0xd1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strtok.o)
+ .debug_info    0x0007f15a       0xe3 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(printf_cdnopsuxX.eo)
+ .debug_info    0x0007f23d       0xe5 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(sprintf_cdnopsuxX.eo)
+ .debug_info    0x0007f322       0xe4 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(sscanf_cdfFnopuxX.eo)
+ .debug_info    0x0007f406      0x106 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-bootstrap-exception-handler.o)
+ .debug_info    0x0007f50c       0xe0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-reset.o)
+ .debug_info    0x0007f5ec       0xe8 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-bootstrap.o)
+ .debug_info    0x0007f6d4        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(_iob.o)
+ .debug_info    0x0007f6d4       0xd6 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(_fputc_simple.o)
+ .debug_info    0x0007f7aa       0xd3 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcspn.o)
+ .debug_info    0x0007f87d       0xd1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strspn.o)
+ .debug_info    0x0007f94e       0xe6 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(doprnt_cdnopsuxX.eo)
+ .debug_info    0x0007fa34      0x10c c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(doscan_cdfFnopuxX.eo)
+ .debug_info    0x0007fb40      0x10a c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(doscan_cdnopuxX.eo)
+ .debug_info    0x0007fc4a       0xd1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(write.o)
+ .debug_info    0x0007fd1b       0xd9 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(_flsbuf_simple.o)
+ .debug_info    0x0007fdf4       0xcf c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(fgetc.o)
+ .debug_info    0x0007fec3      0x235 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(ctypef.o)
+ .debug_info    0x000800f8       0xff c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strtof.o)
+ .debug_info    0x000801f7      0x100 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strtod.o)
+ .debug_info    0x000802f7       0xd1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(ungetc.o)
+ .debug_info    0x000803c8       0xd2 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(filbuf.o)
+ .debug_info    0x0008049a       0xd1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(fflush.o)
+ .debug_info    0x0008056b       0xcf c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(read.o)
+ .debug_info    0x0008063a        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(c32_uart.o)
+ .debug_info    0x0008063a       0xd4 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libm.a(w_sqrtf.o)
+ .debug_info    0x0008070e        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libm.a(s_lib_ver.o)
+ .debug_info    0x0008070e       0xe3 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_strtod.o)
+ .debug_info    0x000807f1       0xe3 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_strtof.o)
+ .debug_info    0x000808d4      0x106 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_divdf3.o)
+ .debug_info    0x000809da      0x106 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_muldf3.o)
+ .debug_info    0x00080ae0       0xe4 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_negdf2.o)
+ .debug_info    0x00080bc4      0x11d c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_adddf3.o)
+ .debug_info    0x00080ce1       0xde c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_floatsidf.o)
+ .debug_info    0x00080dbf       0xef c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_ldexp.o)
+ .debug_info    0x00080eae       0xf0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_ldexpf.o)
+ .debug_info    0x00080f9e       0xc7 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(soft_reset_lib.o)
+ .debug_info    0x00081065       0xd4 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(pcache.o)
+ .debug_info    0x00081139       0xcb c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(int_disable_interrupts_lib.o)
+ .debug_info    0x00081204       0xcb c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(int_restore_interrupts_lib.o)
+ .debug_info    0x000812cf       0xd1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(int_enable_mv_int_lib.o)
+ .debug_info    0x000813a0      0x1ab c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(int_tbl_lib.o)
+ .debug_info    0x0008154b      0x18a c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(uart_lib.o)
+ .debug_info    0x000816d5       0xb9 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(idle_i2c2_lib_legacy.o)
+ .debug_info    0x0008178e        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CPrivate.o)
+ .debug_info    0x0008178e       0xb5 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CBusIsIdle.o)
+ .debug_info    0x00081843       0xc9 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CByteWasAcknowledged.o)
+ .debug_info    0x0008190c       0xaf c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CEnable.o)
+ .debug_info    0x000819bb       0xb1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CGetByte.o)
+ .debug_info    0x00081a6c       0xb5 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CGetStatus.o)
+ .debug_info    0x00081b21       0xd1 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CReceivedDataIsAvailable.o)
+ .debug_info    0x00081bf2       0xbf c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CReceiverEnable.o)
+ .debug_info    0x00081cb1       0xb9 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CRepeatStart.o)
+ .debug_info    0x00081d6a       0xbb c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CSetFrequency.o)
+ .debug_info    0x00081e25       0xad c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CStart.o)
+ .debug_info    0x00081ed2       0xab c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CStop.o)
+ .debug_info    0x00081f7d       0xd3 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CTransmissionHasCompleted.o)
+ .debug_info    0x00082050       0xc7 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CTransmitterIsReady.o)
+ .debug_info    0x00082117       0xc9 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(int_enable_interrupts_lib.o)
+ .debug_info    0x000821e0        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(errno.o)
+ .debug_info    0x000821e0      0x349 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(_lshrdi3.o)
+ .debug_info    0x00082529      0x345 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(_ashldi3.o)
 
 .debug_abbrev   0x00000000     0xc514
  *(.debug_abbrev)
@@ -2705,168 +2705,168 @@ LOAD c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.
  .debug_abbrev  0x0000c34e       0xe3 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(_lshrdi3.o)
  .debug_abbrev  0x0000c431       0xe3 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(_ashldi3.o)
 
-.debug_line     0x00000000     0xdebe
+.debug_line     0x00000000     0xdcd5
  *(.debug_line)
- .debug_line    0x00000000      0x404 obj-tmp\Main.o
- .debug_line    0x00000404      0x4b1 obj-tmp\CustomHTTPApp.o
- .debug_line    0x000008b5      0x226 obj-tmp\WF_Config.o
- .debug_line    0x00000adb      0x15c obj-tmp\WifiGDemoMPFSImg.o
- .debug_line    0x00000c37      0x1fd obj-tmp\Announce.o
- .debug_line    0x00000e34      0x146 obj-tmp\ARCFOUR.o
- .debug_line    0x00000f7a      0x283 obj-tmp\ARP.o
- .debug_line    0x000011fd      0x146 obj-tmp\AutoIP.o
- .debug_line    0x00001343      0x146 obj-tmp\BerkeleyAPI.o
- .debug_line    0x00001489      0x146 obj-tmp\BigInt.o
- .debug_line    0x000015cf      0x189 obj-tmp\Delay.o
- .debug_line    0x00001758      0x2ea obj-tmp\DNS.o
- .debug_line    0x00001a42      0x258 obj-tmp\DNSs.o
- .debug_line    0x00001c9a      0x146 obj-tmp\DynDNS.o
- .debug_line    0x00001de0      0x146 obj-tmp\FileSystem.o
- .debug_line    0x00001f26      0x146 obj-tmp\FTP.o
- .debug_line    0x0000206c      0x146 obj-tmp\Hashes.o
- .debug_line    0x000021b2      0x359 obj-tmp\Helpers.o
- .debug_line    0x0000250b      0x4bf obj-tmp\HTTP2.o
- .debug_line    0x000029ca      0x1be obj-tmp\ICMP.o
- .debug_line    0x00002b88      0x1fb obj-tmp\IP.o
- .debug_line    0x00002d83      0x146 obj-tmp\LCDBlocking.o
- .debug_line    0x00002ec9      0x2f5 obj-tmp\MPFS2.o
- .debug_line    0x000031be      0x230 obj-tmp\NBNS.o
- .debug_line    0x000033ee      0x146 obj-tmp\Random.o
- .debug_line    0x00003534      0x1ce obj-tmp\Reboot.o
- .debug_line    0x00003702      0x146 obj-tmp\RSA.o
- .debug_line    0x00003848      0x146 obj-tmp\SMTP.o
- .debug_line    0x0000398e      0x146 obj-tmp\SNMP.o
- .debug_line    0x00003ad4      0x146 obj-tmp\SNMPv3.o
- .debug_line    0x00003c1a      0x146 obj-tmp\SNMPv3USM.o
- .debug_line    0x00003d60      0x146 obj-tmp\SNTP.o
- .debug_line    0x00003ea6      0x146 obj-tmp\SPIEEPROM.o
- .debug_line    0x00003fec      0x392 obj-tmp\SPIFlash.o
- .debug_line    0x0000437e      0x146 obj-tmp\SPIRAM.o
- .debug_line    0x000044c4      0x146 obj-tmp\SSL.o
- .debug_line    0x0000460a      0x224 obj-tmp\StackTsk.o
- .debug_line    0x0000482e      0x94a obj-tmp\TCP.o
- .debug_line    0x00005178      0x146 obj-tmp\TCPPerformanceTest.o
- .debug_line    0x000052be      0x146 obj-tmp\Telnet.o
- .debug_line    0x00005404      0x146 obj-tmp\TFTPc.o
- .debug_line    0x0000554a      0x1cd obj-tmp\Tick.o
- .debug_line    0x00005717      0x146 obj-tmp\UART2TCPBridge.o
- .debug_line    0x0000585d      0x307 obj-tmp\UDP.o
- .debug_line    0x00005b64      0x146 obj-tmp\UDPPerformanceTest.o
- .debug_line    0x00005caa      0x18e obj-tmp\ZeroconfHelper.o
- .debug_line    0x00005e38      0x2f4 obj-tmp\ZeroconfLinkLocal.o
- .debug_line    0x0000612c      0x6ce obj-tmp\ZeroconfMulticastDNS.o
- .debug_line    0x000067fa      0x1b1 obj-tmp\WF_Eint.o
- .debug_line    0x000069ab      0x3a1 obj-tmp\WF_pbkdf2.o
- .debug_line    0x00006d4c      0x2fc obj-tmp\WFConnectionAlgorithm.o
- .debug_line    0x00007048      0x223 obj-tmp\WFConnectionManager.o
- .debug_line    0x0000726b      0x2aa obj-tmp\WFConnectionProfile.o
- .debug_line    0x00007515      0x146 obj-tmp\WFConsole.o
- .debug_line    0x0000765b      0x146 obj-tmp\WFConsoleIfconfig.o
- .debug_line    0x000077a1      0x146 obj-tmp\WFConsoleIwconfig.o
- .debug_line    0x000078e7      0x146 obj-tmp\WFConsoleIwpriv.o
- .debug_line    0x00007a2d      0x1a2 obj-tmp\WFConsoleMsgHandler.o
- .debug_line    0x00007bcf      0x25b obj-tmp\WFConsoleMsgs.o
- .debug_line    0x00007e2a      0x146 obj-tmp\WFDataTxRx.o
- .debug_line    0x00007f70      0x2f8 obj-tmp\WFDebugStrings.o
- .debug_line    0x00008268      0x292 obj-tmp\WFEasyConfig.o
- .debug_line    0x000084fa      0x273 obj-tmp\WFEventHandler.o
- .debug_line    0x0000876d      0x1d4 obj-tmp\WFInit.o
- .debug_line    0x00008941      0x21d obj-tmp\WFPowerSave.o
- .debug_line    0x00008b5e      0x1df obj-tmp\WFScan.o
- .debug_line    0x00008d3d      0x1d4 obj-tmp\WFTxPower.o
- .debug_line    0x00008f11      0x1fb obj-tmp\WF_Spi.o
- .debug_line    0x0000910c      0x346 obj-tmp\WFDriverCom_24G.o
- .debug_line    0x00009452      0x2c5 obj-tmp\WFDriverRaw_24G.o
- .debug_line    0x00009717      0x394 obj-tmp\WFMac_24G.o
- .debug_line    0x00009aab      0x22f obj-tmp\WFMgmtMsg_24G.o
- .debug_line    0x00009cda      0x2aa obj-tmp\WFParamMsg_24G.o
- .debug_line    0x00009f84      0x375 obj-tmp\DHCP.o
- .debug_line    0x0000a2f9      0x3ba obj-tmp\DHCPs.o
- .debug_line    0x0000a6b3      0x21b obj-tmp\i2c_master.o
- .debug_line    0x0000a8ce      0x798 obj-tmp\OpenADRClient.o
- .debug_line    0x0000b066      0x1d5 obj-tmp\INTiMain.o
- .debug_line    0x0000b23b      0x1f9 obj-tmp\UARTiMain.o
- .debug_line    0x0000b434      0x1e0 obj-tmp\TimeMonitor.o
- .debug_line    0x0000b614      0x2ce obj-tmp\EPRI_UARTLayer.o
- .debug_line    0x0000b8e2      0x171 obj-tmp\app_UCM.o
- .debug_line    0x0000ba53      0x16f obj-tmp\Assert.o
- .debug_line    0x0000bbc2      0x112 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(_udivdi3.o)
- .debug_line    0x0000bcd4      0x128 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(_umoddi3.o)
- .debug_line    0x0000bdfc       0x6d c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(floatunsisf.o)
- .debug_line    0x0000be69       0x85 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(atoi.o)
- .debug_line    0x0000beee       0x85 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(atol.o)
- .debug_line    0x0000bf73       0x86 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(ctime.o)
- .debug_line    0x0000bff9        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(ctype.o)
- .debug_line    0x0000bff9       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(mktime.o)
- .debug_line    0x0000c080       0x85 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(puts.o)
- .debug_line    0x0000c105       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcat.o)
- .debug_line    0x0000c18c       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strchr.o)
- .debug_line    0x0000c213       0x88 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strncmp.o)
- .debug_line    0x0000c29b       0x88 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strncpy.o)
- .debug_line    0x0000c323       0x88 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strrchr.o)
- .debug_line    0x0000c3ab       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strstr.o)
- .debug_line    0x0000c432       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strtok.o)
- .debug_line    0x0000c4b9       0x30 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(printf_cdnopsuxX.eo)
- .debug_line    0x0000c4e9       0x31 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(sprintf_cdnopsuxX.eo)
- .debug_line    0x0000c51a       0x30 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(sscanf_cdfFnopuxX.eo)
- .debug_line    0x0000c54a       0xa6 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-bootstrap-exception-handler.o)
- .debug_line    0x0000c5f0       0x93 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-reset.o)
- .debug_line    0x0000c683       0x97 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-bootstrap.o)
- .debug_line    0x0000c71a        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(_iob.o)
- .debug_line    0x0000c71a       0x2f c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(_fputc_simple.o)
- .debug_line    0x0000c749       0x88 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcspn.o)
- .debug_line    0x0000c7d1       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strspn.o)
- .debug_line    0x0000c858       0x30 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(doprnt_cdnopsuxX.eo)
- .debug_line    0x0000c888       0x30 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(doscan_cdfFnopuxX.eo)
- .debug_line    0x0000c8b8       0x30 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(doscan_cdnopuxX.eo)
- .debug_line    0x0000c8e8       0x88 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(write.o)
- .debug_line    0x0000c970       0x30 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(_flsbuf_simple.o)
- .debug_line    0x0000c9a0       0x86 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(fgetc.o)
- .debug_line    0x0000ca26       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(ctypef.o)
- .debug_line    0x0000caad       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strtof.o)
- .debug_line    0x0000cb34       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strtod.o)
- .debug_line    0x0000cbbb       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(ungetc.o)
- .debug_line    0x0000cc42       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(filbuf.o)
- .debug_line    0x0000ccc9       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(fflush.o)
- .debug_line    0x0000cd50       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(read.o)
- .debug_line    0x0000cdd7        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(c32_uart.o)
- .debug_line    0x0000cdd7       0x8b c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libm.a(w_sqrtf.o)
- .debug_line    0x0000ce62        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libm.a(s_lib_ver.o)
- .debug_line    0x0000ce62       0x93 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_strtod.o)
- .debug_line    0x0000cef5       0x93 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_strtof.o)
- .debug_line    0x0000cf88       0xa4 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_divdf3.o)
- .debug_line    0x0000d02c       0xa4 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_muldf3.o)
- .debug_line    0x0000d0d0       0x92 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_negdf2.o)
- .debug_line    0x0000d162       0xa4 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_adddf3.o)
- .debug_line    0x0000d206       0x93 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_floatsidf.o)
- .debug_line    0x0000d299       0xa6 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_ldexp.o)
- .debug_line    0x0000d33f       0xa6 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_ldexpf.o)
- .debug_line    0x0000d3e5       0xbf c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(soft_reset_lib.o)
- .debug_line    0x0000d4a4       0x62 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(pcache.o)
- .debug_line    0x0000d506       0x73 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(int_disable_interrupts_lib.o)
- .debug_line    0x0000d579       0x73 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(int_restore_interrupts_lib.o)
- .debug_line    0x0000d5ec       0x6e c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(int_enable_mv_int_lib.o)
- .debug_line    0x0000d65a       0x64 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(int_tbl_lib.o)
- .debug_line    0x0000d6be       0x62 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(uart_lib.o)
- .debug_line    0x0000d720       0x6d c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(idle_i2c2_lib_legacy.o)
- .debug_line    0x0000d78d        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CPrivate.o)
- .debug_line    0x0000d78d       0x65 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CBusIsIdle.o)
- .debug_line    0x0000d7f2       0x6f c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CByteWasAcknowledged.o)
- .debug_line    0x0000d861       0x62 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CEnable.o)
- .debug_line    0x0000d8c3       0x63 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CGetByte.o)
- .debug_line    0x0000d926       0x65 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CGetStatus.o)
- .debug_line    0x0000d98b       0x73 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CReceivedDataIsAvailable.o)
- .debug_line    0x0000d9fe       0x6a c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CReceiverEnable.o)
- .debug_line    0x0000da68       0x67 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CRepeatStart.o)
- .debug_line    0x0000dacf       0x68 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CSetFrequency.o)
- .debug_line    0x0000db37       0x61 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CStart.o)
- .debug_line    0x0000db98       0x60 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CStop.o)
- .debug_line    0x0000dbf8       0x74 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CTransmissionHasCompleted.o)
- .debug_line    0x0000dc6c       0x6e c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CTransmitterIsReady.o)
- .debug_line    0x0000dcda       0x72 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(int_enable_interrupts_lib.o)
- .debug_line    0x0000dd4c        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(errno.o)
- .debug_line    0x0000dd4c       0xb8 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(_lshrdi3.o)
- .debug_line    0x0000de04       0xba c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(_ashldi3.o)
+ .debug_line    0x00000000      0x3fe obj-tmp\Main.o
+ .debug_line    0x000003fe      0x4ab obj-tmp\CustomHTTPApp.o
+ .debug_line    0x000008a9      0x220 obj-tmp\WF_Config.o
+ .debug_line    0x00000ac9      0x159 obj-tmp\WifiGDemoMPFSImg.o
+ .debug_line    0x00000c22      0x1f4 obj-tmp\Announce.o
+ .debug_line    0x00000e16      0x143 obj-tmp\ARCFOUR.o
+ .debug_line    0x00000f59      0x27a obj-tmp\ARP.o
+ .debug_line    0x000011d3      0x143 obj-tmp\AutoIP.o
+ .debug_line    0x00001316      0x143 obj-tmp\BerkeleyAPI.o
+ .debug_line    0x00001459      0x143 obj-tmp\BigInt.o
+ .debug_line    0x0000159c      0x183 obj-tmp\Delay.o
+ .debug_line    0x0000171f      0x2e1 obj-tmp\DNS.o
+ .debug_line    0x00001a00      0x24f obj-tmp\DNSs.o
+ .debug_line    0x00001c4f      0x143 obj-tmp\DynDNS.o
+ .debug_line    0x00001d92      0x143 obj-tmp\FileSystem.o
+ .debug_line    0x00001ed5      0x143 obj-tmp\FTP.o
+ .debug_line    0x00002018      0x143 obj-tmp\Hashes.o
+ .debug_line    0x0000215b      0x353 obj-tmp\Helpers.o
+ .debug_line    0x000024ae      0x4b6 obj-tmp\HTTP2.o
+ .debug_line    0x00002964      0x1b5 obj-tmp\ICMP.o
+ .debug_line    0x00002b19      0x1f2 obj-tmp\IP.o
+ .debug_line    0x00002d0b      0x143 obj-tmp\LCDBlocking.o
+ .debug_line    0x00002e4e      0x2ec obj-tmp\MPFS2.o
+ .debug_line    0x0000313a      0x227 obj-tmp\NBNS.o
+ .debug_line    0x00003361      0x143 obj-tmp\Random.o
+ .debug_line    0x000034a4      0x1c5 obj-tmp\Reboot.o
+ .debug_line    0x00003669      0x143 obj-tmp\RSA.o
+ .debug_line    0x000037ac      0x143 obj-tmp\SMTP.o
+ .debug_line    0x000038ef      0x143 obj-tmp\SNMP.o
+ .debug_line    0x00003a32      0x143 obj-tmp\SNMPv3.o
+ .debug_line    0x00003b75      0x143 obj-tmp\SNMPv3USM.o
+ .debug_line    0x00003cb8      0x143 obj-tmp\SNTP.o
+ .debug_line    0x00003dfb      0x143 obj-tmp\SPIEEPROM.o
+ .debug_line    0x00003f3e      0x38c obj-tmp\SPIFlash.o
+ .debug_line    0x000042ca      0x143 obj-tmp\SPIRAM.o
+ .debug_line    0x0000440d      0x143 obj-tmp\SSL.o
+ .debug_line    0x00004550      0x21b obj-tmp\StackTsk.o
+ .debug_line    0x0000476b      0x941 obj-tmp\TCP.o
+ .debug_line    0x000050ac      0x143 obj-tmp\TCPPerformanceTest.o
+ .debug_line    0x000051ef      0x143 obj-tmp\Telnet.o
+ .debug_line    0x00005332      0x143 obj-tmp\TFTPc.o
+ .debug_line    0x00005475      0x1c7 obj-tmp\Tick.o
+ .debug_line    0x0000563c      0x143 obj-tmp\UART2TCPBridge.o
+ .debug_line    0x0000577f      0x2fe obj-tmp\UDP.o
+ .debug_line    0x00005a7d      0x143 obj-tmp\UDPPerformanceTest.o
+ .debug_line    0x00005bc0      0x188 obj-tmp\ZeroconfHelper.o
+ .debug_line    0x00005d48      0x2eb obj-tmp\ZeroconfLinkLocal.o
+ .debug_line    0x00006033      0x6c5 obj-tmp\ZeroconfMulticastDNS.o
+ .debug_line    0x000066f8      0x1ab obj-tmp\WF_Eint.o
+ .debug_line    0x000068a3      0x39b obj-tmp\WF_pbkdf2.o
+ .debug_line    0x00006c3e      0x2f3 obj-tmp\WFConnectionAlgorithm.o
+ .debug_line    0x00006f31      0x21a obj-tmp\WFConnectionManager.o
+ .debug_line    0x0000714b      0x2a1 obj-tmp\WFConnectionProfile.o
+ .debug_line    0x000073ec      0x143 obj-tmp\WFConsole.o
+ .debug_line    0x0000752f      0x143 obj-tmp\WFConsoleIfconfig.o
+ .debug_line    0x00007672      0x143 obj-tmp\WFConsoleIwconfig.o
+ .debug_line    0x000077b5      0x143 obj-tmp\WFConsoleIwpriv.o
+ .debug_line    0x000078f8      0x19c obj-tmp\WFConsoleMsgHandler.o
+ .debug_line    0x00007a94      0x252 obj-tmp\WFConsoleMsgs.o
+ .debug_line    0x00007ce6      0x143 obj-tmp\WFDataTxRx.o
+ .debug_line    0x00007e29      0x2ef obj-tmp\WFDebugStrings.o
+ .debug_line    0x00008118      0x289 obj-tmp\WFEasyConfig.o
+ .debug_line    0x000083a1      0x26a obj-tmp\WFEventHandler.o
+ .debug_line    0x0000860b      0x1cb obj-tmp\WFInit.o
+ .debug_line    0x000087d6      0x214 obj-tmp\WFPowerSave.o
+ .debug_line    0x000089ea      0x1d6 obj-tmp\WFScan.o
+ .debug_line    0x00008bc0      0x1cb obj-tmp\WFTxPower.o
+ .debug_line    0x00008d8b      0x1f2 obj-tmp\WF_Spi.o
+ .debug_line    0x00008f7d      0x33d obj-tmp\WFDriverCom_24G.o
+ .debug_line    0x000092ba      0x2bc obj-tmp\WFDriverRaw_24G.o
+ .debug_line    0x00009576      0x38b obj-tmp\WFMac_24G.o
+ .debug_line    0x00009901      0x226 obj-tmp\WFMgmtMsg_24G.o
+ .debug_line    0x00009b27      0x2a1 obj-tmp\WFParamMsg_24G.o
+ .debug_line    0x00009dc8      0x36c obj-tmp\DHCP.o
+ .debug_line    0x0000a134      0x3b1 obj-tmp\DHCPs.o
+ .debug_line    0x0000a4e5      0x218 obj-tmp\i2c_master.o
+ .debug_line    0x0000a6fd      0x792 obj-tmp\OpenADRClient.o
+ .debug_line    0x0000ae8f      0x1d2 obj-tmp\INTiMain.o
+ .debug_line    0x0000b061      0x1f6 obj-tmp\UARTiMain.o
+ .debug_line    0x0000b257      0x1dd obj-tmp\TimeMonitor.o
+ .debug_line    0x0000b434      0x2cb obj-tmp\EPRI_UARTLayer.o
+ .debug_line    0x0000b6ff      0x16e obj-tmp\app_UCM.o
+ .debug_line    0x0000b86d      0x16c obj-tmp\Assert.o
+ .debug_line    0x0000b9d9      0x112 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(_udivdi3.o)
+ .debug_line    0x0000baeb      0x128 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(_umoddi3.o)
+ .debug_line    0x0000bc13       0x6d c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(floatunsisf.o)
+ .debug_line    0x0000bc80       0x85 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(atoi.o)
+ .debug_line    0x0000bd05       0x85 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(atol.o)
+ .debug_line    0x0000bd8a       0x86 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(ctime.o)
+ .debug_line    0x0000be10        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(ctype.o)
+ .debug_line    0x0000be10       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(mktime.o)
+ .debug_line    0x0000be97       0x85 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(puts.o)
+ .debug_line    0x0000bf1c       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcat.o)
+ .debug_line    0x0000bfa3       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strchr.o)
+ .debug_line    0x0000c02a       0x88 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strncmp.o)
+ .debug_line    0x0000c0b2       0x88 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strncpy.o)
+ .debug_line    0x0000c13a       0x88 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strrchr.o)
+ .debug_line    0x0000c1c2       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strstr.o)
+ .debug_line    0x0000c249       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strtok.o)
+ .debug_line    0x0000c2d0       0x30 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(printf_cdnopsuxX.eo)
+ .debug_line    0x0000c300       0x31 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(sprintf_cdnopsuxX.eo)
+ .debug_line    0x0000c331       0x30 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(sscanf_cdfFnopuxX.eo)
+ .debug_line    0x0000c361       0xa6 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-bootstrap-exception-handler.o)
+ .debug_line    0x0000c407       0x93 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-reset.o)
+ .debug_line    0x0000c49a       0x97 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-bootstrap.o)
+ .debug_line    0x0000c531        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(_iob.o)
+ .debug_line    0x0000c531       0x2f c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(_fputc_simple.o)
+ .debug_line    0x0000c560       0x88 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcspn.o)
+ .debug_line    0x0000c5e8       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strspn.o)
+ .debug_line    0x0000c66f       0x30 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(doprnt_cdnopsuxX.eo)
+ .debug_line    0x0000c69f       0x30 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(doscan_cdfFnopuxX.eo)
+ .debug_line    0x0000c6cf       0x30 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(doscan_cdnopuxX.eo)
+ .debug_line    0x0000c6ff       0x88 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(write.o)
+ .debug_line    0x0000c787       0x30 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(_flsbuf_simple.o)
+ .debug_line    0x0000c7b7       0x86 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(fgetc.o)
+ .debug_line    0x0000c83d       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(ctypef.o)
+ .debug_line    0x0000c8c4       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strtof.o)
+ .debug_line    0x0000c94b       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strtod.o)
+ .debug_line    0x0000c9d2       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(ungetc.o)
+ .debug_line    0x0000ca59       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(filbuf.o)
+ .debug_line    0x0000cae0       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(fflush.o)
+ .debug_line    0x0000cb67       0x87 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(read.o)
+ .debug_line    0x0000cbee        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(c32_uart.o)
+ .debug_line    0x0000cbee       0x8b c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libm.a(w_sqrtf.o)
+ .debug_line    0x0000cc79        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libm.a(s_lib_ver.o)
+ .debug_line    0x0000cc79       0x93 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_strtod.o)
+ .debug_line    0x0000cd0c       0x93 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_strtof.o)
+ .debug_line    0x0000cd9f       0xa4 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_divdf3.o)
+ .debug_line    0x0000ce43       0xa4 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_muldf3.o)
+ .debug_line    0x0000cee7       0x92 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_negdf2.o)
+ .debug_line    0x0000cf79       0xa4 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_adddf3.o)
+ .debug_line    0x0000d01d       0x93 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_floatsidf.o)
+ .debug_line    0x0000d0b0       0xa6 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_ldexp.o)
+ .debug_line    0x0000d156       0xa6 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libe.a(_ldexpf.o)
+ .debug_line    0x0000d1fc       0xbf c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(soft_reset_lib.o)
+ .debug_line    0x0000d2bb       0x62 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(pcache.o)
+ .debug_line    0x0000d31d       0x73 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(int_disable_interrupts_lib.o)
+ .debug_line    0x0000d390       0x73 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(int_restore_interrupts_lib.o)
+ .debug_line    0x0000d403       0x6e c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(int_enable_mv_int_lib.o)
+ .debug_line    0x0000d471       0x64 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(int_tbl_lib.o)
+ .debug_line    0x0000d4d5       0x62 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(uart_lib.o)
+ .debug_line    0x0000d537       0x6d c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(idle_i2c2_lib_legacy.o)
+ .debug_line    0x0000d5a4        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CPrivate.o)
+ .debug_line    0x0000d5a4       0x65 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CBusIsIdle.o)
+ .debug_line    0x0000d609       0x6f c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CByteWasAcknowledged.o)
+ .debug_line    0x0000d678       0x62 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CEnable.o)
+ .debug_line    0x0000d6da       0x63 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CGetByte.o)
+ .debug_line    0x0000d73d       0x65 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CGetStatus.o)
+ .debug_line    0x0000d7a2       0x73 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CReceivedDataIsAvailable.o)
+ .debug_line    0x0000d815       0x6a c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CReceiverEnable.o)
+ .debug_line    0x0000d87f       0x67 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CRepeatStart.o)
+ .debug_line    0x0000d8e6       0x68 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CSetFrequency.o)
+ .debug_line    0x0000d94e       0x61 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CStart.o)
+ .debug_line    0x0000d9af       0x60 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CStop.o)
+ .debug_line    0x0000da0f       0x74 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CTransmissionHasCompleted.o)
+ .debug_line    0x0000da83       0x6e c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(I2CTransmitterIsReady.o)
+ .debug_line    0x0000daf1       0x72 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX575F256L.a(int_enable_interrupts_lib.o)
+ .debug_line    0x0000db63        0x0 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(errno.o)
+ .debug_line    0x0000db63       0xb8 c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(_lshrdi3.o)
+ .debug_line    0x0000dc1b       0xba c:/program files (x86)/microchip/mplabc32/v2.02/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(_ashldi3.o)
 
 .debug_frame    0x00000000     0x4488
  *(.debug_frame)
