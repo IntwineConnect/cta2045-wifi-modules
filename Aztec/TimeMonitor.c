@@ -7,24 +7,18 @@
  * Company:         Intwine Energy, Inc.
  ********************************************************************/
 #include "HardwareProfile.h"
-
-/* #include "Compiler.h"             // Automatically brings in hardware structures */
-#include "TCPIP Stack/Tick.h"
 #include "Assert.h"
 #include "Metrics.h"
 #include "Power.h"
 #include "TimeMonitor.h"
 
-int tmMillisecondsPerTick = 1000 / TIME_MONITOR_TICK_SECOND;
+//int tmMillisecondsPerTick = (TIME_MONITOR_TICK_PER_SECOND / 1000);
 unsigned long tmTimeMonitorClock = 0;
 
 #define MAX_TIMER_CALLBACKS 6
 int tmTickDownTimeIndex0 = 0;
 int tmTickDownTimeI[MAX_TIMER_CALLBACKS];
 void (*tmCallbackFunctionI[MAX_TIMER_CALLBACKS])(void);
-
-static volatile BOOL TimeMonitorEnabled = TRUE;
-
 
 /*****************************************************************************
   Function:
@@ -34,7 +28,7 @@ static volatile BOOL TimeMonitorEnabled = TRUE;
 	Initializes the TimeMonitor functionality
 
   Description:
-	Initializes callback array. Uses Timer1 configured in Tick.c
+	Configures and starts Timer 2 for a 1ms interrupt.
 
   Precondition:
 	None
@@ -50,7 +44,9 @@ static volatile BOOL TimeMonitorEnabled = TRUE;
   ***************************************************************************/
 void TimeMonitorInit(void)
 {
-  // TimeMonitor will use Timer1 configured in Tick.c
+  // TimeMonitor will use T2Interrupt/Timer 2
+
+//  TRISGbits.TRISG6 = 0;       // Test output
 
   int i=0;
   for(i=0; i<MAX_TIMER_CALLBACKS; i++)
@@ -58,6 +54,16 @@ void TimeMonitorInit(void)
       tmTickDownTimeI[i] = 0;
       tmCallbackFunctionI[i] = NULL;
   }
+
+  T2CONbits.T32 = 0;          // 16 bit timer
+  T2CONbits.TCKPS = 0;        // from 1:1 (0=1:1 (in use), 3=1:8, 6=1:64, 7=1:256)
+  // Default is 1ms is 40,000 ticks at 40MHz (dfeined in HardwareProfile.h)
+  PR2 = GetPeripheralClock() / TIME_MONITOR_TICK_PER_SECOND;
+  TMR2 = 0;
+  IFS0bits.T2IF = 0;  // Clear any pending interrupt
+  IEC0bits.T2IE = 1;  // Enable the interrupt
+  T2CONbits.TON = 1;  // Ship it!
+
 }
 
 /*****************************************************************************
@@ -71,13 +77,13 @@ void TimeMonitorInit(void)
 	User passes in the desired callback time in ms and the function to
     call when that time expires.
 
-    Note: Given the fact that the timer (currently 10ms) may be just ready
+    Note: Given the fact that the timer (currently 1ms) may be just ready
     to interrupt or has just interrupted, the first tick after registration 
-    may be anywhere from 0ms to 10ms.  Thus, one interrupt period is always
+    may be anywhere from 0ms to 1ms.  Thus, one interrupt period is always
     added to the registration time.  Thus, the registration time can be considered
     as the minimum time before callback.  
     
-    Therefore, a registration for 40ms will truly callback between 40ms and 50ms.
+    Therefore, a registration for 40ms will truly callback between 40ms and 41ms.
 
   Precondition:
 	None
@@ -102,10 +108,10 @@ void TimeMonitorRegisterI(int index, unsigned int callback_time_ms, void (*callb
   // 4) Enable interrupt
   
   // 1)
-  TimeMonitorDisable();
+  TimeMonitorDisableInterrupt();
 
   // 2)
-  tmTickDownTimeI[index] = callback_time_ms + tmMillisecondsPerTick;
+  tmTickDownTimeI[index] = callback_time_ms + (TIME_MONITOR_TICK_PER_SECOND / 1000);
   if(index == 0)
   {
       tmTickDownTimeIndex0 = tmTickDownTimeI[index];
@@ -115,7 +121,7 @@ void TimeMonitorRegisterI(int index, unsigned int callback_time_ms, void (*callb
   tmCallbackFunctionI[index] = callback_function;
 
   // 4)
-  TimeMonitorEnable();
+  TimeMonitorEnableInterrupt();
 }
 
 void TimeMonitorChangeTimeI(int index, unsigned int callback_time_ms)
@@ -126,17 +132,17 @@ void TimeMonitorChangeTimeI(int index, unsigned int callback_time_ms)
   // 3) Enable interrupt
   
   // 1)
-  TimeMonitorDisable();
+  TimeMonitorDisableInterrupt();
 
   // 2)
-  tmTickDownTimeI[index] = callback_time_ms + tmMillisecondsPerTick;
+  tmTickDownTimeI[index] = callback_time_ms + (TIME_MONITOR_TICK_PER_SECOND / 1000);
   if(index == 0)
   {
       tmTickDownTimeIndex0 = tmTickDownTimeI[index];
   }
 
   // 3)
-  TimeMonitorEnable();
+  TimeMonitorEnableInterrupt();
 }
 
 
@@ -176,7 +182,7 @@ void TimeMonitorCancelI(int index)
   // 4) Enable interrupt
   
   // 1)
-  TimeMonitorDisable();
+  TimeMonitorDisableInterrupt();
 
   // 2)
   tmTickDownTimeI[index] = 0;
@@ -185,20 +191,25 @@ void TimeMonitorCancelI(int index)
   tmCallbackFunctionI[index] = NULL;
 
   // 4)
-  TimeMonitorEnable();
+  TimeMonitorEnableInterrupt();
 }
 
 
-void TimeMonitorUpdate(void)
+//void _ISR __attribute__((__no_auto_psv__)) _T2Interrupt(void)
+void __ISR(_TIMER_2_VECTOR, ipl1) T2InterruptServiceRoutine(void)
 {
+/*     static int toggle=1; */
     int i, bp;
+
+    // Reset interrupt flag
+    IFS0bits.T2IF = 0;
 
     // Update clock
     tmTimeMonitorClock++;
 
     if((tmTimeMonitorClock & 0xFFFF0000) == 0xFFFF0000)
     {
-//        ASRT_INT(0, "Timer overflow", WATCHDOG_TIME_MONITOR_OVERFLOW);
+        ASRT_INT(0, "Timer overflow", WATCHDOG_TIME_MONITOR_OVERFLOW);
     }
 
     // Steps to processing a callback
@@ -213,7 +224,7 @@ void TimeMonitorUpdate(void)
         if(tmTickDownTimeI[i] > 0)
         {
           // 2)
-          tmTickDownTimeI[i] -= tmMillisecondsPerTick;
+          tmTickDownTimeI[i] -= (TIME_MONITOR_TICK_PER_SECOND / 1000);
     
           if(tmTickDownTimeI[i] <= 0)
           {
@@ -245,8 +256,8 @@ void TimeMonitorUpdate(void)
 
 /*****************************************************************************
   Function:
-	TimeMonitorEnable
-	TimeMonitorDisable
+	TimeMonitorEnableInterrupt
+	TimeMonitorDisableInterrupt
 
   Summary:
 	Enables interrupt
@@ -266,16 +277,11 @@ void TimeMonitorUpdate(void)
   Remarks:
 	These functions are used for interrupt/thread protection
   ***************************************************************************/
-void TimeMonitorEnable()
+void TimeMonitorEnableInterrupt()
 {
-    TimeMonitorEnabled = TRUE;
-//  IEC0SET = _IEC0_T1IE_MASK;   // Enable the interrupt
-//  IEC0bits.T2IE = 1;  // Enable the interrupt
+  IEC0bits.T2IE = 1;  // Enable the interrupt
 }
-void TimeMonitorDisable()
+void TimeMonitorDisableInterrupt()
 {
-
-    TimeMonitorEnabled = FALSE;
-//  IEC0CLR = _IEC0_T1IE_MASK;  // Disable the interrupt
-//  IEC0bits.T2IE = 0;  // Disable the interrupt
+  IEC0bits.T2IE = 0;  // Disable the interrupt
 }

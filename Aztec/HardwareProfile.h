@@ -214,20 +214,42 @@
 //#define DataRdyUART()       TelnetInChars()
 //#define ReadUART()          TelnetGet()
 
-//modified for UART support on Wifi-Comm Demo Board (for use of (STACK_USE_UART)-macro) 
-#define UARTTX_TRIS   (TRISFbits.TRISF5) 
-#define UARTTX_IO   (PORTFbits.RF5) 
-#define UARTRX_TRIS   (TRISFbits.TRISF4) 
-#define UARTRX_IO   (PORTFbits.RF4) 
-#define UBRG    U2BRG 
-#define UMODE    U2MODE 
-#define USTA    U2STA 
-#define BusyUART()          BusyUART2() 
-#define putcUART(a)         do{while(BusyUART()); WriteUART(a); while(BusyUART()); }while(0) 
-#define putrsUART(a)        putrsUART2(a) 
-#define putsUART(a)         putsUART2(a) 
-#define DataRdyUART()       DataRdyUART2() 
-#define ReadUART()          ReadUART2()
-#define WriteUART(a)        WriteUART2(a)
+// modified for UART support on Wifi-Comm Demo Board (for use of (STACK_USE_UART)-macro) 
+// JK - modified to support UART4 when using UART2 for AC-CEA2045
+// note: SENSOR_UART is the debug uart defined by the Wifi G demo board. Need to 
+//       preserve names as much as posible so we don't break the TCP/IP Stack
+#if defined AC_CEA2045
+    #define SENSOR_UART         UART4
+    #define UARTTX_TRIS   (TRISFbits.TRISRD15) 
+    #define UARTTX_IO   (PORTFbits.RD15) 
+    #define UARTRX_TRIS   (TRISFbits.TRISD14) 
+    #define UARTRX_IO   (PORTFbits.RD14) 
+    #define UBRG    U4BRG 
+    #define UMODE    U4MODE 
+    #define USTA    U4STA 
+    #define BusyUART()          BusyUART4() 
+    #define putcUART(a)         do{while(BusyUART()); WriteUART(a); while(BusyUART()); }while(0) 
+    #define putrsUART(a)        putsUART4(a) 
+    #define putsUART(a)         putsUART4(a) 
+    #define DataRdyUART()       DataRdyUART4() 
+    #define ReadUART()          ReadUART4()
+    #define WriteUART(a)        WriteUART4(a)
+#else
+    #define SENSOR_UART         UART2
+    #define UARTTX_TRIS   (TRISFbits.TRISF5) 
+    #define UARTTX_IO   (PORTFbits.RF5) 
+    #define UARTRX_TRIS   (TRISFbits.TRISF4) 
+    #define UARTRX_IO   (PORTFbits.RF4) 
+    #define UBRG    U2BRG 
+    #define UMODE    U2MODE 
+    #define USTA    U2STA 
+    #define BusyUART()          BusyUART2() 
+    #define putcUART(a)         do{while(BusyUART()); WriteUART(a); while(BusyUART()); }while(0) 
+    #define putrsUART(a)        putrsUART2(a) 
+    #define putsUART(a)         putsUART2(a) 
+    #define DataRdyUART()       DataRdyUART2() 
+    #define ReadUART()          ReadUART2()
+    #define WriteUART(a)        WriteUART2(a)
+#endif
 
 #endif // #ifndef HARDWARE_PROFILE_H

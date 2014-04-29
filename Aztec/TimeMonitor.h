@@ -12,11 +12,10 @@ void TimeMonitorRegisterI(int index, unsigned int callback_time_ms, void (*callb
 void TimeMonitorChangeTimeI(int index, unsigned int callback_time_ms);
 void TimeMonitorCancelI(int index);
 void TimeMonitorUpdate(void);
-void TimeMonitorEnable(void);
-void TimeMonitorDisable(void);
+void TimeMonitorEnableInterrupt(void);
+void TimeMonitorDisableInterrupt(void);
 
-// Read TICKS per SECOND, so, 100 is 100 ticks per second
-// 1000ms per second divided by 100 ticks per second = 10 ms per tick
-#define TIME_MONITOR_TICK_SECOND 100
+// Read TICKS per SECOND, so, 1000 is a 1ms tick resolution
+#define TIME_MONITOR_TICK_PER_SECOND 1000
 
 #endif

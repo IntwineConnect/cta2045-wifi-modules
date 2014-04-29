@@ -55,6 +55,7 @@
 #if defined(STACK_USE_UART)
 
 #include "TCPIP Stack/TCPIP.h"
+#include "UARTiAPI.h"
 
 
 BYTE ReadStringUART(BYTE *Dest, BYTE BufferLen)

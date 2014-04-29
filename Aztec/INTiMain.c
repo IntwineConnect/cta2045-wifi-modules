@@ -53,7 +53,7 @@ void INTiRegisterSPI3CallbackFunction(void (*HandlerFunction)(void))
 * Author:           Robert Scaccia
 */
 
-void __ISR(_UART_5_VECTOR, ipl3) UART5InterruptServiceRoutine(void)
+void __ISR(_UART_5_VECTOR, ipl6) UART5InterruptServiceRoutine(void)
 {
 
     if(INTGetFlag(INT_U5RX))
@@ -73,7 +73,7 @@ void __ISR(_UART_5_VECTOR, ipl3) UART5InterruptServiceRoutine(void)
 * Creation Date:    10/19/2011
 * Author:           Robert Scaccia
 */
-void __ISR(_UART_2_VECTOR, ipl2) UART2InterruptServiceRoutine(void)
+void __ISR(_UART_2_VECTOR, ipl5) UART2InterruptServiceRoutine(void)
 {
     if(INTGetFlag(INT_U2RX))
     {

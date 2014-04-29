@@ -77,7 +77,7 @@ UINT8 g_prescan_waiting = 1;  // WF_PRESCAN   This is used only to allow POR pre
 static void InitAppConfig(void);
 static void InitializeBoard(void);
 extern void WF_Connect(void);
-void UARTTxBuffer(char *buffer, UINT32 size);
+char sbuf[40];
 
 
 // Used for re-directing printf when uart 2 is used by CEA2045
@@ -384,9 +384,10 @@ static void InitializeBoard(void)
     // IPL4 = SPI3 (AC_CEA2045)
     // IPL3 = SPI1 (MRF24WG) See StackInit()
     // IPL2 = Timer1 See TickInit()
-    // IPL1 = UART5 (TBD)
+    // IPL1 = Timer2 TimeMonitor
     // Note: WiFi Module hardware Initialization handled by StackInit() Library Routine
     // Note: Timer1 Initialization handled by TickInit() Library Routine
+    // Note: Timer2 Initialization handled by TimeMonitorInit()
 
     IFS0CLR = 0xffffffff;
     IFS1CLR = 0xffffffff;
@@ -403,10 +404,6 @@ static void InitializeBoard(void)
 #if defined(INTWINE_CONNECTED_OUTLET) || defined(INTWINE_CONNECTED_LOAD_CONTROL)
     SPI3EnableInterrupts();
 #endif
-
-    INTSetVectorPriority(INT_UART_5_VECTOR, INT_PRIORITY_LEVEL_1);
-    INTSetVectorSubPriority(INT_UART_5_VECTOR,    INT_SUB_PRIORITY_LEVEL_0);
-//    INTEnable(INT_SOURCE_UART_RX(UART5), INT_ENABLED);
 
     // Enable multi-vectored interrupts
     INTEnableSystemMultiVectoredInt();
@@ -447,7 +444,7 @@ static void InitializeBoard(void)
     CNEN = 0x00000000;
     CNCON = 0x00000000;
 
-    UARTiConfigure(UART5, 19200);
+    UARTiConfigure(UART4, 19200);
     UARTiConfigure(UART2, 19200);
 
 /****************************************************************************
@@ -676,7 +673,8 @@ static void InitAppConfig(void)
   ***************************************************************************/
 void DisplayIPValue(IP_ADDR IPVal)
 {
-    printf("%u.%u.%u.%u\r\n", IPVal.v[0], IPVal.v[1], IPVal.v[2], IPVal.v[3]);
+    sprintf(sbuf, "%u.%u.%u.%u\r\n", IPVal.v[0], IPVal.v[1], IPVal.v[2], IPVal.v[3]);
+    putsUART(sbuf);
 }
 
 /****************************************************************************
