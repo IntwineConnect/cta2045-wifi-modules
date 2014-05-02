@@ -12,18 +12,6 @@
 #include <proc\p32mx575f256l.h>
 #include "UARTiAPI.h"
 
-#if defined(_UART4)
-void putsUART4(const char* buffer)
-{
-    /* transmit till NULL character is encountered */
-	while(*buffer != '\0')
-	{
-		while( BusyUART4() );
-		putcUART4(*buffer++);
-	}
-}
-#endif
-
 /*
 
 1. Select the desired basic configuration from the UART_CONFIGURATION Enumeration and set the selected options using the UARTConfigure Function. 

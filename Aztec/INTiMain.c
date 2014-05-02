@@ -10,20 +10,8 @@
 #include "Metrics.h"
 #include "INTiAPI.h"
 
-void (*UART5RxCallbackFunction)(void) = NULL;
 void (*UART2RxCallbackFunction)(void) = NULL;
 void (*SPI3RxCallbackFunction)(void) = NULL;
-
-/*
-* Function:         void INTiRegisterUART5RxCallbackFunction(void (*HandlerFunction)(void))
-* Description:      Register an external handler for UART5InterruptServiceRoutine
-* Creation Date:    11/04/2011
-* Author:           Bill Barnett
-*/
-void INTiRegisterUART5RxCallbackFunction(void (*HandlerFunction)(void))
-{
-    UART5RxCallbackFunction = HandlerFunction;
-}
 
 /*
 * Function:         void INTiRegisterUART2RxCallbackFunction(void (*HandlerFunction)(void))
@@ -44,27 +32,6 @@ void INTiRegisterUART2RxCallbackFunction(void (*HandlerFunction)(void))
 void INTiRegisterSPI3CallbackFunction(void (*HandlerFunction)(void))
 {
     SPI3RxCallbackFunction = HandlerFunction;
-}
-
-/*
-* Function:         void UART5InterruptServiceRoutine(void)
-* Description:      ISR for UART5InterruptServiceRoutine. NOTE: the ipl must match the priority set in the INTSetVectorPriority function
-* Creation Date:    10/19/2011
-* Author:           Robert Scaccia
-*/
-
-void __ISR(_UART_5_VECTOR, ipl6) UART5InterruptServiceRoutine(void)
-{
-
-    if(INTGetFlag(INT_U5RX))
-    {
-        if(UART5RxCallbackFunction != NULL)
-        {
-            (*UART5RxCallbackFunction)();
-        }
-        INTClearFlag(INT_U5RX);
-    }
-
 }
 
 /*

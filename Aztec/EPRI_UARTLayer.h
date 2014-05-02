@@ -54,4 +54,5 @@ RSResponse MCISend(unsigned char * msg);
 void       MCISendAsync(unsigned char * msg);
 void rxMessageHandler(RSResponse * lastSentPacket);
 void rxbuffer_initialize();
+void UART2_ISR(void);
 

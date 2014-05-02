@@ -74,7 +74,7 @@ enum _CommState TCPCommState=DR_SERVER;
 void AppTaskInit(void)
 {
 
-//	InitOpenADRComm();
+	InitOpenADRComm();
 
 }
 

@@ -367,6 +367,9 @@ void InitOpenADRComm( void )
     commGood = 0;
     commGoodOld = 0;
 
+    // Send EndShed at start-up
+    RsBuf = MCISend(EndShedCommand);
+
     // clear the event queue
     for (i = 0; i < OPENADR_QSIZE; i++)
     {
@@ -378,9 +381,6 @@ void InitOpenADRComm( void )
         eventStateQ[i].executing = 0;
         eventStateQ[i].executed = 0;
     }
-
-    // Send EndShed at start-up
-    RsBuf = MCISend(EndShedCommand);
 
 }
 

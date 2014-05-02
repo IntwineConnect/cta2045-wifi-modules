@@ -79,7 +79,6 @@ static void InitializeBoard(void);
 extern void WF_Connect(void);
 char sbuf[40];
 
-
 // Used for re-directing printf when uart 2 is used by CEA2045
 // Remap UART in HardwareProfile.h
 void _mon_putc(char c)
@@ -120,10 +119,10 @@ int main(void)
     UINT8 Si7005ID, si7005Reg, Si7005Data[2] = {0,0};
     INT16 Temp;
     
+    Temp = 0;
+
     // Initialize application specific hardware
     InitializeBoard();
-
-    AppTaskInit();
 
     // Read ID register
     si7005Reg = 17;
@@ -142,6 +141,9 @@ int main(void)
 //    DelayMs(40);
 //    ReadI2C( I2C_BUS, SI7005_ADDRESS, 1, Si7005Data, 2);
 //    Temp = Si7005Data[0] << 8 + Si7005Data[1];
+
+    // 1ms tick for timed callback functions
+    TimeMonitorInit();
 
     // Initialize TCP/IP stack timer
     TickInit();
@@ -172,7 +174,6 @@ int main(void)
         WF_TxPowerSetMax(TxPower);
     }
 #endif
-
 
     #if defined ( EZ_CONFIG_SCAN )
     // Initialize WiFi Scan State Machine NV variables
@@ -228,6 +229,8 @@ int main(void)
     // job.
     // If a task needs very long time to do its job, it must be broken
     // down into smaller pieces so that other tasks can have CPU time.
+
+    AppTaskInit();
 
     while(1)
     {
@@ -369,6 +372,7 @@ int main(void)
   ***************************************************************************/
 static void InitializeBoard(void)
 {
+
     // Si7005 Temp/Humidity on I2C2
     SI7005_TRIS = 0;
     SI7005_IO = 1;      // Pulse Si7005 CS inactive per data sheet.
@@ -376,37 +380,6 @@ static void InitializeBoard(void)
     SI7005_IO = 1;      // Si7005 CS inactive. Power down
     InitI2C( I2C_BUS, I2C_CLOCK_FREQ );
 
-
-    // Note: Interrupt priority, 1 is lowest priority to 7 which is highest priority
-
-    // Enable the interrupt sources
-    // IPL5 = UART2 (AC_CEA2045)
-    // IPL4 = SPI3 (AC_CEA2045)
-    // IPL3 = SPI1 (MRF24WG) See StackInit()
-    // IPL2 = Timer1 See TickInit()
-    // IPL1 = Timer2 TimeMonitor
-    // Note: WiFi Module hardware Initialization handled by StackInit() Library Routine
-    // Note: Timer1 Initialization handled by TickInit() Library Routine
-    // Note: Timer2 Initialization handled by TimeMonitorInit()
-
-    IFS0CLR = 0xffffffff;
-    IFS1CLR = 0xffffffff;
-    IFS0CLR = 0xffffffff;
-
-    INTSetVectorPriority(INT_UART_2_VECTOR, INT_PRIORITY_LEVEL_5);
-    INTSetVectorSubPriority(INT_UART_2_VECTOR,    INT_SUB_PRIORITY_LEVEL_0);
-#if defined(AC_CEA2045)
-    INTEnable(INT_SOURCE_UART_RX(UART2), INT_ENABLED);
-#endif
-
-    INTSetVectorPriority(INT_SPI_3_VECTOR, INT_PRIORITY_LEVEL_4);  
-    INTSetVectorSubPriority(INT_SPI_3_VECTOR, INT_SUB_PRIORITY_LEVEL_0);    
-#if defined(INTWINE_CONNECTED_OUTLET) || defined(INTWINE_CONNECTED_LOAD_CONTROL)
-    SPI3EnableInterrupts();
-#endif
-
-    // Enable multi-vectored interrupts
-    INTEnableSystemMultiVectoredInt();
 
     // Enable optimal performance
     SYSTEMConfigPerformance(GetSystemClock());
@@ -444,8 +417,42 @@ static void InitializeBoard(void)
     CNEN = 0x00000000;
     CNCON = 0x00000000;
 
-    UARTiConfigure(UART4, 19200);
+    UARTiConfigure(UART1, 19200);
     UARTiConfigure(UART2, 19200);
+
+    // Note: Interrupt priority, 1 is lowest priority to 7 which is highest priority
+
+    // Enable the interrupt sources
+    // IPL5 = UART2 (AC_CEA2045)
+    // IPL4 = SPI3 (AC_CEA2045)
+    // IPL3 = SPI1 (MRF24WG) See StackInit()
+    // IPL2 = Timer1 See TickInit()
+    // IPL1 = Timer2 TimeMonitor
+    // Note: WiFi Module hardware Initialization handled by StackInit() Library Routine
+    // Note: Timer1 Initialization handled by TickInit() Library Routine
+    // Note: Timer2 Initialization handled by TimeMonitorInit()
+
+    IFS0CLR = 0xffffffff;
+    IFS1CLR = 0xffffffff;
+    IFS0CLR = 0xffffffff;
+
+    INTSetVectorPriority(INT_UART_2_VECTOR, INT_PRIORITY_LEVEL_5);
+    INTSetVectorSubPriority(INT_UART_2_VECTOR,    INT_SUB_PRIORITY_LEVEL_0);
+#if defined(AC_CEA2045)
+    INTEnable(INT_SOURCE_UART_RX(UART2), INT_ENABLED);
+#endif
+
+    INTSetVectorPriority(INT_SPI_3_VECTOR, INT_PRIORITY_LEVEL_4);  
+    INTSetVectorSubPriority(INT_SPI_3_VECTOR, INT_SUB_PRIORITY_LEVEL_0);    
+#if defined(INTWINE_CONNECTED_OUTLET) || defined(INTWINE_CONNECTED_LOAD_CONTROL)
+    SPI3EnableInterrupts();
+#endif
+
+    INTSetVectorPriority(INT_TIMER_2_VECTOR, INT_PRIORITY_LEVEL_1);  
+    INTSetVectorSubPriority(INT_TIMER_2_VECTOR, INT_SUB_PRIORITY_LEVEL_0);	
+
+    // Enable multi-vectored interrupts
+    INTEnableSystemMultiVectoredInt();
 
 /****************************************************************************
  Bits RF4 and RF4 are multifunction:
@@ -456,8 +463,8 @@ static void InitializeBoard(void)
 
 #ifdef AC_CEA2045
     // Set RS-485 DE enable to inactive low
-    LATDCLR = BIT_14;
     TRISDCLR = BIT_14;
+    LATDCLR = BIT_14;
     // TX inactive high
     TRISFCLR = BIT_5;
     LATFSET = BIT_5;

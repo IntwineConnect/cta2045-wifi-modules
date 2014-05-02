@@ -39,7 +39,7 @@ RSResponse  AsyncTxRSBuf;
 RSResponse  AsyncRxRSBuf;
 RSResponse  NullRSBuf;
 
-enum _TxMsgState
+volatile enum _TxMsgState
 {
     TX_IDLE = 0,
     TX_SEND_CMD,
@@ -50,7 +50,7 @@ enum _TxMsgState
     TX_WAIT_RETRY_DLY,
 } TxMsgState;
 
-enum _RxMsgState
+volatile enum _RxMsgState
 {
     RX_IDLE = 0,
     RX_CMD_RECEIVED,
@@ -65,7 +65,6 @@ enum _RxMsgState
 unsigned char dl_ack[1] = {0x06};
 unsigned char dl_nak[2] = {0x15, 0x03};
 
-//void txbuffer_initialize(void);
 UINT16 MakeChecksum(unsigned char * message, int len);
 void MCI_Wait_Callback();
 void parse_epri_buf(unsigned char *msg_buf, int *param_val, unsigned char *param_buf, int msg_len);
@@ -76,7 +75,9 @@ void App_Ack(unsigned char * message, int len);
  */
 void EPRI_UART_init()
 {
-//    txbuffer_initialize();
+
+    INTiRegisterUART2RxCallbackFunction(UART2_ISR);
+
     rxbuffer_initialize();
     position_counter = 0;
     OK_TO_READ_232 = 1;
@@ -104,6 +105,47 @@ void EPRI_UART_write(unsigned char *message, int length )
 
 	UARTEnable(UART2, UART_ENABLE_FLAGS(UART_PERIPHERAL | UART_RX | UART_TX));
 
+}
+
+/*
+* Function:			void UART2_ISR(void)
+* Description:		ISR for UART2
+* Creation Date:	10/19/2011	
+* Author:			Robert Scaccia
+*/
+void UART2_ISR(void)
+{
+	unsigned char i;
+
+   // check receiver
+    if (INTGetFlag(INT_U2RX) && INTGetEnable(INT_U2RX))	 // something in the receive buffer?
+    {
+        while (UARTReceivedDataIsAvailable(UART2))
+        {
+            i = UARTGetDataByte(UART2);
+            if (OK_TO_READ_232) // if we are past bootup
+            {
+                // Call back detect 20ms idle time on RS-485 bus.
+                // Per the MCI V2 spec, section 14.1.4 this indicates 
+                // "start of a new message".
+                TimeMonitorRegisterI(2, 20, MCI_Sync_Callback);
+
+                RxBuf[position_counter] = i;
+                RxBuf[position_counter + 1] = '\0';
+                position_counter++;
+            }
+        }
+
+        INTClearFlag(INT_U2RX);	 // buffer is empty, clear interrupt flag
+
+    }
+
+    // check transmitter
+	if (INTGetFlag(INT_U2TX) && INTGetEnable(INT_U2TX))	// transmit buffer empty?)
+	{
+		INTClearFlag(INT_U2TX);
+
+	}
 }
 
 /**

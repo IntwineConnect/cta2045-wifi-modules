@@ -215,25 +215,25 @@
 //#define ReadUART()          TelnetGet()
 
 // modified for UART support on Wifi-Comm Demo Board (for use of (STACK_USE_UART)-macro) 
-// JK - modified to support UART4 when using UART2 for AC-CEA2045
+// JK - modified to support UART1 when using UART2 for AC-CEA2045
 // note: SENSOR_UART is the debug uart defined by the Wifi G demo board. Need to 
 //       preserve names as much as posible so we don't break the TCP/IP Stack
 #if defined AC_CEA2045
-    #define SENSOR_UART         UART4
-    #define UARTTX_TRIS   (TRISFbits.TRISRD15) 
-    #define UARTTX_IO   (PORTFbits.RD15) 
-    #define UARTRX_TRIS   (TRISFbits.TRISD14) 
-    #define UARTRX_IO   (PORTFbits.RD14) 
-    #define UBRG    U4BRG 
-    #define UMODE    U4MODE 
-    #define USTA    U4STA 
-    #define BusyUART()          BusyUART4() 
+    #define SENSOR_UART         UART1
+    #define UARTTX_TRIS   (TRISFbits.TRISRF8) 
+    #define UARTTX_IO   (PORTFbits.RF8) 
+    #define UARTRX_TRIS   (TRISFbits.TRISF2) 
+    #define UARTRX_IO   (PORTFbits.RF2) 
+    #define UBRG    U1BRG 
+    #define UMODE    U1MODE 
+    #define USTA    U1STA 
+    #define BusyUART()          BusyUART1() 
     #define putcUART(a)         do{while(BusyUART()); WriteUART(a); while(BusyUART()); }while(0) 
-    #define putrsUART(a)        putsUART4(a) 
-    #define putsUART(a)         putsUART4(a) 
-    #define DataRdyUART()       DataRdyUART4() 
-    #define ReadUART()          ReadUART4()
-    #define WriteUART(a)        WriteUART4(a)
+    #define putrsUART(a)        putsUART1(a) 
+    #define putsUART(a)         putsUART1(a) 
+    #define DataRdyUART()       DataRdyUART1() 
+    #define ReadUART()          ReadUART1()
+    #define WriteUART(a)        WriteUART1(a)
 #else
     #define SENSOR_UART         UART2
     #define UARTTX_TRIS   (TRISFbits.TRISF5) 
