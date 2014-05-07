@@ -14,6 +14,8 @@
 #include "HardwareProfile.h"
 
 #include "TimeMonitor.h"
+#include "UARTiAPI.h"
+#include "INTiAPI.h"
 #include "EPRI_Queue.h"
 #include "EPRI_UARTLayer.h"
 
@@ -135,17 +137,7 @@ void UART2_ISR(void)
                 position_counter++;
             }
         }
-
-        INTClearFlag(INT_U2RX);	 // buffer is empty, clear interrupt flag
-
     }
-
-    // check transmitter
-	if (INTGetFlag(INT_U2TX) && INTGetEnable(INT_U2TX))	// transmit buffer empty?)
-	{
-		INTClearFlag(INT_U2TX);
-
-	}
 }
 
 /**

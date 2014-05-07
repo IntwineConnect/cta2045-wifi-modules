@@ -59,6 +59,7 @@
 #include "app.h"
 #include "INTiAPI.h"
 #include "UARTiAPI.h"
+#include "TimeMonitor.h"
 #include "Device_ICO_ICL.h"
 
 #if defined( WF_CONSOLE )

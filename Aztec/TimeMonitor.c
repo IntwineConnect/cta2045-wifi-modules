@@ -12,7 +12,7 @@
 #include "Power.h"
 #include "TimeMonitor.h"
 
-//int tmMillisecondsPerTick = (TIME_MONITOR_TICK_PER_SECOND / 1000);
+int tmMillisecondsPerTick = (TIME_MONITOR_TICK_PER_SECOND / 1000);
 unsigned long tmTimeMonitorClock = 0;
 
 #define MAX_TIMER_CALLBACKS 6
@@ -60,8 +60,8 @@ void TimeMonitorInit(void)
   // Default is 1ms is 40,000 ticks at 40MHz (dfeined in HardwareProfile.h)
   PR2 = GetPeripheralClock() / TIME_MONITOR_TICK_PER_SECOND;
   TMR2 = 0;
-  IFS0bits.T2IF = 0;  // Clear any pending interrupt
-  IEC0bits.T2IE = 1;  // Enable the interrupt
+  IFS0CLR = _IFS0_T2IF_MASK;  // Clear any pending interrupt
+  IEC0SET = _IEC0_T2IE_MASK;  // Enable the interrupt
   T2CONbits.TON = 1;  // Ship it!
 
 }
@@ -111,7 +111,7 @@ void TimeMonitorRegisterI(int index, unsigned int callback_time_ms, void (*callb
   TimeMonitorDisableInterrupt();
 
   // 2)
-  tmTickDownTimeI[index] = callback_time_ms + (TIME_MONITOR_TICK_PER_SECOND / 1000);
+  tmTickDownTimeI[index] = callback_time_ms + tmMillisecondsPerTick;
   if(index == 0)
   {
       tmTickDownTimeIndex0 = tmTickDownTimeI[index];
@@ -135,7 +135,7 @@ void TimeMonitorChangeTimeI(int index, unsigned int callback_time_ms)
   TimeMonitorDisableInterrupt();
 
   // 2)
-  tmTickDownTimeI[index] = callback_time_ms + (TIME_MONITOR_TICK_PER_SECOND / 1000);
+  tmTickDownTimeI[index] = callback_time_ms + tmMillisecondsPerTick;
   if(index == 0)
   {
       tmTickDownTimeIndex0 = tmTickDownTimeI[index];
@@ -201,9 +201,6 @@ void __ISR(_TIMER_2_VECTOR, ipl1) T2InterruptServiceRoutine(void)
 /*     static int toggle=1; */
     int i, bp;
 
-    // Reset interrupt flag
-    IFS0bits.T2IF = 0;
-
     // Update clock
     tmTimeMonitorClock++;
 
@@ -224,7 +221,7 @@ void __ISR(_TIMER_2_VECTOR, ipl1) T2InterruptServiceRoutine(void)
         if(tmTickDownTimeI[i] > 0)
         {
           // 2)
-          tmTickDownTimeI[i] -= (TIME_MONITOR_TICK_PER_SECOND / 1000);
+          tmTickDownTimeI[i] -= tmMillisecondsPerTick;
     
           if(tmTickDownTimeI[i] <= 0)
           {
@@ -251,6 +248,9 @@ void __ISR(_TIMER_2_VECTOR, ipl1) T2InterruptServiceRoutine(void)
           }
         }
     }
+
+    // Reset interrupt flag
+    IFS0CLR = _IFS0_T2IF_MASK;
 }
 
 
@@ -279,9 +279,9 @@ void __ISR(_TIMER_2_VECTOR, ipl1) T2InterruptServiceRoutine(void)
   ***************************************************************************/
 void TimeMonitorEnableInterrupt()
 {
-  IEC0bits.T2IE = 1;  // Enable the interrupt
+  IEC0SET = _IEC0_T2IE_MASK;  // Enable the interrupt
 }
 void TimeMonitorDisableInterrupt()
 {
-  IEC0bits.T2IE = 0;  // Disable the interrupt
+  IEC0CLR = _IEC0_T2IE_MASK;  // Disable the interrupt
 }
