@@ -8,7 +8,7 @@
  */
 
 
-#include <uart.h>
+//#include <uart.h>
 #include <string.h>
 
 #include "HardwareProfile.h"
