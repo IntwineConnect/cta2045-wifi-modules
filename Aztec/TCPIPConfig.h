@@ -48,6 +48,6 @@
 #ifndef TCPIPCONFIG_STUB_H
 #define TCPIPCONFIG_STUB_H
 
-#include "Configs/TCPIP MRF24W.h"
+#include "Configs/TCPIP_MRF24W.h"
 
 #endif

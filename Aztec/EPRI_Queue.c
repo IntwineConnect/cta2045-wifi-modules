@@ -16,7 +16,7 @@
 #include "UARTiAPI.h"
 //#include <P24FJ256GB106.h>
 //#include "232Comm.h"
-//#include "TCPIP Stack/UART.h"
+//#include "TCPIP_Stack/UART.h"
 
 // the compiler flipped out when I attempted to do this properly.
 // not wasting any more time here. this is ugly but I don't care.

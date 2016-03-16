@@ -48,7 +48,7 @@
 #ifndef __WF_CONFIG_H_
 #define __WF_CONFIG_H_
 
-#include "TCPIP Stack/WFApi.h"
+#include "TCPIP_Stack/WFApi.h"
 
 /*
 *********************************************************************************************************

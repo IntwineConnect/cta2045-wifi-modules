@@ -11,13 +11,13 @@
 /**
  * File: app.c
  */
-//gcm #include "TCPIP Stack/TCPIP.h"
+//gcm #include "TCPIP_Stack/TCPIP.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-//gcm #include "TCPIP Stack/ZGLinkMgrII.h"
-//gcm #include "TCPIP Stack/UART.h"
-//gcm #include "TCPIP Stack/ZGCommon.h"
+//gcm #include "TCPIP_Stack/ZGLinkMgrII.h"
+//gcm #include "TCPIP_Stack/UART.h"
+//gcm #include "TCPIP_Stack/ZGCommon.h"
 #include "EventTCPClient.h"
 //gcm #include "BerkeleyUDPTimePool.h"
 //gcm #include "time.h"

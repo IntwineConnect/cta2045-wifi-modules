@@ -47,7 +47,7 @@
 #include "TCPIPConfig.h"
 #if !defined(MPFS_USE_EEPROM) && !defined(MPFS_USE_SPI_FLASH)
 
-#include "TCPIP Stack/TCPIP.h"
+#include "TCPIP_Stack/TCPIP.h"
 #if defined(STACK_USE_MPFS2)
 
 

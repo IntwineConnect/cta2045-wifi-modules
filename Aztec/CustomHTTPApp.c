@@ -54,8 +54,8 @@
 #include "TCPIPConfig.h"
 
 #if defined(STACK_USE_HTTP2_SERVER)
-#include "TCPIP Stack/TCPIP.h"
-#include "TCPIP Stack/WFConsoleMsgHandler.h"
+#include "TCPIP_Stack/TCPIP.h"
+#include "TCPIP_Stack/WFConsoleMsgHandler.h"
 #include "MainDemo.h"        // Needed for SaveAppConfig() prototype
 #include "UpgradeClient.h"   // Firmware version stored here
 
@@ -73,7 +73,7 @@ extern APP_CONFIG AppConfig;
   ***************************************************************************/
 #if defined(HTTP_USE_POST)
 	#if defined(STACK_USE_EZ_CONFIG)
-        #include "TCPIP Stack/WFEasyConfig.h"
+        #include "TCPIP_Stack/WFEasyConfig.h"
 	    static HTTP_IO_RESULT HTTPPostWifiConfig(void);
     #endif
 #endif

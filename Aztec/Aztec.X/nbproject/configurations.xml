@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="62">
+  <logicalFolder name="root" displayName="root" projectFiles="true">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <logicalFolder name="Configs" displayName="Configs" projectFiles="true">
+        <itemPath>../Configs/TCPIP_MRF24W.h</itemPath>
+      </logicalFolder>
+      <itemPath>../MainDemo.h</itemPath>
+      <itemPath>../HardwareProfile.h</itemPath>
+      <itemPath>../HTTPPrint.h</itemPath>
+      <itemPath>../TCPIPConfig.h</itemPath>
+      <itemPath>../WF_Config.h</itemPath>
+      <itemPath>../i2c_master.h</itemPath>
+      <itemPath>../app.h</itemPath>
+      <itemPath>../EPRI_UARTLayer.h</itemPath>
+      <itemPath>../OpenADRClient.h</itemPath>
+      <itemPath>../EPRI_Queue.h</itemPath>
+      <itemPath>../INTiAPI.h</itemPath>
+      <itemPath>../UARTiAPI.h</itemPath>
+      <itemPath>../TimeMonitor.h</itemPath>
+      <itemPath>../Assert.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="LinkerScript"
+                   displayName="Linker Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <logicalFolder name="TCPIP_Stack" displayName="TCPIP_Stack" projectFiles="true">
+        <itemPath>../MicroChip/TCPIP_Stack/Announce.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/ARCFOUR.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/ARP.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/AutoIP.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/BerkeleyAPI.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/BigInt.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/BigInt_helper_PIC32.S</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/Delay.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/DNS.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/DNSs.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/DynDNS.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/FileSystem.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/FTP.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/Hashes.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/Helpers.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/HTTP2.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/ICMP.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/IP.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/LCDBlocking.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/MPFS2.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/NBNS.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/Random.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/Reboot.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/RSA.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/SMTP.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/SNMP.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/SNMPv3.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/SNMPv3USM.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/SNTP.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/SPIEEPROM.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/SPIFlash.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/SPIRAM.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/SSL.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/StackTsk.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/TCP.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/TCPPerformanceTest.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/Telnet.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/TFTPc.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/Tick.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/UART2TCPBridge.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/UDP.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/UDPPerformanceTest.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/ZeroconfHelper.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/ZeroconfLinkLocal.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/ZeroconfMulticastDNS.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/DHCP.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/DHCPs.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="WiFi" displayName="WiFi" projectFiles="true">
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WF_Eint.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WF_pbkdf2.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WFConnectionAlgorithm.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WFConnectionManager.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WFConnectionProfile.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WFConsole.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WFConsoleIfconfig.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WFConsoleIwconfig.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WFConsoleIwpriv.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WFConsoleMsgHandler.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WFConsoleMsgs.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WFDataTxRx.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WFDebugStrings.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WFEasyConfig.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WFEventHandler.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WFInit.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WFPowerSave.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WFScan.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WFTxPower.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WF_Spi.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WFDriverCom_24G.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WFDriverRaw_24G.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WFMac_24G.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WFMgmtMsg_24G.c</itemPath>
+        <itemPath>../MicroChip/TCPIP_Stack/WiFi/WFParamMsg_24G.c</itemPath>
+      </logicalFolder>
+      <itemPath>../Main.c</itemPath>
+      <itemPath>../CustomHTTPApp.c</itemPath>
+      <itemPath>../WF_Config.c</itemPath>
+      <itemPath>../WifiGDemoMPFSImg.c</itemPath>
+      <itemPath>../i2c_master.c</itemPath>
+      <itemPath>../OpenADRClient.c</itemPath>
+      <itemPath>../INTiMain.c</itemPath>
+      <itemPath>../UARTiMain.c</itemPath>
+      <itemPath>../TimeMonitor.c</itemPath>
+      <itemPath>../EPRI_UARTLayer.c</itemPath>
+      <itemPath>../app_UCM.c</itemPath>
+      <itemPath>../Assert.c</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceRootList>
+    <Elem>..</Elem>
+    <Elem>..\MicroChip\TCPIP_Stack</Elem>
+    <Elem>..\Configs</Elem>
+    <Elem>..\MicroChip\TCPIP_Stack\WiFi</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="default" type="2">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <targetDevice>PIC32MX575F256L</targetDevice>
+        <targetHeader></targetHeader>
+        <targetPluginBoard></targetPluginBoard>
+        <platformTool>ICD3PlatformTool</platformTool>
+        <languageToolchain>XC32</languageToolchain>
+        <languageToolchainVersion>1.40</languageToolchainVersion>
+        <platform>3</platform>
+      </toolsSet>
+      <compileType>
+        <linkerTool>
+          <linkerLibItems>
+          </linkerLibItems>
+        </linkerTool>
+        <archiverTool>
+        </archiverTool>
+        <loading>
+          <useAlternateLoadableFile>false</useAlternateLoadableFile>
+          <parseOnProdLoad>false</parseOnProdLoad>
+          <alternateLoadableFile></alternateLoadableFile>
+        </loading>
+      </compileType>
+      <makeCustomizationType>
+        <makeCustomizationPreStepEnabled>false</makeCustomizationPreStepEnabled>
+        <makeCustomizationPreStep></makeCustomizationPreStep>
+        <makeCustomizationPostStepEnabled>false</makeCustomizationPostStepEnabled>
+        <makeCustomizationPostStep></makeCustomizationPostStep>
+        <makeCustomizationPutChecksumInUserID>false</makeCustomizationPutChecksumInUserID>
+        <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
+        <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
+      </makeCustomizationType>
+      <item path="../MicroChip/TCPIP_Stack/WiFi/WFDriverRaw_24G.c"
+            ex="false"
+            overriding="true">
+        <C32>
+          <property key="additional-warnings" value="false"/>
+          <property key="enable-app-io" value="false"/>
+          <property key="enable-omit-frame-pointer" value="false"/>
+          <property key="enable-symbols" value="true"/>
+          <property key="enable-unroll-loops" value="false"/>
+          <property key="exclude-floating-point" value="false"/>
+          <property key="extra-include-directories"
+                    value="..;../Microchip/Include;../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral;../Configs;;."/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="isolate-each-function" value="false"/>
+          <property key="make-warnings-into-errors" value="false"/>
+          <property key="optimization-level" value=""/>
+          <property key="place-data-into-section" value="false"/>
+          <property key="post-instruction-scheduling" value="default"/>
+          <property key="pre-instruction-scheduling" value="default"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="strict-ansi" value="false"/>
+          <property key="support-ansi" value="false"/>
+          <property key="use-cci" value="false"/>
+          <property key="use-iar" value="false"/>
+          <property key="use-indirect-calls" value="false"/>
+        </C32>
+        <C32-AR>
+        </C32-AR>
+        <C32-AS>
+          <property key="assembler-symbols" value=""/>
+          <property key="enable-symbols" value="false"/>
+          <property key="exclude-floating-point-library" value="false"/>
+          <property key="expand-macros" value="false"/>
+          <property key="extra-include-directories-for-assembler" value="..;;."/>
+          <property key="extra-include-directories-for-preprocessor"
+                    value="..;../Microchip/Include;../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral;../Configs;;."/>
+          <property key="false-conditionals" value="false"/>
+          <property key="keep-locals" value="false"/>
+          <property key="list-assembly" value="false"/>
+          <property key="list-source" value="false"/>
+          <property key="list-symbols" value="false"/>
+          <property key="oXC32asm-list-to-file" value="false"/>
+          <property key="omit-debug-dirs" value="false"/>
+          <property key="omit-forms" value="false"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="warning-level" value=""/>
+          <appendMe value="-gdwarf-2"/>
+        </C32-AS>
+        <C32-LD>
+          <property key="additional-options-use-response-files" value="false"/>
+          <property key="enable-check-sections" value="false"/>
+          <property key="exclude-floating-point-library" value="false"/>
+          <property key="exclude-standard-libraries" value="false"/>
+          <property key="extra-lib-directories"
+                    value="../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/lib;;."/>
+          <property key="fill-flash-options-addr" value=""/>
+          <property key="fill-flash-options-const" value=""/>
+          <property key="fill-flash-options-how" value="0"/>
+          <property key="fill-flash-options-inc-const" value=""/>
+          <property key="fill-flash-options-increment" value=""/>
+          <property key="fill-flash-options-seq" value=""/>
+          <property key="fill-flash-options-what" value="0"/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-cross-reference-file" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="heap-size" value=""/>
+          <property key="input-libraries" value=""/>
+          <property key="linker-symbols" value=""/>
+          <property key="map-file" value="&quot;${DISTDIR}/Aztec.X.${IMAGE_TYPE}.map&quot;"/>
+          <property key="no-startup-files" value="false"/>
+          <property key="oXC32ld-extra-opts" value=""/>
+          <property key="optimization-level" value=""/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="remove-unused-sections" value="false"/>
+          <property key="report-memory-usage" value="false"/>
+          <property key="stack-size" value=""/>
+          <property key="symbol-stripping" value=""/>
+          <property key="trace-symbols" value=""/>
+          <property key="warn-section-align" value="false"/>
+        </C32-LD>
+        <C32CPP>
+        </C32CPP>
+        <C32Global>
+          <property key="common-include-directories" value=""/>
+          <property key="gp-relative-option" value=""/>
+          <property key="legacy-libc" value="false"/>
+          <property key="relaxed-math" value="false"/>
+          <property key="save-temps" value="false"/>
+          <property key="wpo-lto" value="false"/>
+        </C32Global>
+      </item>
+      <item path="../MicroChip/TCPIP_Stack/WiFi/WF_Eint.c"
+            ex="false"
+            overriding="true">
+        <C32>
+          <property key="additional-warnings" value="false"/>
+          <property key="enable-app-io" value="false"/>
+          <property key="enable-omit-frame-pointer" value="false"/>
+          <property key="enable-symbols" value="true"/>
+          <property key="enable-unroll-loops" value="false"/>
+          <property key="exclude-floating-point" value="false"/>
+          <property key="extra-include-directories"
+                    value="..;../Microchip/Include;../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral;../Configs;;."/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="isolate-each-function" value="false"/>
+          <property key="make-warnings-into-errors" value="false"/>
+          <property key="optimization-level" value=""/>
+          <property key="place-data-into-section" value="false"/>
+          <property key="post-instruction-scheduling" value="default"/>
+          <property key="pre-instruction-scheduling" value="default"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="strict-ansi" value="false"/>
+          <property key="support-ansi" value="false"/>
+          <property key="use-cci" value="false"/>
+          <property key="use-iar" value="false"/>
+          <property key="use-indirect-calls" value="false"/>
+        </C32>
+        <C32-AR>
+        </C32-AR>
+        <C32-AS>
+          <property key="assembler-symbols" value=""/>
+          <property key="enable-symbols" value="false"/>
+          <property key="exclude-floating-point-library" value="false"/>
+          <property key="expand-macros" value="false"/>
+          <property key="extra-include-directories-for-assembler" value="..;;."/>
+          <property key="extra-include-directories-for-preprocessor"
+                    value="..;../Microchip/Include;../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral;../Configs;;."/>
+          <property key="false-conditionals" value="false"/>
+          <property key="keep-locals" value="false"/>
+          <property key="list-assembly" value="false"/>
+          <property key="list-source" value="false"/>
+          <property key="list-symbols" value="false"/>
+          <property key="oXC32asm-list-to-file" value="false"/>
+          <property key="omit-debug-dirs" value="false"/>
+          <property key="omit-forms" value="false"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="warning-level" value=""/>
+          <appendMe value="-gdwarf-2"/>
+        </C32-AS>
+        <C32-LD>
+          <property key="additional-options-use-response-files" value="false"/>
+          <property key="enable-check-sections" value="false"/>
+          <property key="exclude-floating-point-library" value="false"/>
+          <property key="exclude-standard-libraries" value="false"/>
+          <property key="extra-lib-directories"
+                    value="../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/lib;;."/>
+          <property key="fill-flash-options-addr" value=""/>
+          <property key="fill-flash-options-const" value=""/>
+          <property key="fill-flash-options-how" value="0"/>
+          <property key="fill-flash-options-inc-const" value=""/>
+          <property key="fill-flash-options-increment" value=""/>
+          <property key="fill-flash-options-seq" value=""/>
+          <property key="fill-flash-options-what" value="0"/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-cross-reference-file" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="heap-size" value=""/>
+          <property key="input-libraries" value=""/>
+          <property key="linker-symbols" value=""/>
+          <property key="map-file" value="&quot;${DISTDIR}/Aztec.X.${IMAGE_TYPE}.map&quot;"/>
+          <property key="no-startup-files" value="false"/>
+          <property key="oXC32ld-extra-opts" value=""/>
+          <property key="optimization-level" value=""/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="remove-unused-sections" value="false"/>
+          <property key="report-memory-usage" value="false"/>
+          <property key="stack-size" value=""/>
+          <property key="symbol-stripping" value=""/>
+          <property key="trace-symbols" value=""/>
+          <property key="warn-section-align" value="false"/>
+        </C32-LD>
+        <C32CPP>
+        </C32CPP>
+        <C32Global>
+          <property key="common-include-directories" value=""/>
+          <property key="gp-relative-option" value=""/>
+          <property key="legacy-libc" value="false"/>
+          <property key="relaxed-math" value="false"/>
+          <property key="save-temps" value="false"/>
+          <property key="wpo-lto" value="false"/>
+        </C32Global>
+      </item>
+      <item path="../TimeMonitor.c" ex="false" overriding="true">
+        <C32>
+          <property key="additional-warnings" value="false"/>
+          <property key="enable-app-io" value="false"/>
+          <property key="enable-omit-frame-pointer" value="false"/>
+          <property key="enable-symbols" value="true"/>
+          <property key="enable-unroll-loops" value="false"/>
+          <property key="exclude-floating-point" value="false"/>
+          <property key="extra-include-directories"
+                    value="..;../Microchip/Include;../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral;../Configs;;."/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="isolate-each-function" value="false"/>
+          <property key="make-warnings-into-errors" value="false"/>
+          <property key="optimization-level" value=""/>
+          <property key="place-data-into-section" value="false"/>
+          <property key="post-instruction-scheduling" value="default"/>
+          <property key="pre-instruction-scheduling" value="default"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="strict-ansi" value="false"/>
+          <property key="support-ansi" value="false"/>
+          <property key="use-cci" value="false"/>
+          <property key="use-iar" value="false"/>
+          <property key="use-indirect-calls" value="false"/>
+        </C32>
+        <C32-AR>
+        </C32-AR>
+        <C32-AS>
+          <property key="assembler-symbols" value=""/>
+          <property key="enable-symbols" value="false"/>
+          <property key="exclude-floating-point-library" value="false"/>
+          <property key="expand-macros" value="false"/>
+          <property key="extra-include-directories-for-assembler" value="..;;."/>
+          <property key="extra-include-directories-for-preprocessor"
+                    value="..;../Microchip/Include;../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral;../Configs;;."/>
+          <property key="false-conditionals" value="false"/>
+          <property key="keep-locals" value="false"/>
+          <property key="list-assembly" value="false"/>
+          <property key="list-source" value="false"/>
+          <property key="list-symbols" value="false"/>
+          <property key="oXC32asm-list-to-file" value="false"/>
+          <property key="omit-debug-dirs" value="false"/>
+          <property key="omit-forms" value="false"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="warning-level" value=""/>
+          <appendMe value="-gdwarf-2"/>
+        </C32-AS>
+        <C32-LD>
+          <property key="additional-options-use-response-files" value="false"/>
+          <property key="enable-check-sections" value="false"/>
+          <property key="exclude-floating-point-library" value="false"/>
+          <property key="exclude-standard-libraries" value="false"/>
+          <property key="extra-lib-directories"
+                    value="../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/lib;;."/>
+          <property key="fill-flash-options-addr" value=""/>
+          <property key="fill-flash-options-const" value=""/>
+          <property key="fill-flash-options-how" value="0"/>
+          <property key="fill-flash-options-inc-const" value=""/>
+          <property key="fill-flash-options-increment" value=""/>
+          <property key="fill-flash-options-seq" value=""/>
+          <property key="fill-flash-options-what" value="0"/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-cross-reference-file" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="heap-size" value=""/>
+          <property key="input-libraries" value=""/>
+          <property key="linker-symbols" value=""/>
+          <property key="map-file" value="&quot;${DISTDIR}/Aztec.X.${IMAGE_TYPE}.map&quot;"/>
+          <property key="no-startup-files" value="false"/>
+          <property key="oXC32ld-extra-opts" value=""/>
+          <property key="optimization-level" value=""/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="remove-unused-sections" value="false"/>
+          <property key="report-memory-usage" value="false"/>
+          <property key="stack-size" value=""/>
+          <property key="symbol-stripping" value=""/>
+          <property key="trace-symbols" value=""/>
+          <property key="warn-section-align" value="false"/>
+        </C32-LD>
+        <C32CPP>
+        </C32CPP>
+        <C32Global>
+          <property key="common-include-directories" value=""/>
+          <property key="gp-relative-option" value=""/>
+          <property key="legacy-libc" value="false"/>
+          <property key="relaxed-math" value="false"/>
+          <property key="save-temps" value="false"/>
+          <property key="wpo-lto" value="false"/>
+        </C32Global>
+      </item>
+      <C32>
+        <property key="additional-warnings" value="true"/>
+        <property key="enable-app-io" value="false"/>
+        <property key="enable-omit-frame-pointer" value="false"/>
+        <property key="enable-symbols" value="true"/>
+        <property key="enable-unroll-loops" value="false"/>
+        <property key="exclude-floating-point" value="false"/>
+        <property key="extra-include-directories"
+                  value="..;../Microchip/Include;../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral;../Configs;;."/>
+        <property key="generate-16-bit-code" value="false"/>
+        <property key="generate-micro-compressed-code" value="false"/>
+        <property key="isolate-each-function" value="false"/>
+        <property key="make-warnings-into-errors" value="false"/>
+        <property key="optimization-level" value="-O1"/>
+        <property key="place-data-into-section" value="false"/>
+        <property key="post-instruction-scheduling" value="default"/>
+        <property key="pre-instruction-scheduling" value="default"/>
+        <property key="preprocessor-macros" value=""/>
+        <property key="strict-ansi" value="false"/>
+        <property key="support-ansi" value="false"/>
+        <property key="use-cci" value="false"/>
+        <property key="use-iar" value="false"/>
+        <property key="use-indirect-calls" value="false"/>
+      </C32>
+      <C32-AR>
+        <property key="additional-options-chop-files" value="false"/>
+      </C32-AR>
+      <C32-AS>
+        <property key="assembler-symbols" value=""/>
+        <property key="enable-symbols" value="false"/>
+        <property key="exclude-floating-point-library" value="false"/>
+        <property key="expand-macros" value="false"/>
+        <property key="extra-include-directories-for-assembler" value="..;;."/>
+        <property key="extra-include-directories-for-preprocessor"
+                  value="..;../Microchip/Include;../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral;../Configs;;."/>
+        <property key="false-conditionals" value="false"/>
+        <property key="keep-locals" value="false"/>
+        <property key="list-assembly" value="false"/>
+        <property key="list-source" value="false"/>
+        <property key="list-symbols" value="false"/>
+        <property key="oXC32asm-list-to-file" value="false"/>
+        <property key="omit-debug-dirs" value="false"/>
+        <property key="omit-forms" value="false"/>
+        <property key="preprocessor-macros" value=""/>
+        <property key="warning-level" value=""/>
+        <appendMe value="-gdwarf-2"/>
+      </C32-AS>
+      <C32-LD>
+        <property key="additional-options-use-response-files" value="false"/>
+        <property key="enable-check-sections" value="false"/>
+        <property key="exclude-floating-point-library" value="false"/>
+        <property key="exclude-standard-libraries" value="false"/>
+        <property key="extra-lib-directories"
+                  value="../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/lib;;."/>
+        <property key="fill-flash-options-addr" value=""/>
+        <property key="fill-flash-options-const" value=""/>
+        <property key="fill-flash-options-how" value="0"/>
+        <property key="fill-flash-options-inc-const" value=""/>
+        <property key="fill-flash-options-increment" value=""/>
+        <property key="fill-flash-options-seq" value=""/>
+        <property key="fill-flash-options-what" value="0"/>
+        <property key="generate-16-bit-code" value="false"/>
+        <property key="generate-cross-reference-file" value="false"/>
+        <property key="generate-micro-compressed-code" value="false"/>
+        <property key="heap-size" value=""/>
+        <property key="input-libraries" value=""/>
+        <property key="linker-symbols" value=""/>
+        <property key="map-file" value="&quot;${DISTDIR}/Aztec.X.${IMAGE_TYPE}.map&quot;"/>
+        <property key="no-startup-files" value="false"/>
+        <property key="oXC32ld-extra-opts" value=""/>
+        <property key="optimization-level" value=""/>
+        <property key="preprocessor-macros" value=""/>
+        <property key="remove-unused-sections" value="false"/>
+        <property key="report-memory-usage" value="false"/>
+        <property key="stack-size" value=""/>
+        <property key="symbol-stripping" value=""/>
+        <property key="trace-symbols" value=""/>
+        <property key="warn-section-align" value="false"/>
+      </C32-LD>
+      <C32CPP>
+        <property key="additional-warnings" value="false"/>
+        <property key="check-new" value="false"/>
+        <property key="eh-specs" value="true"/>
+        <property key="enable-app-io" value="false"/>
+        <property key="enable-omit-frame-pointer" value="false"/>
+        <property key="enable-symbols" value="true"/>
+        <property key="enable-unroll-loops" value="false"/>
+        <property key="exceptions" value="true"/>
+        <property key="exclude-floating-point" value="false"/>
+        <property key="extra-include-directories" value=""/>
+        <property key="generate-16-bit-code" value="false"/>
+        <property key="generate-micro-compressed-code" value="false"/>
+        <property key="isolate-each-function" value="false"/>
+        <property key="make-warnings-into-errors" value="false"/>
+        <property key="optimization-level" value=""/>
+        <property key="place-data-into-section" value="false"/>
+        <property key="post-instruction-scheduling" value="default"/>
+        <property key="pre-instruction-scheduling" value="default"/>
+        <property key="preprocessor-macros" value=""/>
+        <property key="rtti" value="true"/>
+        <property key="strict-ansi" value="false"/>
+        <property key="use-cci" value="false"/>
+        <property key="use-iar" value="false"/>
+        <property key="use-indirect-calls" value="false"/>
+      </C32CPP>
+      <C32Global>
+        <property key="common-include-directories" value=""/>
+        <property key="gp-relative-option" value=""/>
+        <property key="legacy-libc" value="false"/>
+        <property key="relaxed-math" value="false"/>
+        <property key="save-temps" value="false"/>
+        <property key="wpo-lto" value="false"/>
+      </C32Global>
+      <ICD3PlatformTool>
+        <property key="tracecontrol.disablemacros" value="true"/>
+        <property key="tracecontrol.medium" value="0"/>
+        <property key="tracecontrol.select" value="0"/>
+      </ICD3PlatformTool>
+    </conf>
+  </confs>
+</configurationDescriptor>

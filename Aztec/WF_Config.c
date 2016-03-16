@@ -50,10 +50,10 @@
 /*                                  INCLUDES                                */
 /*==========================================================================*/
 #include "HardwareProfile.h"
-#include "TCPIP Stack/TCPIP.h"
+#include "TCPIP_Stack/TCPIP.h"
 
 #if defined ( EZ_CONFIG_SCAN )
-#include "TCPIP Stack/WFEasyConfig.h"
+#include "TCPIP_Stack/WFEasyConfig.h"
 #endif /* EZ_CONFIG_SCAN */
 
 // Differences to wifi comm demo board (MRF24WB0MA) :

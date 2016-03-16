@@ -2,7 +2,7 @@
 
 #ifdef INTWINE_CONNECTED_OUTLET
 
-#include "TCPIP Stack/Tick.h"
+#include "TCPIP_Stack/Tick.h"
 #include "ADE7753.h"
 #include "eeprom.h"
 #include "Power.h"

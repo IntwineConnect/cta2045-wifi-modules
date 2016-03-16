@@ -2,7 +2,7 @@
 
 #ifdef INTWINE_CONNECTED_OUTLET
 
-#include "TCPIP Stack/Tick.h"
+#include "TCPIP_Stack/Tick.h"
 #include "LOG_Manager.h"
 
 #define BUTTON_STATE_IDLE                 0

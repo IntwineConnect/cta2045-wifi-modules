@@ -16,8 +16,8 @@
 // put this after all defines have been made
     #include "GCMExterns.h"
 
-//port #include "TCPIP Stack/TCPIP.h"
-//port #include "TCPIP Stack/UART.h"
+//port #include "TCPIP_Stack/TCPIP.h"
+//port #include "TCPIP_Stack/UART.h"
 #include "UpgradeClient.h"
 #include "app.h"
 #include "main.h"

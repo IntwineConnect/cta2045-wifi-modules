@@ -63,7 +63,7 @@
 #include "Device_ICO_ICL.h"
 
 #if defined( WF_CONSOLE )
-#include "TCPIP Stack/WFConsole.h"
+#include "TCPIP_Stack/WFConsole.h"
 #include "IperfApp.h"
 #endif
 

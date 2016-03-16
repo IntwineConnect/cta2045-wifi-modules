@@ -49,7 +49,7 @@
 
 #include "HardwareProfile.h"
 #include "OpenADRClient.h"
-#include "TCPIP Stack/TCPIP.h"
+#include "TCPIP_Stack/TCPIP.h"
 #include "TimeMonitor.h"
 #include "EPRI_UARTLayer.h"
 #include "EPRI_Queue.h"
@@ -1073,7 +1073,7 @@ void HandleTSMDone( void )
     InvalidSocketReboot=0;
     if(resetModule==1)
     {
-        HardReset();
+        Reset();
     }
 
     OpenADR_MsgState = OADR_MSG_IDLE;

@@ -49,19 +49,19 @@
 #define _MAINDEMO_H
 
 
-// Include all headers for any enabled TCPIP Stack functions
-#include "TCPIP Stack/TCPIP.h"
+// Include all headers for any enabled TCPIP_Stack functions
+#include "TCPIP_Stack/TCPIP.h"
 
 #if defined(STACK_USE_ZEROCONF_LINK_LOCAL)
-    #include "TCPIP Stack/ZeroconfLinkLocal.h"
+    #include "TCPIP_Stack/ZeroconfLinkLocal.h"
 #endif
 
 #if defined(STACK_USE_ZEROCONF_MDNS_SD)
-    #include "TCPIP Stack/ZeroconfMulticastDNS.h"
+    #include "TCPIP_Stack/ZeroconfMulticastDNS.h"
 #endif
 
 #if defined ( EZ_CONFIG_SCAN )
-    #include "TCPIP Stack/WFEasyConfig.h"
+    #include "TCPIP_Stack/WFEasyConfig.h"
 #endif
 
 #include "WF_Config.h" 

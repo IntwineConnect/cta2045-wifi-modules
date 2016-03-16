@@ -1,5 +1,5 @@
 #include "HardwareProfile.h"
-#include "TCPIP Stack/TCPIP.h"
+#include "TCPIP_Stack/TCPIP.h"
 #include "eeprom.h"
 
 #ifdef INTWINE_CONNECTED_OUTLET
