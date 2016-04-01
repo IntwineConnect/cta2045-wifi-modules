@@ -1,0 +1,13 @@
+Prerequisites:
+1) Install the MPLAB X IDE
+	http://www.microchip.com/mplab/mplab-x-ide
+2) Make sure to also install the MPLAB XC32 Compiler (check Add xc32 to the PATH)
+	http://www.microchip.com/mplab/compilers
+3) Install the PIC32 Peripheral Library
+	http://www.microchip.com/SWLibraryWeb/product.aspx?product=PIC32%20Peripheral%20Library
+
+Clone the repo from git - make sure that the directory used has no spaces
+
+Launch MPLAB X IDE, select File -> Open Project
+Browse to the Aztec\Aztec.X folder and click Open Project 
+Once the project has been imported successfully, you should be able to build successfully.
