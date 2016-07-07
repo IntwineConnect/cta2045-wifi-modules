@@ -7,16 +7,23 @@
 #ifndef INCLUDE_EPRI_UART_H
  #define INCLUDE_EPRI_UART 1
 #endif
+
+#include "HardwareProfile.h"
  
+#include "MCI_Common.h"
+
+#ifndef __EPRI_UARTLAYER_H
+ #define __EPRI_UARTLAYER_H
+
+
+
 #define DLL_ACK_NAK_MIN_TIME_OUT_MS 40      // Data ink-layer ACK.  40-200ms
 #define DLL_ACK_NAK_MAX_TIME_OUT_MS 200     // Data ink-layer ACK.  40-200ms
 #define AL_RESPONSE_MIN_TIME_OUT_MS 100     // App layer response.  100ms-3s
 #define AL_RESPONSE_MAX_TIME_OUT_MS 3000    // App layer response.  100ms-3s
 #define INTER_MESSAGE_MIN_DLY_MS    100     // Inter message delay. 100ms-1s
 #define MESSAGE_RETRY_DLY_MS        500     // Retry delay
-
-#define RX_BUF_SIZE 300
-#define TX_MSG_SIZE 10
+#define INTERMESSAGE_DLY_MS         20
 
 #define TX_NUM_TRIES    3
 
@@ -30,29 +37,22 @@
 #define EPRI_WRITE_CMD 0xF1
 #define EPRI_SAVE_CMD  0xF2
 
-typedef struct
-{
-   UINT8   numTries;            // Number of times the command was sent before it completed.
-   UINT8   numBytesReceived;    // Total bytes received in last message. Includes Checksum
-   UINT8   LLResponseValid;     // flag that indicates we have something
-   UINT8   LLResponse[11];      // the received packet
-   UINT8   AppResponseValid;    // flag that indicates we have something
-   UINT8   AppResponse[11];     // the received packet
-} RSResponse;
-
 
 void EPRI_TimeMonitor_Callback(void);
 void EPRI_UART_init();
 void MCI_Sync_Callback(void);
 void Message_Timeout_Callback(void);
 BOOL SendTimeSync(int weekday, int hour);
-BOOL SendQueryOpState(unsigned char OSCnt);
+//BOOL SendQueryOpState(unsigned char OSCnt);
 BOOL MCI_IsSending();
+MCIResponse MCISend(unsigned char * msg);
 
-// function to transmit RS485 packets. in EPRI_UARTLayer.c
-RSResponse MCISend(unsigned char * msg);
+extern BOOL UARTLock;
+
 void       MCISendAsync(unsigned char * msg);
-void rxMessageHandler(RSResponse * lastSentPacket);
+void rxMessageHandler(MCIResponse * lastSentPacket);
 void rxbuffer_initialize();
 void UART2_ISR(void);
+void UARTLockCallback(void);
 
+#endif

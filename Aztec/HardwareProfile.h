@@ -86,6 +86,20 @@
 #define SI7005_ADDRESS      0x40
 
 //----------------------------
+// MCI SPI pins
+//----------------------------
+#define SPI_ATTN_TRIS           (TRISBbits.TRISB2) //  ATTN pin  (#23)
+#define SPI_ATTN_IO             (LATBbits.LATB2)
+#define SPI_ATTN_INACTIVE      LATBSET = BIT_2;
+#define SPI_ATTN_ASSERT        LATBCLR = BIT_2;
+
+#define SPI_CS_TRIS              (TRISDbits.TRISD14) //CS pin     (#47)   (CN20)
+#define SPI_CS_IO                (PORTDbits.RD14)
+#define SPI_CS_INT_ENABLE      CNENSET = BIT_20;     // to enable CN interrupts on pin47
+#define CN_TURN_ON                 CNCONSET = BIT_15;    // to turn on the CN module
+#define CN_INT_ENABLE           (IEC1bits.CNIE) = 1;  // enable CN interrupts
+
+//----------------------------
 // LED and Button I/O pins
 //----------------------------
 #define ICO_LED_RED_TRIS    (TRISFbits.TRISF4)  // ICO Red F4

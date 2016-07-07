@@ -12,12 +12,13 @@
 #include <string.h>
 
 #include "HardwareProfile.h"
-
 #include "TimeMonitor.h"
 #include "UARTiAPI.h"
 #include "INTiAPI.h"
 #include "EPRI_Queue.h"
+#include "MCI_Common.h"
 #include "EPRI_UARTLayer.h"
+#include "LinkLayerMessaging.h"
 
 int OK_TO_READ_232 = 0;
 int position_counter = 0;
@@ -33,13 +34,11 @@ int OptInEvent = 0;
 int IdleNormal;
 int RunningNormal;
 
-unsigned char AppAckMsg[RX_BUF_SIZE] = { 0x08, 0x01, 0x00, 0x02, 0x03, 0x00, 0x00, 0x00};
-unsigned char TimeSyncMsg[8] = { 0x08, 0x01, 0x00, 0x02, 0x16, 0x00, 0x00, 0x00};
-unsigned char QueryOpState[8] = { 0x08, 0x01, 0x00, 0x02, 0x12, 0x00, 0x00, 0x00};
+BOOL UARTLock = FALSE;
 
-RSResponse  AsyncTxRSBuf;
-RSResponse  AsyncRxRSBuf;
-RSResponse  NullRSBuf;
+MCIResponse  AsyncTxRSBuf;
+MCIResponse  AsyncRxRSBuf;
+MCIResponse  NullRSBuf;
 
 volatile enum _TxMsgState
 {
@@ -63,9 +62,6 @@ volatile enum _RxMsgState
     RX_RECEIVE_LL_ACK
 } RxMsgState;
 
-// global variables
-unsigned char dl_ack[1] = {0x06};
-unsigned char dl_nak[2] = {0x15, 0x03};
 
 UINT16 MakeChecksum(unsigned char * message, int len);
 void MCI_Wait_Callback();
@@ -106,6 +102,10 @@ void EPRI_UART_write(unsigned char *message, int length )
     LATDCLR = BIT_14;
 
 	UARTEnable(UART2, UART_ENABLE_FLAGS(UART_PERIPHERAL | UART_RX | UART_TX));
+    
+    //set lock and timer to release lock after 20ms
+    UARTLock = TRUE;
+    TimeMonitorRegisterI(5,INTERMESSAGE_DLY_MS,UARTLockCallback);
 
 }
 
@@ -147,13 +147,15 @@ void UART2_ISR(void)
  * @param msgtype2 msg type byte, LSB
  * @param payload the message payload
  */
-RSResponse MCISend(unsigned char * msg)
+MCIResponse MCISend(unsigned char * msg)
 {
-
+   
 // Message Sequence:
-//   1. Send command via MCISendAsync
-//   2. Block till TX_IDLE
-
+//   1. Wait until 20ms have elapsed since previous message
+//   2. Send command via MCISendAsync
+//   3. Block till TX_IDLE
+    
+    DelayMs(20);
 
     if (MCI_IsSending())
         return NullRSBuf;
@@ -234,32 +236,8 @@ BOOL MCI_IsSending()
         return FALSE;
     else
         return TRUE;
-
 }
 
-/**
- * Send a Data Layer ACK via the UART.
- */
-void DL_Ack()
-{
-    EPRI_UART_write(dl_ack, 1);
-}
-
-/**
- * Send a Data Layer NACK via the UART.
- */
-void DL_Nak()
-{
-    EPRI_UART_write(dl_nak, 2);
-}
-
-/**
- * Send a App Layer ACK via the UART.
- */
-void App_Ack(unsigned char * message, int len)
-{
-    EPRI_UART_write(message, len);
-}
 
 /**
  * Send a Time Sync to SGD, non-blocking
@@ -272,22 +250,6 @@ BOOL SendTimeSync(int weekday, int hour)
 
     TimeSyncMsg[5] = (weekday << 4) + hour;
     MCISendAsync(TimeSyncMsg);
-
-    return TRUE;
-
-}
-
-/**
- * Send a "Query Operational State" message to SGD, non-blocking
- */
-BOOL SendQueryOpState(unsigned char OSCnt)
-{
-
-    if (MCI_IsSending())
-        return FALSE;
-
-    QueryOpState[5] = OSCnt;
-    MCISendAsync(QueryOpState);
 
     return TRUE;
 }
@@ -365,7 +327,7 @@ UINT16 MakeChecksum(unsigned char * message, int len)
 /**
  * handle a received packet.
  */
-void rxMessageHandler(RSResponse * lastSentPacket)
+void rxMessageHandler(MCIResponse * lastSentPacket)
 {
 
     int len = rxmessage[2] * 256;
@@ -384,33 +346,36 @@ void rxMessageHandler(RSResponse * lastSentPacket)
     // check for data link ack or nack (we dont ack acks)
     if (rxmessage[0] == 0x06 && rxmessage[1] == 0)
     {
+        LinkLayerAckHandler(rxmessage);
 
         lastSentPacket->numBytesReceived = numBytes;
         lastSentPacket->LLResponse[0] = 0x06;
-        lastSentPacket->LLResponse[1] = '\0';
+        lastSentPacket->LLResponse[1] = 0x00;
+        lastSentPacket->LLResponse[2] = '\0';
         lastSentPacket->LLResponseValid = 1;
     }
     // nack code is 0x15
     else if (rxmessage[0] == 0x15 && rxmessage[2] == 0)
     {
+        LinkLayerNakHandler(rxmessage);
+        
         lastSentPacket->numBytesReceived = numBytes;
         lastSentPacket->LLResponse[0] = rxmessage[0];
         lastSentPacket->LLResponse[1] = rxmessage[1];
         lastSentPacket->LLResponse[2] = '\0';
         lastSentPacket->LLResponseValid = 1;
     }
-    // if it wasn't a data link message...
+    // if it wasn't a data link ack/nak...
     else
     {
         // check the checksum
-
         if (ChecksumDecode(rxmessage, len) == 0) // bad shape
         {
             // nack
-            DL_Nak();
+            DL_Nak(CHECKSUM_ERROR);
         }
         else // Message good
-        {
+        {          
             if ( rxmessage[0] < 0xF0 && (TxMsgState != TX_IDLE))
 			// Save the application response
 			// In most cases, it should be an application ack
@@ -424,18 +389,37 @@ void rxMessageHandler(RSResponse * lastSentPacket)
                 lastSentPacket->numBytesReceived = numBytes;
                 lastSentPacket->AppResponseValid = 1;
 
-                // data link ack
-                DL_Ack();
-
-                // Stats for PGE hourly Load Factor
-                // IdleNormal & RunningNormal cleared hourly by MCI_One_Second_Callback()
-                if (rxmessage[4] == OPSTATE_OPCODE1)
+                if(rxmessage[0] == 0x08 && rxmessage[1] == 0x01) // if the message is a basic DR function
                 {
-                    if (rxmessage[5] == IDLE_NORMAL)
-                        IdleNormal++;
-                    else if (rxmessage[5] == RUNNING_NORMAL)
-                        RunningNormal++;
+                    //basic DR application handler goes here
+                    BasicDRMessageHandler(rxmessage); 
+                    // data link ack
+                    DL_Ack();
+                    
+                    // Stats for PGE hourly Load Factor
+                    // IdleNormal & RunningNormal cleared hourly by MCI_One_Second_Callback()
+                    if (rxmessage[4] == OPSTATE_OPCODE1)
+                    {
+                        if (rxmessage[5] == IDLE_NORMAL)
+                            IdleNormal++;
+                        else if (rxmessage[5] == RUNNING_NORMAL)
+                            RunningNormal++;
+                    }
                 }
+                else if(rxmessage[0] == 0x08 && rxmessage[1] == 0x02) // if the message is an intermediate DR function
+                {
+                    //intermediate DR application handler goes here
+                    
+                    // data link ack
+                    DL_Ack();
+                }
+                else if(rxmessage[0] == 0x08 && rxmessage[1] == 0x03)
+                {
+                    //some other link layer message
+                    LinkLayerMessageHandler(rxmessage);
+                    //link layer ack/nak is sent from handler
+                }
+
 
             }
             else if (RxMsgState == RX_SEND_LL_ACK)
@@ -580,6 +564,15 @@ void MCI_Sync_Callback()
     }
     return;
 }
+
+/**
+ * UARTLockCallback() is set to unlock the UART after a period of time since last use
+ */
+void UARTLockCallback()
+{
+    UARTLock = FALSE;
+}
+
 
 // MCI delayed callback. Used for delaying LL ACK/NAK and App ACK/NAK
 // 

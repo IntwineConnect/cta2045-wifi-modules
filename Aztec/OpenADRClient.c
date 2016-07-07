@@ -51,11 +51,19 @@
 #include "OpenADRClient.h"
 #include "TCPIP_Stack/TCPIP.h"
 #include "TimeMonitor.h"
-#include "EPRI_UARTLayer.h"
 #include "EPRI_Queue.h"
+#include "MCI_Common.h"
+#include "BasicDR.h"
 #include <stdio.h>
 #include <time.h>
 #include <math.h>
+
+#ifdef AC_CEA2045
+  #include "EPRI_UARTLayer.h"
+#else
+  #include "EPRI_SPILayer.h"
+#endif
+
 
 int tempbreakpoint;
 unsigned char   DebugCnt;
@@ -72,7 +80,7 @@ extern int RunningNormal;
 char    strAvailabilityStatus[] = "FALSE";
 
 // RS485 response buffer. defined in EPRI_UARTLayer.c and modified there.
-RSResponse RsBuf;
+MCIResponse RsBuf;
 
 int commGood; // flag to indicate if communication with the outside world is working. needed for MCI comm with SGD
 int commGoodOld;  // change of state indicator
@@ -195,35 +203,6 @@ unsigned int    LoadFactor;
 //RS485 commands
 unsigned char SmartQuery[] = { 0x00, 0x00 };
 
-//-----------------------------------------------------------------------------
-// MCI Basic DR command. Message Type = 0x08, 0x01
-//---------------------------------
-// Refer to "Modular Communication Interface Specification for Demand Response"
-// Bytes 1,2 are Message Type
-// Bytes 3,4 are length msb, lsb.
-// Bytes 5,6 are Opcode1, Opcode2
-// Bytes 7,8 are checksum, calculated by MCISend()
-
-unsigned char  EndShedCommand[] = { 0x08, 0x01, 0x00, 0x02, 0x02, 0x00, 0xff, 0xff };
-unsigned char     ShedCommand[] = { 0x08, 0x01, 0x00, 0x02, 0x01, 0x00, 0xff, 0xff };
-// Set Critical Peak Event
-unsigned char      CPPCommand[] = { 0x08, 0x01, 0x00, 0x02, 0x0A, 0x00, 0xff, 0xff };
-// Set Present Relative Price
-unsigned char PresentRelPrice[] = { 0x08, 0x01, 0x00, 0x02, 0x07, 0x01, 0xff, 0xff };
-// Outside Comm Connection Status, Found / Good Connection
-unsigned char OutsideCommGood[] = { 0x08, 0x01, 0x00, 0x02, 0x0E, 0x01, 0xff, 0xff };
-// Outside Comm Connection Status, No / Lost Connection
-unsigned char OutsideCommLost[] = { 0x08, 0x01, 0x00, 0x02, 0x0E, 0x00, 0xff, 0xff };
-
-//-----------------------------------------------------------------------------
-// MCI Intermediate DR Application. Message Type = 0x08, 0x02
-//--------------------------------------------
-
-// SetEnergyPrice
-// Bytes 7,8 are Current Price
-// Bytes 9,10 are Currency code = 840 for US dollars (0x348)
-// Byte 11 is digits after decimal place, currently fixed at 2 (cents)
-unsigned char  SetEnergyPrice[] = { 0x08, 0x02, 0x00, 0x07, 0x03, 0x00, 0x00, 0x00, 0x03, 0x48, 0x02, 0xff, 0xff };
 
 //-----------------------------------------------------------------------------
 
@@ -270,8 +249,8 @@ void HandleListOfEventStateXML( char *strptr );
 void ResetHeaderData( void );
 void MCI_One_Second_Callback();
 WORD Base64Encode(BYTE* cSourceData, WORD wSourceLen, BYTE* cDestData, WORD wDestLen);
-RSResponse TransmitCommGoodPacket( void );
-RSResponse TransmitCommBadPacket( void );
+MCIResponse TransmitCommGoodPacket( void );
+MCIResponse TransmitCommBadPacket( void );
 //-----------------------------------------------------------------------------
 
 static DWORD        TCP_Timeout;
@@ -368,8 +347,9 @@ void InitOpenADRComm( void )
     commGoodOld = 0;
 
     // Send EndShed at start-up
-    RsBuf = MCISend(EndShedCommand);
-
+    //RsBuf = MCISendNeutral(EndShedCommand);
+    SendEndShedCommand();
+    
     // clear the event queue
     for (i = 0; i < OPENADR_QSIZE; i++)
     {
@@ -452,7 +432,7 @@ int OpenADRClient( void )
         case TSM_START_DNS:
         // If IP address the skip DNS lookup
         n = sscanf( OpenADRServerName, "%d.%d.%d.%d", &ip0, &ip1, &ip2, &ip3);
-        if (n == 4 && (ip0 >=0 && ip0 <=255) && (ip1 >=0 && ip1 <=255) && (ip2 >=0 && ip2 <=255) && (ip2 >=0 && ip2 <=255)) {
+        if (n == 4 && (ip0 >=0 && ip0 <=255) && (ip1 >=0 && ip1 <=255) && (ip2 >=0 && ip2 <=255) && (ip3 >=0 && ip3 <=255)) {
             strcpy(OpenADRServerIP, OpenADRServerName);
             OpenADR_TCPState = TSM_HOME;
             break;
@@ -1761,16 +1741,16 @@ void ManageOpenADRQueue()
                         if ( !strcmp(eventStateQ[i].LoadLevel, "MODERATE" ) )
                         {
                             ShedCommand[5] = timeByteMCI;
-                            RsBuf = MCISend(ShedCommand);
+                            RsBuf = MCISendNeutral(ShedCommand);
                         }
                         else if ( !strcmp(eventStateQ[i].LoadLevel, "HIGH" ) )
                         {
-                            CPPCommand[5] = timeByteMCI;
-                            RsBuf = MCISend(CPPCommand);
+                            CriticalPeakEvent[5] = timeByteMCI;
+                            RsBuf = MCISendNeutral(CriticalPeakEvent);
                         }
                         else // normal
                         {
-                            RsBuf = MCISend(EndShedCommand);
+                            RsBuf = MCISendNeutral(EndShedCommand);
                         }
                         break;
     
@@ -1785,7 +1765,8 @@ void ManageOpenADRQueue()
                             SetEnergyPrice[4] = (unsigned char) (dPrice & 0xff00) / 256;
                             SetEnergyPrice[5] = (unsigned char) (dPrice & 0xff00);
                             SetEnergyPrice[8] = 0x02;        // digits after decimal point
-                            RsBuf = MCISend(SetEnergyPrice);
+                            
+                            RsBuf = MCISendNeutral(SetEnergyPrice);
                         }
                         else if ( !PriceRelSupportKnown || SupportsPriceRel )
                         {
@@ -1817,7 +1798,7 @@ void ManageOpenADRQueue()
                             // Yes = Valid App Ack (0x03,0x07)
                             // No = App NAK, Opcode1 not supported (0x04, 0x01)
                             PresentRelPrice[7] = priceByteMCI;
-                            RsBuf = MCISend(PresentRelPrice);
+                            RsBuf = MCISendNeutral(PresentRelPrice);
                             if (RsBuf.AppResponseValid && RsBuf.AppResponse[4] == 0x03 && RsBuf.AppResponse[5] == PresentRelPrice[6])
                             // response 0x03, 0x07 = good APP ACK
                             {
@@ -1844,21 +1825,21 @@ void ManageOpenADRQueue()
                         {
                             if (dPrice < LowPrice)
                             {
-                                RsBuf = MCISend(EndShedCommand);
+                                RsBuf = MCISendNeutral(EndShedCommand);
                             }
                             else if (dPrice >= HighPrice)
                             {
-                                RsBuf = MCISend(CPPCommand);
+                                RsBuf = MCISendNeutral(CriticalPeakEvent);
                             }
                             else
                             {
-                                RsBuf = MCISend(ShedCommand);
+                                RsBuf = MCISendNeutral(ShedCommand);
                             }
                         }
                         break;
     
                     case COMMAND_NONE:
-                        RsBuf = MCISend(EndShedCommand);
+                        RsBuf = MCISendNeutral(EndShedCommand);
                     default:
                         break;
                 }
@@ -1885,8 +1866,7 @@ void ManageOpenADRQueue()
                 // No EndShed for concurrent events
                 if (!concurrentEvents)
                 {
-                    RsBuf = MCISend(EndShedCommand);
-                    OverRide = 0;
+                    RsBuf = MCISendNeutral(EndShedCommand);
                 }
  
                 eventStateQ[i].executing = 0;
@@ -1932,16 +1912,16 @@ char *MovePastNameSpace(char *strptr)
 
 // JL addition
 // sends a "comm good" packet to the end device
-RSResponse TransmitCommGoodPacket()
+MCIResponse TransmitCommGoodPacket()
 {
-    return MCISend(OutsideCommGood);
+    return MCISendNeutral(OutsideCommGood);    
 }
 
 // JL addition
 // sends a "comm bad" packet to the end device
-RSResponse TransmitCommBadPacket()
+MCIResponse TransmitCommBadPacket()
 {
-    return MCISend(OutsideCommLost);
+    return MCISendNeutral(OutsideCommLost);    
 }
 
 time_t RFC882time( char *datestr )
@@ -2089,7 +2069,7 @@ void MCI_One_Second_Callback()
         // Status Query every 15 seconds
         else if ((tm_sec % 15) == 0)
         {
-            SendQueryOpState(DebugCnt);
+            //SendQueryOpState(DebugCnt);
 //            DebugCnt++;
         }
 

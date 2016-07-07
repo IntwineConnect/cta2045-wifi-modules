@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/Family/Documents/Jordan/cta2045-wifi-modules-master/Aztec/BasicDR.c</file>
+            <file>file:/C:/Users/Family/Documents/Jordan/cta2045-wifi-modules-master/Aztec/OpenADRClient.h</file>
+            <file>file:/C:/Users/Family/Documents/Jordan/cta2045-wifi-modules-master/Aztec/LinkLayerMessaging.c</file>
+            <file>file:/C:/Users/Family/Documents/Jordan/cta2045-wifi-modules-master/Aztec/TimeMonitor.c</file>
+            <file>file:/C:/Users/Family/Documents/Jordan/cta2045-wifi-modules-master/Aztec/OpenADRClient.c</file>
+            <file>file:/C:/Users/Family/Documents/Jordan/cta2045-wifi-modules-master/Aztec/MicroChip/TCPIP_Stack/Delay.c</file>
+            <file>file:/C:/Users/Family/Documents/Jordan/cta2045-wifi-modules-master/Aztec/HardwareProfile.h</file>
+            <file>file:/C:/Users/Family/Documents/Jordan/cta2045-wifi-modules-master/Aztec/MicroChip/Include/GenericTypeDefs.h</file>
+            <file>file:/C:/Users/Family/Documents/Jordan/cta2045-wifi-modules-master/Aztec/Main.c</file>
+        </group>
     </open-files>
 </project-private>
