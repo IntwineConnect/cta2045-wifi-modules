@@ -40,6 +40,8 @@
 
 
 void EPRI_SPI_TimeMonitor_Callback(void);
+void EPRI_SPI_startup(void);
+void EPRI_SPI_shutdown(void);
 void EPRI_SPI_init();
 void SPI_MCI_Sync_Callback(void);
 void SPI_Message_Timeout_Callback(void);

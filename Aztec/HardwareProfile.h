@@ -31,8 +31,8 @@
 //#define INTWINE_PROGRAMMABLE_THERMOSTAT
 //#define USER_BUTTON_SCENARIO_2
 
-#define AC_CEA2045
-//#define DC_CEA2045
+//#define AC_CEA2045
+#define DC_CEA2045
 
 //#define DFW                         // Enable downloadable firmware
 
@@ -90,8 +90,8 @@
 //----------------------------
 #define SPI_ATTN_TRIS           (TRISBbits.TRISB2) //  ATTN pin  (#23)
 #define SPI_ATTN_IO             (LATBbits.LATB2)
-#define SPI_ATTN_INACTIVE      LATBSET = BIT_2;
-#define SPI_ATTN_ASSERT        LATBCLR = BIT_2;
+#define SPI_ATTN_INACTIVE      LATBSET = BIT_2; LATBSET = BIT_2;
+#define SPI_ATTN_ASSERT        LATBCLR = BIT_2; LATBSET = BIT_2;
 
 #define SPI_CS_TRIS              (TRISDbits.TRISD14) //CS pin     (#47)   (CN20)
 #define SPI_CS_IO                (PORTDbits.RD14)
