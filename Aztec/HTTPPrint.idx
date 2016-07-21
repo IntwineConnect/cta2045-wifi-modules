@@ -3,13 +3,13 @@
 +curPrivacy
 +wlan
 +ipaddr
++fwver
 +led(0)
 +nextSSID
 +prevSSID
 +prevWLAN
 +nextWLAN
 +scan
-+fwver
 +bssCount
 +valid
 +name
@@ -18,4 +18,4 @@
 +led(1)
 +led(2)
 +btn(0)
-aplist
++LoadResults

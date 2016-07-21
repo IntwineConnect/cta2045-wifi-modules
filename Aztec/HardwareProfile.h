@@ -31,8 +31,8 @@
 //#define INTWINE_PROGRAMMABLE_THERMOSTAT
 //#define USER_BUTTON_SCENARIO_2
 
-//#define AC_CEA2045
-#define DC_CEA2045
+#define AC_CEA2045
+//#define DC_CEA2045
 
 //#define DFW                         // Enable downloadable firmware
 

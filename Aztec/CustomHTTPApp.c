@@ -1012,6 +1012,14 @@ void HTTPPrint_nextWLAN(void)
 }
 
 // ==========================
+// = Sends the return code =
+// ==========================
+void HTTPPrint_LoadResults(void)
+{
+	TCPPutROMString(sktHTTP, (ROM BYTE*)"HTTP RETURN CODE");
+}
+
+// ==========================
 // = Sends the Demo Version =
 // ==========================
 void HTTPPrint_Demoversion(void)
