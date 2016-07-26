@@ -35,6 +35,7 @@ build/default/debug/_ext/93166211/StackTsk.o:  \
  ../Microchip/Include/TCPIP_Stack/WFDebugStrings.h  \
  ../Microchip/Include/TCPIP_Stack/WFDriverPrv_24G.h  \
  ../Microchip/Include/TCPIP_Stack/WFRaw_24G.h  \
+../debugging.h  \
  ../Microchip/Include/TCPIP_Stack/WFEasyConfig.h  \
 ../MainDemo.h  \
  ../Microchip/Include/TCPIP_Stack/ZeroconfLinkLocal.h  \

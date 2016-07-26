@@ -9,4 +9,5 @@ build/default/debug/_ext/1472/EPRI_UARTLayer.o:  \
 ../EPRI_Queue.h  \
 ../MCI_Common.h  \
 ../EPRI_UARTLayer.h  \
- ../LinkLayerMessaging.h 
+ ../LinkLayerMessaging.h  \
+../debugging.h 

@@ -5,6 +5,7 @@
  * Author: Jordan Murray
  * Date: 5/10/2016
  */
+#ifdef DC_CEA2045
 
 #include <string.h>
 
@@ -17,6 +18,7 @@
 #include "MCI_Common.h"
 #include "EPRI_SPILayer.h"
 
+#include "debugging.h"
 
 int OK_TO_READ_SPI = 0;
 int SPI_position_counter = 0;
@@ -655,3 +657,5 @@ SPI3WriteBinaryData(unsigned char *data_block, int length)
         length--;
     }
 }
+
+#endif

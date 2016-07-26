@@ -25,6 +25,7 @@
       <itemPath>../MCI_Common.h</itemPath>
       <itemPath>../LinkLayerMessaging.h</itemPath>
       <itemPath>../BasicDR.h</itemPath>
+      <itemPath>../debugging.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -125,6 +126,7 @@
       <itemPath>../MCI_Common.c</itemPath>
       <itemPath>../LinkLayerMessaging.c</itemPath>
       <itemPath>../BasicDR.c</itemPath>
+      <itemPath>../debugging.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

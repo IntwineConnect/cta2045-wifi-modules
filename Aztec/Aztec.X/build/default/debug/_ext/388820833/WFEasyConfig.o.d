@@ -5,6 +5,7 @@ build/default/debug/_ext/388820833/WFEasyConfig.o:  \
 ../Microchip/Include/Compiler.h  \
  ../TCPIPConfig.h  \
 ../Configs/TCPIP_MRF24W.h  \
+../debugging.h  \
  ../Microchip/Include/TCPIP_Stack/WFEasyConfig.h  \
  ../Microchip/Include/TCPIP_Stack/TCPIP.h  \
  ../Microchip/Include/TCPIP_Stack/StackTsk.h  \
