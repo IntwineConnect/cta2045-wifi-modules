@@ -259,8 +259,10 @@ void BasicDRMessageHandler(unsigned char * msg)
  */
 void RelayTimeoutCallback(void)
 {
-    httpCode = 400;  
+    httpCode = 503;  
     ResponseReadyFlag = TRUE;
+    LED2_ON()
+    //LED1_OFF()
 }
 
 /**
@@ -275,6 +277,7 @@ BOOL CheckDataValid(void)
     }
     else
     {
+        LED1_ON()
         return TRUE;
     }
 }
@@ -284,8 +287,9 @@ void BlockUntilReady(void)
     BOOL RelayDataValid = FALSE;
     
     //set up a callback to ensure that the function returns
-    TimeMonitorRegisterI(4,RELAY_TIMEOUT_PERIOD,RelayTimeoutCallback);
-    
+    TimeMonitorRegisterI(8,RELAY_TIMEOUT_PERIOD,RelayTimeoutCallback);
+    LED1_ON()
+            
     //block until an application response has been received and processed
     while(!RelayDataValid)
     { 

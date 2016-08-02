@@ -244,33 +244,53 @@ int main(void)
     // If a task needs very long time to do its job, it must be broken
     // down into smaller pieces so that other tasks can have CPU time.
     AppTaskInit();
+    LED1_OFF()
+    LED2_OFF()
     while(1)
     {
         ClearWDT();
         
+        
         if(FirstTime == TRUE)
         {
+          
             //DL_Nak(0x89);
             DelayMs(100);
             retval = SendShedCommand(247);
             DelayMs(100);
+            LED1_OFF()
+            LED2_OFF()
             retval = SendEndShedCommand();
             DelayMs(100);
+            LED1_OFF()
+            LED2_OFF()/*
             retval = SendRequestForPowerLevel(76.1,1);
             DelayMs(100);
+            LED1_OFF()
+            LED2_OFF()
             retval = SendPresentRelativePrice(8.2);
             DelayMs(100);
-            retval = SendTimeRemainingInPresentPricePeriod(356);
+            LED1_OFF()
+            LED2_OFF()
+            //retval = SendTimeRemainingInPresentPricePeriod(356);
             DelayMs(100);
+            LED1_OFF()
+            LED2_OFF()
             retval = SendCriticalPeakEvent(465);
             DelayMs(100);
+            LED1_OFF()
+            LED2_OFF()
             retval = SendGridEmergency(222);
             DelayMs(100);
+            LED1_OFF()
+            LED2_OFF()
             retval = SendLoadUp(2889);            
             DelayMs(100);
-            retval = SendQueryOpState();
-            
-         
+            LED1_OFF()
+            LED2_OFF()
+            retval = SendQueryOpState();*/
+            LED0_INV()
+                                           
             
             
             /*
@@ -288,12 +308,14 @@ int main(void)
             SendRequestDifferentPowerMode(2);
             DelayMs(100);
             SendRequestDifferentBitRate(0);
+            
+            
             */
-            
-            
             FirstTime = FALSE;
+            
         
         }
+        
 
          if (AppConfig.networkType == WF_SOFT_AP || AppConfig.networkType == WF_INFRASTRUCTURE) {
             if (g_scan_done) {

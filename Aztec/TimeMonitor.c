@@ -15,7 +15,7 @@
 int tmMillisecondsPerTick = (TIME_MONITOR_TICK_PER_SECOND / 1000);
 unsigned long tmTimeMonitorClock = 0;
 
-#define MAX_TIMER_CALLBACKS 6
+#define MAX_TIMER_CALLBACKS 9
 int tmTickDownTimeIndex0 = 0;
 int tmTickDownTimeI[MAX_TIMER_CALLBACKS];
 void (*tmCallbackFunctionI[MAX_TIMER_CALLBACKS])(void);

@@ -107,7 +107,7 @@ void EPRI_UART_write(unsigned char *message, int length )
     
     //set lock and timer to release lock after 20ms
     UARTLock = TRUE;
-    TimeMonitorRegisterI(5,INTERMESSAGE_DLY_MS,UARTLockCallback);
+    TimeMonitorRegisterI(4,INTERMESSAGE_DLY_MS,UARTLockCallback);
 
 }
 
@@ -604,7 +604,7 @@ void MCI_Wait_Callback()
             rxMessageHandler(&AsyncRxRSBuf);
 
             RxMsgState = RX_WAIT_APP_ACK_DLY;
-            TimeMonitorRegisterI(4, AL_RESPONSE_MIN_TIME_OUT_MS, MCI_Wait_Callback);
+            TimeMonitorRegisterI(3, AL_RESPONSE_MIN_TIME_OUT_MS, MCI_Wait_Callback);
             break;
 
         case RX_WAIT_APP_ACK_DLY:

@@ -162,7 +162,7 @@ void EPRI_SPI_write(unsigned char *message, int length)
     
 
     //wait for SCG to be ready - set callback in case the SCG doesn't respond
-    TimeMonitorRegisterI(1,CS_ASSERT_TIMEOUT_MS, SPI_Message_Timeout_Callback);
+    TimeMonitorRegisterI(5,CS_ASSERT_TIMEOUT_MS, SPI_Message_Timeout_Callback);
     /* temporary comment 
     while(SPIBusState == SLAVE_WAITING)  //the timeout callback will change the state to something else
     {
@@ -211,7 +211,7 @@ void SPI3_ISR(void)
             i = SpiChnGetC(SPI_CHANNEL3);
                     if(OK_TO_READ_SPI)
                     {
-                        TimeMonitorRegisterI(2, 20, SPI_MCI_Sync_Callback);
+                        TimeMonitorRegisterI(6, 20, SPI_MCI_Sync_Callback);
                         
                         SPIRxBuf[SPI_position_counter] = i;
                         SPIRxBuf[SPI_position_counter + 1] = '/0';
@@ -277,7 +277,7 @@ void MCISendAsyncSPI(unsigned char * msg)
     
     //send initial message to start Tx state machine
     EPRI_SPI_write(SPItxmessage, (payloadLen + 6));
-    TimeMonitorRegisterI(1,INTER_MESSAGE_TIMEOUT_MS, SPI_Message_Timeout_Callback);
+    TimeMonitorRegisterI(5,INTER_MESSAGE_TIMEOUT_MS, SPI_Message_Timeout_Callback);
     
     TxSPIMsgState = TX_WAIT_LL_ACK;
 }
@@ -536,17 +536,17 @@ void SPI_MCI_Sync_Callback()
             //link layer ACK OK. Wait for application ack
             {
                 TxSPIMsgState = TX_WAIT_APP_ACK;
-                TimeMonitorRegisterI(1, APP_ACK_WAIT_TIME_MS, SPI_Message_Timeout_Callback);
+                TimeMonitorRegisterI(5, APP_ACK_WAIT_TIME_MS, SPI_Message_Timeout_Callback);
             }
             else //LL NAK or worse. Set quick timeout for end of message clean up
             {
-                TimeMonitorRegisterI(1,9,SPI_Message_Timeout_Callback);
+                TimeMonitorRegisterI(5,9,SPI_Message_Timeout_Callback);
             }
             break;
         case TX_WAIT_APP_ACK:
             TimeMonitorCancelI(1);         // cancel timeout callback
             TxSPIMsgState = TX_WAIT_LL_ACK_DLY;
-            TimeMonitorRegisterI(3, LINK_ACK_DELAY_MS, SPI_MCI_Wait_Callback);
+            TimeMonitorRegisterI(7, LINK_ACK_DELAY_MS, SPI_MCI_Wait_Callback);
             break;
         default:
             break;
@@ -565,8 +565,8 @@ void SPI_MCI_Sync_Callback()
                 SPIrxMessageHandler(&AsyncRxSPIBuf);    // send ACK/NAK
                 
                 RxSPIMsgState = RX_WAIT_LL_ACK_DLY;
-                TimeMonitorRegisterI(1, APP_ACK_WAIT_TIME_MS, SPI_Message_Timeout_Callback);
-                TimeMonitorRegisterI(3, LINK_ACK_DELAY_MS, SPI_MCI_Wait_Callback);
+                TimeMonitorRegisterI(5, APP_ACK_WAIT_TIME_MS, SPI_Message_Timeout_Callback);
+                TimeMonitorRegisterI(7, LINK_ACK_DELAY_MS, SPI_MCI_Wait_Callback);
                 break;
             case RX_RECEIVE_LL_ACK:
                 TimeMonitorCancelI(1);          //Cancel message timeout callback
@@ -603,7 +603,7 @@ void SPI_MCI_Wait_Callback()
             SPIrxMessageHandler(&AsyncRxSPIBuf);
             
             RxSPIMsgState = RX_WAIT_APP_ACK_DLY;
-            TimeMonitorRegisterI(4, APP_ACK_WAIT_TIME_MS, SPI_MCI_Wait_Callback);
+            TimeMonitorRegisterI(7, APP_ACK_WAIT_TIME_MS, SPI_MCI_Wait_Callback);
             break;
         case RX_WAIT_APP_ACK_DLY:
             RxSPIMsgState = RX_SEND_APP_ACK;
@@ -630,7 +630,7 @@ void SPI_Message_Timeout_Callback()
         {
             //resend
             TxSPIMsgState = TX_WAIT_RETRY_DLY;
-            TimeMonitorRegisterI(3, MESSAGE_RETRY_DELAY_MS, SPI_MCI_Wait_Callback);            
+            TimeMonitorRegisterI(7, MESSAGE_RETRY_DELAY_MS, SPI_MCI_Wait_Callback);            
         }
     }
     

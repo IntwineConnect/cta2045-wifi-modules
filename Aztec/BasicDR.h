@@ -8,7 +8,7 @@
 #define opc2index     5
 
 //how long before we assume there won't be an SCG response and return a failure code to the ICG
-#define RELAY_TIMEOUT_PERIOD        3000      
+#define RELAY_TIMEOUT_PERIOD        500      
 
 //operational state definitions
 #define IDLE_NORMAL                     0
