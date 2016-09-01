@@ -253,7 +253,7 @@ int main(void)
         
         if(FirstTime == TRUE)
         {
-          
+          /*
             //DL_Nak(0x89);
             DelayMs(100);
             retval = SendShedCommand(247);
@@ -263,7 +263,7 @@ int main(void)
             retval = SendEndShedCommand();
             DelayMs(100);
             LED1_OFF()
-            LED2_OFF()/*
+            LED2_OFF()
             retval = SendRequestForPowerLevel(76.1,1);
             DelayMs(100);
             LED1_OFF()

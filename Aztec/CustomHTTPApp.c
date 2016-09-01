@@ -52,6 +52,8 @@
 #define __CUSTOMHTTPAPP_C
 
 #include "TCPIPConfig.h"
+#include "BasicDR.h"
+#include "MCI_Common.h"
 
 #if defined(STACK_USE_HTTP2_SERVER)
 #include "TCPIP_Stack/TCPIP.h"
@@ -187,6 +189,7 @@ HTTP_IO_RESULT HTTPExecuteGet(void)
     /******************************************/
 	if(!memcmppgm2ram(filename, "leds.cgi", 8))
 	{
+        LED2_ON()
 		// Determine which LED to toggle
 		ptr = HTTPGetROMArg(curHTTP.data, (ROM BYTE *)"led");
 		
@@ -209,6 +212,7 @@ HTTP_IO_RESULT HTTPExecuteGet(void)
     /******************************************/
 	if(!memcmppgm2ram(filename, "scan.cgi", 8))
 	{
+        LED1_ON()
 		ptr = HTTPGetROMArg(curHTTP.data, (ROM BYTE *)"scan");
 		ptr1 = HTTPGetROMArg(curHTTP.data, (ROM BYTE *)"getBss");
 
@@ -261,7 +265,32 @@ HTTP_IO_RESULT HTTPExecuteGet(void)
         }  
 
 	}
-	
+	if(!memcmppgm2ram(filename, "Shed.cgi", 8))
+    {
+        
+        RelayMsg temp;
+        LED1_ON()
+        
+        temp = SendShedCommand(4);
+        
+        if(temp.httpCode == 200)
+        {
+            curHTTP.httpStatus = HTTP_GET;
+        }
+        else if(temp.httpCode == 400)
+        {
+            curHTTP.httpStatus = HTTP_BAD_REQUEST;
+        }
+        else if(temp.httpCode == 403)
+        {
+            curHTTP.httpStatus = HTTP_SSL_REQUIRED;
+        }
+        else
+        {
+            curHTTP.httpStatus = HTTP_NOT_IMPLEMENTED;
+        }
+        
+    }
 	return HTTP_IO_DONE;
 }
 

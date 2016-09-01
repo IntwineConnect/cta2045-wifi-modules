@@ -1,7 +1,7 @@
 /**
  * BasicDR.c
  * 
- * contains code related to receiving/sending basic DR messages
+ * contains code related to receiving/sending DR messages
  */
 #include "MCI_Common.h"
 #include "HardwareProfile.h"
@@ -9,7 +9,7 @@
 #include <math.h>
 
 #include "debugging.h"
-//when a UCM has sent a message that 
+
 volatile enum _RelayMsgState
 {
     RLY_IDLE,
@@ -44,10 +44,166 @@ volatile enum _RelayMsgState
     RLY_WAITING_PENDING_EVENT,
             RLY_ACKED_PENDING_EVENT,
     RLY_WAITING_PENDING_EVENT_TYPE,
-            RLY_ACKED_PENDING_EVENT_TYPE
+            RLY_ACKED_PENDING_EVENT_TYPE,
+    RLY_WAITING_GET_COMMODITY_READ,
+            RLY_ACKED_GET_COMMODITY_READ,
+    RLY_WAITING_SET_COMMODITY_READ,
+            RLY_ACKED_SET_COMMODITY_READ,
+    RLY_WAITING_START_AUTONOMOUS_CYCLING,
+            RLY_ACKED_START_AUTONOMOUS_CYCLING,
+    RLY_WAITING_TERMINATE_AUTONOMOUS_CYCLING,
+            RLY_ACKED_TERMINATE_AUTONOMOUS_CYCLING,
+    RLY_WAITING_SET_TEMPERATURE_OFFSET,
+            RLY_ACKED_SET_TEMPERATURE_OFFSET,
+    RLY_WAITING_GET_TEMPERATURE_OFFSET,
+            RLY_ACKED_GET_TEMPERATURE_OFFSET,
+    RLY_WAITING_GET_SET_POINT,
+            RLY_ACKED_GET_SET_POINT,
+    RLY_WAITING_SET_SET_POINT,
+            RLY_ACKED_SET_SET_POINT,
+    RLY_WAITING_GET_ENERGY_PRICE,
+            RLY_ACKED_GET_ENERGY_PRICE,
+    RLY_WAITING_SET_ENERGY_PRICE,
+            RLY_ACKED_SET_ENERGY_PRICE
             
 } RelayMsgState;
 
+//storage for commodity data
+CommodityReadData commodityResponse[10];
+
+void IntermediateDRMessageHandler(unsigned char *msg)
+{
+    unsigned char opcode1 = msg[4];
+    unsigned char opcode2 = msg[5];
+    int mlen = msg[2]*256 + msg[3];
+    
+    ResponseReadyFlag == TRUE;
+    
+    //is the message Get Commodity Read message?
+    if(opcode1 == GET_COMMODITY_READ_CODE)
+    {
+        //is the message a Get Commodity Read Reply?
+        if(opcode2 == GET_COMMODITY_READ_REPLY_CODE && RelayMsgState == RLY_WAITING_GET_COMMODITY_READ)
+        {
+            int i = 1;
+            int nCommodities = mlen/13;
+            RelayMsgState = RLY_ACKED_GET_COMMODITY_READ;
+            
+            responseCode = msg[6];
+            //set the http code in accordance with the intermediate DR response code
+            if(responseCode == SUCCESS)
+            {
+                httpCode = 200;
+            }
+            else
+            {
+                httpCode = 400;  //update this to be more informative once REST API spec is updated
+            }
+            //this structure array holds response information for all commodity types in the message
+            CommodityReadData commodityDataArray[nCommodities];
+            //figure out the length of the commodity data size for malloc
+            //int datasize = nCommodities*sizeof(CommodityReadData);
+            
+            
+            //put data from message buffer into structure for each commodity type
+            for(i == 0; i <= nCommodities; i++)
+            {
+                commodityDataArray[i].commodityCode = msg[7+i*13];
+                commodityDataArray[i].instantaneousRate = msg[8+i*13] << 40 | msg[9+i*13] << 32 | msg[10+i*13] << 24 | msg[11+i*13] << 16 | msg[12+i*13] << 8 | msg[13+i*13];
+                commodityDataArray[i].cumulativeAmount = msg[14+i*13] << 40 | msg[15+i*13] << 32 | msg[16+i*13] << 24 | msg[17+i*13] << 16 | msg[18+i*13] << 8 | msg[19+i*13];;
+            }
+            
+            /*zero memory in the commodity data buffer before copying so that no old data is left in case
+             the length of valid data field is ignored elsewhere*/
+            memset(commodityResponse,0,COMMODITY_DATA_BUFFER_LENGTH*sizeof(CommodityReadData));
+            //copy received data to buffer
+            memcpy(commodityResponse, commodityDataArray, COMMODITY_DATA_BUFFER_LENGTH*sizeof(CommodityReadData));  
+            
+            ResponseReadyFlag = TRUE;
+        }
+    }
+    else if(opcode1 == START_AUTONOMOUS_CYCLING_CODE)
+    {
+        if(opcode2 == START_AUTONOMOUS_CYCLING_REPLY_CODE && RelayMsgState == RLY_WAITING_START_AUTONOMOUS_CYCLING)
+        {
+            unsigned char responseCode = msg[6];
+            RelayMsgState = RLY_ACKED_START_AUTONOMOUS_CYCLING;
+            if(responseCode == SUCCESS)
+            {
+                httpCode = 200;
+            }
+            else
+            {
+                httpCode = 400;
+            }
+            ResponseReadyFlag = TRUE;
+        }
+    }
+    else if(opcode1 == TERMINATE_AUTONOMOUS_CYCLING_CODE)
+    {
+        //if this is a response and we are expecting a response to this message type
+        if(opcode2 == TERMINATE_AUTONOMOUS_CYCLING_REPLY_CODE && RelayMsgState == RLY_WAITING_TERMINATE_AUTONOMOUS_CYCLING)
+        {
+            unsigned char responseCode = msg[6];
+            RelayMsgState = RLY_ACKED_TERMINATE_AUTONOMOUS_CYCLING;
+            if(responseCode == SUCCESS)
+            {
+                httpCode = 200;
+            }
+            else
+            {
+                httpCode = 400;
+            }
+        }
+    }
+    else if(opcode1 == SET_TEMPERATURE_OFFSET_CODE)
+    {
+        if(opcode2 == SET_TEMPERATURE_OFFSET_REPLY_CODE && RelayMsgState == RLY_WAITING_SET_TEMPERATURE_OFFSET)
+        {
+            
+            
+        }
+    }
+    else if(opcode1 == GET_TEMPERATURE_OFFSET_CODE)
+    {
+        if(opcode2 == GET_TEMPERATURE_OFFSET_REPLY_CODE && RelayMsgState == RLY_WAITING_GET_TEMPERATURE_OFFSET)
+        {
+            
+        }
+    }
+    else if(opcode1 == SET_SET_POINT_CODE)
+    {
+        if(opcode2 == SET_SET_POINT_REPLY_CODE && RelayMsgState == RLY_WAITING_SET_SET_POINT)
+        {
+            
+        }
+    }
+    else if(opcode1 == GET_SET_POINT_CODE)
+    {
+        if(opcode2 == GET_SET_POINT_REPLY_CODE && RelayMsgState == RLY_WAITING_GET_SET_POINT)
+        {
+            
+        }
+    }
+    else if(opcode1 == SET_ENERGY_PRICE_CODE && RelayMsgState == RLY_WAITING_SET_ENERGY_PRICE)
+    {
+        if(opcode2 == SET_ENERGY_PRICE_REPLY_CODE)
+        {
+            
+        }
+    }
+    else if(opcode1 == GET_ENERGY_PRICE_CODE)
+    {
+        if(opcode2 == GET_ENERGY_PRICE_REPLY_CODE && RelayMsgState == RLY_WAITING_GET_ENERGY_PRICE)
+        {
+            
+        }
+    }
+    else
+    {           
+        httpCode = 404;
+    }
+}
 
 void BasicDRMessageHandler(unsigned char * msg)
 {
@@ -72,45 +228,59 @@ void BasicDRMessageHandler(unsigned char * msg)
             {
                 case IDLE_NORMAL:
                     httpCode = 200;
+                    codeByte = IDLE_NORMAL;
                     break;
                 case RUNNING_NORMAL:
                     httpCode = 200;
+                    codeByte = RUNNING_NORMAL;
                     break;
                 case RUNNING_CURTAILED:
                     httpCode = 200;
+                    codeByte = RUNNING_CURTAILED;
                     break;
                 case RUNNING_HEIGHTENED:
                     httpCode = 200;
+                    codeByte = RUNNING_HEIGHTENED;
                     break;
                 case IDLE_CURTAILED:
                     httpCode = 200;
+                    codeByte = IDLE_CURTAILED;
                     break;
                 case SGD_ERROR_CONDITION:
                     httpCode = 200;
+                    codeByte = SGD_ERROR_CONDITION;
                     break;
                 case IDLE_HEIGHTENED:
                     httpCode = 200;
+                    codeByte = IDLE_HEIGHTENED;
                     break;
                 case CYCLING_ON:
                     httpCode = 200;
+                    codeByte = CYCLING_ON;
                     break;
                 case CYCLING_OFF:
                     httpCode = 200;
+                    codeByte = CYCLING_OFF;
                     break;
                 case VARIABLE_FOLLOWING:
                     httpCode = 200;
+                    codeByte = VARIABLE_FOLLOWING;
                     break;
                 case VARIABLE_NOT_FOLLOWING:
                     httpCode = 200;
+                    codeByte = VARIABLE_NOT_FOLLOWING;
                     break;
                 case IDLE_OPTED_OUT:
                     httpCode = 200;
+                    codeByte = IDLE_OPTED_OUT;
                     break;
                 case RUNNING_OPTED_OUT:
                     httpCode = 200;
+                    codeByte = RUNNING_OPTED_OUT;
                     break;
                 default:
                     httpCode = 400;
+                    codeByte = 0;
                     break;                    
             }
         }
@@ -175,6 +345,10 @@ void BasicDRMessageHandler(unsigned char * msg)
         else if(opcode2 == PENDING_EVENT_TYPE_CODE && RelayMsgState == RLY_WAITING_PENDING_EVENT_TYPE)
         {
             RelayMsgState = RLY_ACKED_PENDING_EVENT_TYPE;
+        }
+        else if(opcode2 == GET_COMMODITY_READ_CODE && RelayMsgState == RLY_WAITING_GET_COMMODITY_READ)
+        {
+            RelayMsgState = RLY_ACKED_GET_COMMODITY_READ;
         }
         else
         {
@@ -243,6 +417,10 @@ void BasicDRMessageHandler(unsigned char * msg)
         {
             RelayMsgState = RLY_ACKED_PENDING_EVENT_TYPE;
         }
+        else if(opcode2 == GET_COMMODITY_READ_CODE && RelayMsgState == RLY_WAITING_GET_COMMODITY_READ)
+        {
+            RelayMsgState = RLY_ACKED_GET_COMMODITY_READ;
+        }
         else
         {
             //there must be a mismatch between the expected response type and what has been received
@@ -259,7 +437,7 @@ void BasicDRMessageHandler(unsigned char * msg)
  */
 void RelayTimeoutCallback(void)
 {
-    httpCode = 503;  
+    httpCode = 400;  
     ResponseReadyFlag = TRUE;
     LED2_ON()
     //LED1_OFF()
@@ -317,7 +495,7 @@ RelayMsg SendShedCommand( int eventDuration)
     MCISendNeutral(messageBuffer);    
     
     BlockUntilReady();
- 
+    LED2_ON()
     retval.httpCode = httpCode;
     retval.codeByte = DEFAULT_RETURN_CODE;
     return retval;
@@ -536,6 +714,231 @@ RelayMsg SendOutsideCommLost(void)
     return retval;
 }
 
+CommodityRelayMsg SendGetCommodityRead(unsigned char measured, 
+                                        unsigned char commodityCode)
+{
+    CommodityRelayMsg retval;
+    RelayMsgState = RLY_WAITING_GET_COMMODITY_READ;
+    
+    if(commodityCode >= 0 && commodityCode <= 7) // if the request is specific
+    {
+        unsigned char messageBuffer[9];  
+        memcpy(messageBuffer, GetCommodityRead, 9);  
+        
+        if(measured != 0)
+        {
+            measured = 128;
+        }
+        commodityCode = commodityCode | measured;
+        
+        messageBuffer[6] = commodityCode;
+        
+        MCISendNeutral(messageBuffer);
+    }
+    else //if the request is general (if there was a commodity code that wasn't good, we'll pretend it's not there)
+    {
+        MCISendNeutral(GetCommodityReadGeneral);
+    }
+    
+    BlockUntilReady();
+    
+    //transfer data to structure
+    retval.nCommodities = nCommodities;             // number of commodities for which we have data
+    retval.httpCode = httpCode;
+    retval.responseCode = responseCode;
+    retval.commodityResponse = commodityResponse;
+    return retval;
+}
+
+RelayMsg SendStartAutonomousCycling(UINT32 ID,         //event ID 32 bit uint
+                                    UINT32 startTime, // in Unix seconds since 1/1/2000 (946702800 seconds after the epoch)
+                                    UINT16 duration,           //in minutes
+                                    UINT8 dutyCycle,          //as a percentage
+                                    UINT8 startRand,          //in minutes
+                                    UINT8 endRand,            //in minutes
+                                    UINT8 crit                //reserved for future use
+                                    )
+{
+    RelayMsg retval;
+    unsigned char messageBuffer[22];
+    memcpy(messageBuffer, StartAutonomousCycling, 22);
+    
+    //convert to network byte ordering
+    ReverseByteOrder(&ID,4);
+    ReverseByteOrder(&startTime,4);
+    ReverseByteOrder(&duration,2);
+    //construct packet
+    memcpy(&messageBuffer[6],&ID,4);
+    memcpy(&messageBuffer[10],&startTime,4);
+    memcpy(&messageBuffer[14],&duration, 2);
+    
+    messageBuffer[16] = dutyCycle;
+    messageBuffer[17] = startRand;
+    messageBuffer[18] = endRand;
+    messageBuffer[19] = crit;  
+    
+    
+    MCISendNeutral(messageBuffer);
+    
+    BlockUntilReady();
+    
+    retval.httpCode = httpCode;
+    retval.codeByte = responseCode;
+    return retval;
+}
+
+TempOffsetRelayMsg SendGetTemperatureOffset(void)
+{
+    TempOffsetRelayMsg retval;
+    
+    MCISendNeutral(GetTemperatureOffset);
+    
+    BlockUntilReady();
+    
+    retval.httpCode = httpCode;
+    retval.responseCode = responseCode;
+    retval.currentOffset = currentOffset;
+    retval.units = units;
+    return retval;
+}
+
+RelayMsg SendSetTemperatureOffset(unsigned char currentOffset,  //offset to be applied in degrees F or C
+                                unsigned char units)            //0 for F, 1 for C
+{
+    RelayMsg retval;
+    unsigned char messageBuffer[10];
+    memcpy(messageBuffer, SetTemperatureOffset, 10);
+    
+    //0 means 0, everything else means 1
+    if(units != 0)
+    {
+        units = 1;
+    }
+    
+    messageBuffer[6] = currentOffset;
+    messageBuffer[7] = units;
+    
+    MCISendNeutral(messageBuffer);
+    
+    BlockUntilReady();
+    
+    retval.httpCode = httpCode;
+    retval.codeByte = responseCode;
+    return retval;
+}
+
+RelayMsg SendTerminateAutonomousCycling(UINT32 ID,
+                                        UINT8 endRand)
+{
+    RelayMsg retval;
+    unsigned char messageBuffer[13];
+    memcpy(messageBuffer,TerminateAutonomousCycling,13);
+    
+    ReverseByteOrder(&ID,4);
+    
+    memcpy(&messageBuffer[6],&ID,4);
+    
+    messageBuffer[10] = endRand;    
+    
+    MCISendNeutral(messageBuffer);
+    
+    BlockUntilReady();
+    
+    retval.httpCode = httpCode;
+    retval.codeByte = responseCode;
+    return retval;
+}
+
+TempSetpointRelayMsg SendGetSetPoint(void)
+{
+    TempSetpointRelayMsg retval;
+    
+    MCISendNeutral(GetSetPoint);
+    
+    BlockUntilReady();
+    
+    retval.httpCode = httpCode;
+    retval.responseCode = responseCode;
+    retval.units = units;
+    retval.setpoint1 = setpoint1;
+    retval.setpoint2 = setpoint2;
+    return retval;
+}
+
+RelayMsg SendSetSetPoint(UINT16 deviceType,
+                        UINT8 units,
+                        UINT16 setpoint1,
+                        UINT16 setpoint2)
+{
+    RelayMsg retval;
+    unsigned char messageBuffer[15];
+    memcpy(messageBuffer,SetSetPoint,15);
+    
+    ReverseByteOrder(&deviceType,2);
+    ReverseByteOrder(&setpoint1,2);
+    ReverseByteOrder(&setpoint2,2);
+    
+    memcpy(&messageBuffer[6],&deviceType,2);
+    memcpy(&messageBuffer[9],&setpoint1,2);
+    memcpy(&messageBuffer[11],&setpoint2,2);
+    
+    MCISendNeutral(messageBuffer);
+    
+    BlockUntilReady();    
+    
+    retval.httpCode = httpCode;
+    retval.codeByte = responseCode;
+    return retval;
+}
+
+EnergyPriceRelayMsg SendGetEnergyPrice(void)
+{
+    EnergyPriceRelayMsg retval;
+    
+    MCISendNeutral(GetEnergyPrice);
+    
+    BlockUntilReady();
+    
+    retval.httpCode = httpCode;
+    retval.responseCode = responseCode;
+    retval.currentPrice = currentPrice;
+    retval.currencyCode = currencyCode;
+    retval.digitsAfterPoint = digitsAfterPoint;
+    retval.expirationTime = expirationTime;
+    retval.nextPrice = nextPrice;
+    return retval;
+}
+
+RelayMsg SendSetEnergyPrice(UINT16 currentPrice,
+                            UINT16 currencyCode,
+                            UINT8 digitsAfterPoint,
+                            UINT32 expirationTime,
+                            UINT32 nextPrice)
+{
+    RelayMsg retval;
+    unsigned char messageBuffer[21];
+    memcpy(messageBuffer,SetEnergyPrice,21);
+    
+    ReverseByteOrder(&currentPrice,2);
+    ReverseByteOrder(&currencyCode,2);
+    ReverseByteOrder(&expirationTime,4);
+    ReverseByteOrder(&nextPrice,4);
+    
+    memcpy(&messageBuffer[6], &currentPrice, 2);
+    memcpy(&messageBuffer[8], &currencyCode, 2);
+    messageBuffer[10] = digitsAfterPoint;
+    memcpy(&messageBuffer[11], &expirationTime, 4);
+    memcpy(&messageBuffer[15], &nextPrice, 4);
+    
+    MCISendNeutral(messageBuffer);
+    
+    BlockUntilReady();
+    
+    retval.httpCode = httpCode;
+    retval.codeByte = responseCode;
+    return retval;
+}
+
 unsigned char MakeDurationByte(int eventDuration)
 {
     unsigned char opcode2 = 0;
@@ -554,4 +957,17 @@ unsigned char MakeDurationByte(int eventDuration)
     opcode2 = (unsigned char) ceil(eventDuration);
     
     return opcode2;
+}
+
+void ReverseByteOrder(void *ptr, int length)
+{
+    unsigned char buffer;
+    int i;
+    
+    for(i = 0; i < (int)length/2; i++)
+    {
+        memcpy(&buffer,ptr+i,1);
+        memcpy(ptr+i,ptr+length-1-i,1);
+        memcpy(ptr+length-1-i, &buffer,1);
+    }
 }

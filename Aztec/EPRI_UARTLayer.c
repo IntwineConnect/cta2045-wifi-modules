@@ -411,7 +411,7 @@ void rxMessageHandler(MCIResponse * lastSentPacket)
                 else if(rxmessage[0] == 0x08 && rxmessage[1] == 0x02) // if the message is an intermediate DR function
                 {
                     //intermediate DR application handler goes here
-                    
+                    IntermediateDRMessageHandler(rxmessage);
                     // data link ack
                     DL_Ack();
                 }
