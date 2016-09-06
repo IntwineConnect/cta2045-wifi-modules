@@ -54,6 +54,7 @@
 #include "TCPIPConfig.h"
 #include "BasicDR.h"
 #include "MCI_Common.h"
+#include "RESTAPI.h"
 
 #if defined(STACK_USE_HTTP2_SERVER)
 #include "TCPIP_Stack/TCPIP.h"
@@ -189,7 +190,6 @@ HTTP_IO_RESULT HTTPExecuteGet(void)
     /******************************************/
 	if(!memcmppgm2ram(filename, "leds.cgi", 8))
 	{
-        LED2_ON()
 		// Determine which LED to toggle
 		ptr = HTTPGetROMArg(curHTTP.data, (ROM BYTE *)"led");
 		
@@ -212,7 +212,6 @@ HTTP_IO_RESULT HTTPExecuteGet(void)
     /******************************************/
 	if(!memcmppgm2ram(filename, "scan.cgi", 8))
 	{
-        LED1_ON()
 		ptr = HTTPGetROMArg(curHTTP.data, (ROM BYTE *)"scan");
 		ptr1 = HTTPGetROMArg(curHTTP.data, (ROM BYTE *)"getBss");
 
@@ -265,32 +264,7 @@ HTTP_IO_RESULT HTTPExecuteGet(void)
         }  
 
 	}
-	if(!memcmppgm2ram(filename, "Shed.cgi", 8))
-    {
-        
-        RelayMsg temp;
-        LED1_ON()
-        
-        temp = SendShedCommand(4);
-        
-        if(temp.httpCode == 200)
-        {
-            curHTTP.httpStatus = HTTP_GET;
-        }
-        else if(temp.httpCode == 400)
-        {
-            curHTTP.httpStatus = HTTP_BAD_REQUEST;
-        }
-        else if(temp.httpCode == 403)
-        {
-            curHTTP.httpStatus = HTTP_SSL_REQUIRED;
-        }
-        else
-        {
-            curHTTP.httpStatus = HTTP_NOT_IMPLEMENTED;
-        }
-        
-    }
+	
 	return HTTP_IO_DONE;
 }
 
@@ -311,6 +285,7 @@ HTTP_IO_RESULT HTTPExecutePost(void)
 {
 	// Resolve which function to use and pass along
 	BYTE filename[20];
+    int moreToRead = 1;
 	
 	// Load the file name
 	// Make sure BYTE filename[] above is large enough for your longest name
@@ -323,6 +298,86 @@ HTTP_IO_RESULT HTTPExecutePost(void)
 	if(!memcmppgm2ram(filename, "configure.htm", 13))
 		return HTTPPostWifiConfig();
     #endif
+
+    //for messages associated with the /load page
+    if(!memcmppgm2ram(filename,"load.cgi",8))
+    {
+        LED1_ON()
+        
+        char typeBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+        char valueBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+        int itemCounter = 0; 
+        int i;
+        unsigned char found = 0;
+        
+        //get the parameters out of the buffer and strip their formatting
+        while(readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]) == 1)
+        {            
+            itemCounter++;
+        }
+        //go through the collected items, then find and determine the event type
+        while(found == 0 && i <= itemCounter)
+        {
+            if(!memcmp(typeBuffer[i],"event", 5))
+            {
+                parseEventName(valueBuffer[i]);
+                found = 1;
+            }    
+            i++;
+        }
+        
+        /*with the event type determined, get the parameters necessary to 
+         * construct the message, then call the API function to send it */
+        
+        switch(eventType)  
+        {
+            RelayMsg retval;
+            int intparam1;
+            int intparam2;
+            int intparam3;
+            
+            case SHED:
+                            
+                for(i = 0; i < itemCounter; i++)
+                {
+                    if(!memcmp(typeBuffer[i],"event_duration",14))
+                    {
+                        intparam1 = atoi(valueBuffer[i]);
+                    }
+                }
+                retval = SendShedCommand(intparam1);
+                
+                HTTPcodeHandler(retval.httpCode);
+                
+                
+                break;
+            case END_SHED:
+                SendEndShedCommand();
+                break;
+            case CRITICAL_PEAK_EVENT:
+                break;
+            case GRID_EMERGENCY:
+                break;
+            case REQUEST_POWER_LEVEL:
+                break;
+            default:
+                
+                break;
+                
+        }
+    }
+    
+    //for messages associated with the /price page
+    if(!memcmppgm2ram(filename,"price.cgi", 9))
+    {
+        
+    }
+    
+    //for message types associated with the /time page
+    if(!memcmppgm2ram(filename,"time.cgi", 8))
+    {
+        
+    }
 
 	return HTTP_IO_DONE;
 }
@@ -1110,6 +1165,107 @@ void HTTPPrint_aplist(void)
         TCPPutString(sktHTTP, strString);
         TCPPutROMString(sktHTTP, (ROM BYTE*)"</strength>\n");
         TCPPutROMString(sktHTTP, (ROM BYTE*)"</bss>\n");
+    }
+}
+
+void HTTPcodeHandler(short int httpCode)
+{
+    if(httpCode == 200) 
+    {
+        curHTTP.httpStatus = HTTP_GET;
+    } 
+    else if (httpCode == 400) 
+    {
+        curHTTP.httpStatus = HTTP_BAD_REQUEST;
+    }
+    else if (httpCode == 403) 
+    {
+        curHTTP.httpStatus = HTTP_SSL_REQUIRED;
+    }
+    else 
+    {
+        curHTTP.httpStatus = HTTP_NOT_IMPLEMENTED;
+    }
+}
+
+int readLine(char *typeBuffer, char *valueBuffer)
+{
+    int lenA, lenB, lenC;
+    int last = 0;
+    char trashBuffer[40];
+    
+    //get end of item
+    lenB = TCPFindEx(sktHTTP, ',', 0, 0, FALSE);
+    lenC = TCPFindEx(sktHTTP, '}', 0, 0, FALSE);
+    //lenA = TCPFindEx(sktHTTP, '\n', 0, 0, FALSE);
+    
+    //if this is the last line
+    if(lenB > lenC)
+    {
+        lenB = lenC;
+        last = 1;
+    }
+    
+    //get colon location
+    lenC = TCPFindEx(sktHTTP, ':', 0, 0, FALSE);
+    //get ID open quote
+    lenA = TCPFindEx(sktHTTP, '"', 0, 0, FALSE);
+    if (lenA > lenB) //item delimiter comes too soon
+    {
+
+    }
+    if (lenA > lenC) //ID/value separator comes too soon
+    {
+
+    }
+    
+    //get the ID open quote out of the buffer
+    TCPGetArray(sktHTTP, trashBuffer, lenA + 1);
+    lenB -= lenA;
+    lenC -= lenA;
+    //get the location of the ID close quote
+    lenA = TCPFindEx(sktHTTP, '"', 0, 0, FALSE);
+
+    TCPGetArray(sktHTTP, typeBuffer, lenA);
+    lenB -= lenA;
+    lenC -= lenA;
+    //get the location of the value open quote (skip the next character, which is an old quote)
+    lenA = TCPFindEx(sktHTTP, '"', 1, 0, FALSE);
+    
+    if (lenA < lenC) //value open quote comes too soon
+    {
+
+    }
+    if (lenA > lenB) // item delimiter comes too soon
+    {
+
+    }
+    //get the value open quote out of the buffer
+    TCPGetArray(sktHTTP, trashBuffer, lenA + 1);
+    lenB -= lenA;
+
+    //get the location of the value close quote
+    lenA = TCPFindEx(sktHTTP, '"', 0, 0, FALSE);
+    
+    if (lenA > lenB) // item delimiter comes too soon
+    {
+
+    }
+
+    TCPGetArray(sktHTTP, valueBuffer, lenA);
+    lenB -= lenA;
+    //clean up the rest of this line            
+    TCPGetArray(sktHTTP, trashBuffer, lenB);
+    LED2_ON()
+    //check to see if we're done reading
+    if (last) 
+    {
+        LED1_OFF()
+        return 0;        
+    } 
+    else
+    {
+        return 1;
     }
 }
 

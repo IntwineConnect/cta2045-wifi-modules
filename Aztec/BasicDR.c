@@ -439,7 +439,7 @@ void RelayTimeoutCallback(void)
 {
     httpCode = 400;  
     ResponseReadyFlag = TRUE;
-    LED2_ON()
+    //LED2_ON()
     //LED1_OFF()
 }
 
@@ -456,6 +456,7 @@ BOOL CheckDataValid(void)
     else
     {
         LED1_ON()
+        LED1_OFF()
         return TRUE;
     }
 }
@@ -466,7 +467,6 @@ void BlockUntilReady(void)
     
     //set up a callback to ensure that the function returns
     TimeMonitorRegisterI(8,RELAY_TIMEOUT_PERIOD,RelayTimeoutCallback);
-    LED1_ON()
             
     //block until an application response has been received and processed
     while(!RelayDataValid)
@@ -487,6 +487,11 @@ RelayMsg SendShedCommand( int eventDuration)
     
     memcpy(messageBuffer, ShedCommand,8);  
     
+    if(eventDuration = 45)
+    {
+        LED1_OFF()
+        LED2_OFF()
+    }
     
     opcode2 = MakeDurationByte(eventDuration);
     messageBuffer[5] = opcode2;
@@ -495,7 +500,7 @@ RelayMsg SendShedCommand( int eventDuration)
     MCISendNeutral(messageBuffer);    
     
     BlockUntilReady();
-    LED2_ON()
+    
     retval.httpCode = httpCode;
     retval.codeByte = DEFAULT_RETURN_CODE;
     return retval;
