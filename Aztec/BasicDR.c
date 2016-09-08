@@ -160,15 +160,33 @@ void IntermediateDRMessageHandler(unsigned char *msg)
     {
         if(opcode2 == SET_TEMPERATURE_OFFSET_REPLY_CODE && RelayMsgState == RLY_WAITING_SET_TEMPERATURE_OFFSET)
         {
-            
-            
+            unsigned char responseCode = msg[6];
+            RelayMsgState = RLY_ACKED_SET_TEMPERATURE_OFFSET;
+            if(responseCode == SUCCESS)
+            {
+                httpCode = 200;
+            }
+            else
+            {
+                httpCode = 400;
+            }
         }
     }
     else if(opcode1 == GET_TEMPERATURE_OFFSET_CODE)
     {
         if(opcode2 == GET_TEMPERATURE_OFFSET_REPLY_CODE && RelayMsgState == RLY_WAITING_GET_TEMPERATURE_OFFSET)
         {
-            
+            unsigned char responseCode = msg[6];
+            unsigned char currentOffset = msg[7];
+            unsigned char units = msg[8];
+            if(responseCode == SUCCESS)
+            {
+                httpCode = 200;
+            }
+            else
+            {
+                httpCode = 400;
+            }
         }
     }
     else if(opcode1 == SET_SET_POINT_CODE)
@@ -437,10 +455,13 @@ void BasicDRMessageHandler(unsigned char * msg)
  */
 void RelayTimeoutCallback(void)
 {
-    httpCode = 400;  
+    //httpCode = 400;  
+    //codeByte = 4;
+    
+    httpCode = 400;    
+             
+            
     ResponseReadyFlag = TRUE;
-    //LED2_ON()
-    //LED1_OFF()
 }
 
 /**
@@ -600,6 +621,37 @@ RelayMsg SendPresentRelativePrice(double rpi)
     return retval;
 }
 
+RelayMsg SendNextPeriodRelativePrice(double rpi) 
+{
+    RelayMsg retval;
+    unsigned char opcode2 = 0x00;
+    unsigned char messageBuffer[8];    
+    memcpy(messageBuffer, NextPeriodRelativePrice,8);
+    
+    
+    //input bounds checking
+    if(rpi > 10.0)
+    {
+        rpi = 10.0;
+    }
+    else if(rpi < 0.0)
+    {
+        rpi = 0.0;
+    }
+
+    opcode2 = (unsigned char) floor(-31 + .5*sqrtf(3844+(4*(63+8192*rpi))));    //calculate byte value per section 8.2.2 of CTA spec
+    messageBuffer[5] = opcode2;
+    
+    RelayMsgState = RLY_WAITING_NEXT_PERIOD_RELATIVE_PRICE;
+    MCISendNeutral(messageBuffer);
+        
+    BlockUntilReady();
+    
+    retval.httpCode = httpCode;
+    retval.codeByte = DEFAULT_RETURN_CODE;
+    return retval;
+}
+
 RelayMsg SendTimeRemainingInPresentPricePeriod(int eventDuration)
 {
     RelayMsg retval;
@@ -676,6 +728,46 @@ RelayMsg SendLoadUp(int eventDuration)
     
     retval.httpCode = httpCode;
     retval.codeByte = DEFAULT_RETURN_CODE;
+    return retval;
+}
+
+RelayMsg SendTimeSync(int day, int hour)
+{
+    RelayMsg retval;
+    unsigned char messageBuffer[8];
+    memcpy(messageBuffer, TimeSync, 8);
+    unsigned char opcode2 = 0;
+    
+    //input checking
+    if(day < 0)
+    {
+        day = 0;
+    }
+    else if(day > 6)
+    {
+        day = 6;
+    }
+    
+    if(hour < 0)
+    {
+        hour = 0;
+    }
+    else if(hour > 24)
+    {
+        hour = 24;
+    }
+    
+    opcode2 = day << 5 | hour;        
+    messageBuffer[5] = opcode2;
+    
+    RelayMsgState = RLY_WAITING_SIMPLE_TIME_SYNC;
+    MCISendNeutral(messageBuffer);
+    
+    BlockUntilReady();
+    
+    retval.httpCode = httpCode;
+    retval.codeByte = DEFAULT_RETURN_CODE;
+    
     return retval;
 }
 

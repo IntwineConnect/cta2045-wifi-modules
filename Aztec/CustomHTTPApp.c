@@ -264,6 +264,15 @@ HTTP_IO_RESULT HTTPExecuteGet(void)
         }  
 
 	}
+    if(!memcmppgm2ram(filename, "state_sgd.cgi", 13))
+    {
+        LED1_ON()
+        RelayMsg retval;
+        
+        retval = SendQueryOpState();
+        
+        HTTPcodeHandler(retval.httpCode);
+    }
 	
 	return HTTP_IO_DONE;
 }
@@ -347,18 +356,49 @@ HTTP_IO_RESULT HTTPExecutePost(void)
                 }
                 retval = SendShedCommand(intparam1);
                 
-                HTTPcodeHandler(retval.httpCode);
-                
+                HTTPcodeHandler(retval.httpCode);                
                 
                 break;
             case END_SHED:
-                SendEndShedCommand();
+                retval = SendEndShedCommand();
+                HTTPcodeHandler(retval.httpCode);
                 break;
             case CRITICAL_PEAK_EVENT:
+                for(i = 0; i < itemCounter; i++)
+                {
+                    if(!memcmp(typeBuffer[i],"event_duration",14))
+                    {
+                        intparam1 = atoi(valueBuffer[i]);
+                    }
+                }
+                retval = SendCriticalPeakEvent(intparam1);
+                
+                HTTPcodeHandler(retval.httpCode);                
+                
                 break;
             case GRID_EMERGENCY:
+                for(i = 0; i < itemCounter; i++)
+                {
+                    if(!memcmp(typeBuffer[i],"event_duration",14))
+                    {
+                        intparam1 = atoi(valueBuffer[i]);
+                    }
+                }
+                retval = SendGridEmergency(intparam1);
+                
+                HTTPcodeHandler(retval.httpCode);  
                 break;
             case REQUEST_POWER_LEVEL:
+                for(i = 0; i < itemCounter; i++)
+                {
+                    if(!memcmp(typeBuffer[i],"load_percent",12))
+                    {
+                        intparam1 = atoi(valueBuffer[i]);
+                    }
+                }
+                retval = SendRequestForPowerLevel(intparam1, 0);
+                
+                HTTPcodeHandler(retval.httpCode);  
                 break;
             default:
                 
@@ -370,13 +410,79 @@ HTTP_IO_RESULT HTTPExecutePost(void)
     //for messages associated with the /price page
     if(!memcmppgm2ram(filename,"price.cgi", 9))
     {
+        char typeBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+        char valueBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+        int itemCounter = 0; 
+        int i;
+        unsigned char found = 0;
+        RelayMsg retval;
+        int intparam1;
+        double doubleparam1;
+                
         
+        //get the parameters out of the buffer and strip their formatting
+        while(readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]) == 1)
+        {            
+            itemCounter++;
+        }
+        
+        for(i = 0; i < itemCounter; i++)
+        {
+            if (!memcmp(typeBuffer[i], "cur_price", 9)) 
+            {
+                doubleparam1 = atof(valueBuffer[i]);
+                retval = SendPresentRelativePrice(doubleparam1);
+            }
+            else if(!memcmp(typeBuffer[i],"time_remaining", 14))
+            {
+                intparam1 = atoi(valueBuffer[i]);
+                retval = SendTimeRemainingInPresentPricePeriod(intparam1);
+            }
+            else if(!memcmp(typeBuffer[i], "next_price", 10))
+            {
+                doubleparam1 = atof(valueBuffer[i]);
+                retval = SendNextPeriodRelativePrice(doubleparam1);
+            }
+            else
+            {
+                
+            }
+        }
+        HTTPcodeHandler(retval.httpCode);            
+
     }
     
     //for message types associated with the /time page
     if(!memcmppgm2ram(filename,"time.cgi", 8))
     {
+        char typeBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+        char valueBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+        int itemCounter = 0; 
+        int i;
+        unsigned char found = 0;
+        int intparam1;
+        int intparam2;
+        RelayMsg retval;
         
+        //get the parameters out of the buffer and strip their formatting
+        while(readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]) == 1)
+        {            
+            itemCounter++;
+        }
+        for(i = 0; i < itemCounter; i++) 
+        {
+            if (!memcmp(typeBuffer[i], "day", 3)) 
+            {
+                intparam1 = atoi(valueBuffer[i]);
+            }
+            else if(!memcmp(typeBuffer[i], "hour", 4))
+            {
+                intparam2 = atoi(valueBuffer[i]);
+            }
+        }
+        retval = SendTimeSync(intparam1, intparam2);
+                
+        HTTPcodeHandler(retval.httpCode);
     }
 
 	return HTTP_IO_DONE;
@@ -826,6 +932,28 @@ void HTTPPrint_scan(void)
     TCPPutString(sktHTTP, scanInProgressString);
 }
 
+//===================================
+// = set SGD state code
+//===================================
+void HTTPPrint_code(void)
+{
+    BYTE stateCode[2];
+    
+    uitoa(codeByte, stateCode);
+    TCPPutString(sktHTTP, stateCode);
+}
+
+//====================================
+// = set SGD meaning string
+//====================================
+void HTTPPrint_meaning(void)
+{
+    char stateMeaning[30];
+    ProvideMeaning(codeByte, stateMeaning, sizeof(stateMeaning));
+    TCPPutString(sktHTTP, stateMeaning);
+}
+
+
 // ======================================
 // = Sends the FW version     =
 // ======================================
@@ -1184,7 +1312,7 @@ void HTTPcodeHandler(short int httpCode)
     }
     else 
     {
-        curHTTP.httpStatus = HTTP_NOT_IMPLEMENTED;
+        curHTTP.httpStatus = httpCode;
     }
 }
 
@@ -1266,6 +1394,54 @@ int readLine(char *typeBuffer, char *valueBuffer)
     else
     {
         return 1;
+    }
+}
+
+void ProvideMeaning(unsigned char stateCode, char *buffer, int bufferlength)
+{
+    switch(stateCode)
+    {
+        case IDLE_NORMAL:
+            strcpy(buffer,"Idle Normal");
+        break;
+        case RUNNING_NORMAL:
+            strcpy(buffer,"Running Normal");
+        break;
+        case RUNNING_CURTAILED:
+            strcpy(buffer,"Running Curtailed");
+            break;
+        case RUNNING_HEIGHTENED:
+            strcpy(buffer,"Running Heightened");
+            break;
+        case IDLE_CURTAILED:
+            strcpy(buffer,"Idle Curtailed");
+            break;
+        case SGD_ERROR_CONDITION:
+            strcpy(buffer,"SGD Error Condition");
+            break;
+        case IDLE_HEIGHTENED:
+            strcpy(buffer,"Idle Heightened");
+            break;
+        case CYCLING_ON:
+            strcpy(buffer,"Cycling On");
+            break;
+        case CYCLING_OFF:
+            strcpy(buffer,"Cycling Off");
+            break;
+        case VARIABLE_FOLLOWING:
+            strcpy(buffer,"Variable Following");
+            break;
+        case VARIABLE_NOT_FOLLOWING:
+            strcpy(buffer,"Variable Not Following");
+            break;
+        case IDLE_OPTED_OUT:
+            strcpy(buffer,"Idle, Opted Out");
+            break;
+        case RUNNING_OPTED_OUT:
+            strcpy(buffer,"Running, Opted Out");
+            break;
+        default:
+            break;
     }
 }
 

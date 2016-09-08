@@ -42,7 +42,7 @@ void EPRI_TimeMonitor_Callback(void);
 void EPRI_UART_init();
 void MCI_Sync_Callback(void);
 void Message_Timeout_Callback(void);
-BOOL SendTimeSync(int weekday, int hour);
+//BOOL SendTimeSync(int weekday, int hour);
 //BOOL SendQueryOpState(unsigned char OSCnt);
 BOOL MCI_IsSending();
 MCIResponse MCISend(unsigned char * msg);

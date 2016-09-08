@@ -71,6 +71,8 @@ void HTTPPrint_privacy(void);
 void HTTPPrint_strength(void);
 void HTTPPrint_btn(WORD);
 void HTTPPrint_LoadResults(void);
+void HTTPPrint_code(void);
+void HTTPPrint_meaning(void);
 
 void HTTPPrint(DWORD callbackID)
 {
@@ -138,6 +140,12 @@ void HTTPPrint(DWORD callbackID)
 			break;
         case 0x00000014:
 			HTTPPrint_LoadResults();
+			break;
+        case 0x00000015:
+			HTTPPrint_code();
+			break;
+        case 0x00000016:
+			HTTPPrint_meaning();
 			break;
 		default:
 			// Output notification for undefined values

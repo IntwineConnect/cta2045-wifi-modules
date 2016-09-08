@@ -244,6 +244,7 @@ BOOL MCI_IsSending()
 /**
  * Send a Time Sync to SGD, non-blocking
  */
+/*
 BOOL SendTimeSync(int weekday, int hour)
 {
 
@@ -254,7 +255,7 @@ BOOL SendTimeSync(int weekday, int hour)
     MCISendAsync(TimeSyncMsg);
 
     return TRUE;
-}
+}*/
 
 /**
  * Check the checksum of a received message.

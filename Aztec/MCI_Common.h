@@ -78,6 +78,7 @@ extern unsigned char PresentRelPrice[8];
 extern unsigned char OutsideCommGood[8];
 // Outside Comm Connection Status, No / Lost Connection
 extern unsigned char OutsideCommLost[8];
+extern unsigned char TimeSync[8];
 
 //-----------------------------------------------------------------------------
 // MCI Intermediate DR Application. Message Type = 0x08, 0x02

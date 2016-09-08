@@ -89,11 +89,13 @@ RelayMsg SendShedCommand(int eventDuration);
 RelayMsg SendEndShedCommand(void);
 RelayMsg SendRequestForPowerLevel(double percent, int produce);
 RelayMsg SendPresentRelativePrice(double rpi);
+RelayMsg SendNextPeriodRelativePrice(double rpi);
 RelayMsg SendTimeRemainingInPresentPricePeriod(int eventDuration);
 RelayMsg SendCriticalPeakEvent(int eventDuration);
 RelayMsg SendGridEmergency(int eventDuration);
 RelayMsg SendLoadUp(int eventDuration);
 RelayMsg SendQueryOpState(void);
+RelayMsg SendTimeSync(int day, int hour);
 
 CommodityRelayMsg SendGetCommodityRead(unsigned char, unsigned char);
 
