@@ -35,6 +35,14 @@
 #define BUSY_CODE                       5
 #define OTHER_ERROR                     6
 
+//application nak codes
+#define APPNAK_NO_REASON                       0x00
+#define APPNAK_OPCODE1_NOT_SUPPORTED          0x01
+#define APPNAK_OPCODE2_INVALID              0x02
+#define APPNAK_BUSY                            0x03
+#define APPNAK_LENGTH_INVALID                  0x04
+
+
 typedef struct RelayMsg_t{
     short int httpCode;
     unsigned char codeByte;

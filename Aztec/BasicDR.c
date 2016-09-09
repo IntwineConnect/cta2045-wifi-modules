@@ -68,6 +68,8 @@ volatile enum _RelayMsgState
             
 } RelayMsgState;
 
+unsigned char ExpectedAckType;
+
 //storage for commodity data
 CommodityReadData commodityResponse[10];
 
@@ -356,7 +358,7 @@ void BasicDRMessageHandler(unsigned char * msg)
         {
             RelayMsgState = RLY_ACKED_SIMPLE_TIME_SYNC;
         }
-        else if(opcode2 == PENDING_EVENT_TYPE_CODE && RelayMsgState == RLY_WAITING_PENDING_EVENT)
+        else if(opcode2 == PENDING_EVENT_CODE && RelayMsgState == RLY_WAITING_PENDING_EVENT)
         {
             RelayMsgState = RLY_ACKED_PENDING_EVENT;
         }
@@ -366,85 +368,44 @@ void BasicDRMessageHandler(unsigned char * msg)
         }
         else if(opcode2 == GET_COMMODITY_READ_CODE && RelayMsgState == RLY_WAITING_GET_COMMODITY_READ)
         {
-            RelayMsgState = RLY_ACKED_GET_COMMODITY_READ;
+            if(RelayMsgState)
+            {
+                RelayMsgState = RLY_ACKED_GET_COMMODITY_READ;
+            }                
         }
         else
         {
             //there must be a mismatch between the expected response type and what has been received
-            httpCode = 400;
-            DL_Nak(0xa0);
+            httpCode = 302;
         }
         
     }
     else if(opcode1 == APP_NAK_CODE) //application nak
     {
-        httpCode = 400;
-        if(opcode2 == END_SHED_CODE && RelayMsgState == RLY_WAITING_END_SHED)
+        
+        switch (opcode2) 
         {
-            RelayMsgState = RLY_ACKED_END_SHED;
+            case APPNAK_NO_REASON:
+                httpCode = 401;
+                break;
+            case APPNAK_OPCODE1_NOT_SUPPORTED:
+                httpCode = 501;
+                break;
+            case APPNAK_OPCODE2_INVALID:
+                httpCode = 404;
+                break;
+            case APPNAK_BUSY:
+                httpCode = 403;
+                break;
+            case APPNAK_LENGTH_INVALID:
+                httpCode = 414;
+                break;
+            default:
+                httpCode = 500;
+                break;
+
         }
-        else if(opcode2 == SHED_CODE && RelayMsgState == RLY_WAITING_SHED)
-        {
-            RelayMsgState = RLY_ACKED_SHED;
-        }
-        else if(opcode2 == REQUEST_POWER_LEVEL_CODE && RelayMsgState == RLY_WAITING_REQUEST_POWER_LEVEL)
-        {
-            RelayMsgState = RLY_ACKED_REQUEST_POWER_LEVEL;
-        }
-        else if(opcode2 == PRESENT_RELATIVE_PRICE_CODE && RelayMsgState == RLY_WAITING_PRESENT_RELATIVE_PRICE)
-        {
-            RelayMsgState = RLY_ACKED_PRESENT_RELATIVE_PRICE;
-        }
-        else if(opcode2 == NEXT_PERIOD_RELATIVE_PRICE_CODE && RelayMsgState == RLY_WAITING_NEXT_PERIOD_RELATIVE_PRICE)
-        {
-            RelayMsgState = RLY_ACKED_NEXT_PERIOD_RELATIVE_PRICE;
-        }
-        else if(opcode2 == TIME_IN_PRICE_PERIOD_CODE && RelayMsgState == RLY_WAITING_TIME_IN_PRICE_PERIOD)
-        {
-            RelayMsgState = RLY_ACKED_TIME_IN_PRICE_PERIOD;
-        }
-        else if(opcode2 == CRITICAL_PEAK_EVENT_CODE && RelayMsgState == RLY_WAITING_CRITICAL_PEAK_EVENT)
-        {
-            RelayMsgState = RLY_ACKED_CRITICAL_PEAK_EVENT;
-        }
-        else if(opcode2 == GRID_EMERGENCY_CODE && RelayMsgState == RLY_WAITING_GRID_EMERGENCY)
-        {
-            RelayMsgState = RLY_ACKED_GRID_EMERGENCY;
-        }
-        else if(opcode2 == GRID_GUIDANCE_CODE && RelayMsgState == RLY_WAITING_GRID_GUIDANCE)
-        {
-            RelayMsgState = RLY_ACKED_GRID_GUIDANCE;
-        }
-        else if(opcode2 == OUTSIDE_COMM_CODE && RelayMsgState == RLY_WAITING_OUTSIDE_COMM_GOOD)
-        {
-            RelayMsgState = RLY_ACKED_OUTSIDE_COMM_GOOD;
-        }
-        else if(opcode2 == OUTSIDE_COMM_CODE && RelayMsgState == RLY_WAITING_OUTSIDE_COMM_LOST)
-        {
-            RelayMsgState = RLY_ACKED_OUTSIDE_COMM_LOST;
-        }
-        else if(opcode2 == SIMPLE_TIME_SYNC_CODE && RelayMsgState == RLY_WAITING_SIMPLE_TIME_SYNC)
-        {
-            RelayMsgState = RLY_ACKED_SIMPLE_TIME_SYNC;
-        }
-        else if(opcode2 == PENDING_EVENT_TYPE_CODE && RelayMsgState == RLY_WAITING_PENDING_EVENT)
-        {
-            RelayMsgState = RLY_ACKED_PENDING_EVENT;
-        }
-        else if(opcode2 == PENDING_EVENT_TYPE_CODE && RelayMsgState == RLY_WAITING_PENDING_EVENT_TYPE)
-        {
-            RelayMsgState = RLY_ACKED_PENDING_EVENT_TYPE;
-        }
-        else if(opcode2 == GET_COMMODITY_READ_CODE && RelayMsgState == RLY_WAITING_GET_COMMODITY_READ)
-        {
-            RelayMsgState = RLY_ACKED_GET_COMMODITY_READ;
-        }
-        else
-        {
-            //there must be a mismatch between the expected response type and what has been received
-            httpCode = 400;
-            DL_Nak(0xa4);
-        }
+        
     }
     
 }
@@ -455,7 +416,7 @@ void BasicDRMessageHandler(unsigned char * msg)
  */
 void RelayTimeoutCallback(void)
 {
-    //httpCode = 400;  
+    //httpCode = 200;  
     //codeByte = 4;
     
     httpCode = 400;    
@@ -663,6 +624,8 @@ RelayMsg SendTimeRemainingInPresentPricePeriod(int eventDuration)
     messageBuffer[5] = opcode2;
     
     RelayMsgState = RLY_WAITING_TIME_IN_PRICE_PERIOD;
+    ExpectedAckType = TIME_IN_PRICE_PERIOD_CODE;
+    
     MCISendNeutral(messageBuffer);    
     
     BlockUntilReady();
@@ -683,6 +646,8 @@ RelayMsg SendCriticalPeakEvent(int eventDuration)
     messageBuffer[5] = opcode2;
     
     RelayMsgState = RLY_WAITING_CRITICAL_PEAK_EVENT;
+    ExpectedAckType = CRITICAL_PEAK_EVENT_CODE;
+    
     MCISendNeutral(messageBuffer);    
     
     BlockUntilReady();
@@ -703,6 +668,8 @@ RelayMsg SendGridEmergency(int eventDuration)
     messageBuffer[5] = opcode2;
     
     RelayMsgState = RLY_WAITING_GRID_EMERGENCY;
+    ExpectedAckType = GRID_EMERGENCY_CODE;
+    
     MCISendNeutral(messageBuffer);    
     
     BlockUntilReady();
@@ -722,6 +689,8 @@ RelayMsg SendLoadUp(int eventDuration)
     messageBuffer[5] = MakeDurationByte(eventDuration);
     
     RelayMsgState = RLY_WAITING_LOAD_UP;
+    ExpectedAckType = LOAD_UP_CODE;
+    
     MCISendNeutral(messageBuffer);    
     
     BlockUntilReady();
@@ -761,6 +730,8 @@ RelayMsg SendTimeSync(int day, int hour)
     messageBuffer[5] = opcode2;
     
     RelayMsgState = RLY_WAITING_SIMPLE_TIME_SYNC;
+    ExpectedAckType = SIMPLE_TIME_SYNC_CODE;
+    
     MCISendNeutral(messageBuffer);
     
     BlockUntilReady();
@@ -775,6 +746,7 @@ RelayMsg SendQueryOpState(void)
 {
     RelayMsg retval;
     RelayMsgState = RLY_WAITING_OP_STATE;
+    ExpectedAckType = QUERY_OP_STATE_CODE;
     MCISendNeutral(QueryOpState);
         
     BlockUntilReady();
@@ -788,6 +760,7 @@ RelayMsg SendOutsideCommGood(void)
 {
     RelayMsg retval;
     RelayMsgState = RLY_WAITING_OUTSIDE_COMM_GOOD; 
+    ExpectedAckType = OUTSIDE_COMM_CODE;
     MCISendNeutral(OutsideCommGood);       
     
     BlockUntilReady();
@@ -802,6 +775,7 @@ RelayMsg SendOutsideCommLost(void)
 {
     RelayMsg retval;
     RelayMsgState = RLY_WAITING_OUTSIDE_COMM_LOST;
+    ExpectedAckType = OUTSIDE_COMM_CODE;
     MCISendNeutral(OutsideCommLost);    
     
     BlockUntilReady();
@@ -816,6 +790,7 @@ CommodityRelayMsg SendGetCommodityRead(unsigned char measured,
 {
     CommodityRelayMsg retval;
     RelayMsgState = RLY_WAITING_GET_COMMODITY_READ;
+    ExpectedAckType = GET_COMMODITY_READ_CODE;
     
     if(commodityCode >= 0 && commodityCode <= 7) // if the request is specific
     {

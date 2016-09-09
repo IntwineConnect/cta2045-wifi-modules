@@ -1302,13 +1302,33 @@ void HTTPcodeHandler(short int httpCode)
     {
         curHTTP.httpStatus = HTTP_GET;
     } 
+    else if(httpCode == 302)
+    {
+        curHTTP.httpStatus = HTTP_REDIRECT;
+    }
     else if (httpCode == 400) 
     {
         curHTTP.httpStatus = HTTP_BAD_REQUEST;
     }
+    else if(httpCode == 401)
+    {
+        curHTTP.httpStatus = HTTP_UNAUTHORIZED;
+    }
     else if (httpCode == 403) 
     {
         curHTTP.httpStatus = HTTP_SSL_REQUIRED;
+    }
+    else if(httpCode == 414)
+    {
+        curHTTP.httpStatus = HTTP_OVERFLOW;
+    }
+    else if(httpCode == 500)
+    {
+        curHTTP.httpStatus = HTTP_INTERNAL_SERVER_ERROR;
+    }
+    else if(httpCode == 501)
+    {
+        curHTTP.httpStatus = HTTP_NOT_IMPLEMENTED;
     }
     else 
     {
@@ -1384,7 +1404,6 @@ int readLine(char *typeBuffer, char *valueBuffer)
     lenB -= lenA;
     //clean up the rest of this line            
     TCPGetArray(sktHTTP, trashBuffer, lenB);
-    LED2_ON()
     //check to see if we're done reading
     if (last) 
     {
@@ -1441,6 +1460,7 @@ void ProvideMeaning(unsigned char stateCode, char *buffer, int bufferlength)
             strcpy(buffer,"Running, Opted Out");
             break;
         default:
+            strcpy(buffer,"ERR-unexpected");
             break;
     }
 }
