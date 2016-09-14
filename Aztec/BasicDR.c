@@ -69,6 +69,7 @@ volatile enum _RelayMsgState
 } RelayMsgState;
 
 unsigned char ExpectedAckType;
+unsigned char nOptions = 0;
 
 //storage for commodity data
 CommodityReadData commodityResponse[10];
@@ -77,10 +78,11 @@ void IntermediateDRMessageHandler(unsigned char *msg)
 {
     unsigned char opcode1 = msg[4];
     unsigned char opcode2 = msg[5];
+    unsigned char responseCode = msg[6];
     int mlen = msg[2]*256 + msg[3];
     
     ResponseReadyFlag == TRUE;
-    
+    httpCode = HandleIDRResponseCode(responseCode);
     //is the message Get Commodity Read message?
     if(opcode1 == GET_COMMODITY_READ_CODE)
     {
@@ -93,14 +95,7 @@ void IntermediateDRMessageHandler(unsigned char *msg)
             
             responseCode = msg[6];
             //set the http code in accordance with the intermediate DR response code
-            if(responseCode == SUCCESS)
-            {
-                httpCode = 200;
-            }
-            else
-            {
-                httpCode = 400;  //update this to be more informative once REST API spec is updated
-            }
+            
             //this structure array holds response information for all commodity types in the message
             CommodityReadData commodityDataArray[nCommodities];
             //figure out the length of the commodity data size for malloc
@@ -121,24 +116,21 @@ void IntermediateDRMessageHandler(unsigned char *msg)
             //copy received data to buffer
             memcpy(commodityResponse, commodityDataArray, COMMODITY_DATA_BUFFER_LENGTH*sizeof(CommodityReadData));  
             
-            ResponseReadyFlag = TRUE;
+        }
+    }
+    else if(opcode1 == SET_COMMODITY_READ_CODE)
+    {
+        if(opcode2 == SET_COMMODITY_READ_REPLY_CODE && RelayMsgState == RLY_WAITING_SET_COMMODITY_READ )
+        {
+            RelayMsgState = RLY_ACKED_SET_COMMODITY_READ;
+            responseCode = msg[6];
         }
     }
     else if(opcode1 == START_AUTONOMOUS_CYCLING_CODE)
     {
         if(opcode2 == START_AUTONOMOUS_CYCLING_REPLY_CODE && RelayMsgState == RLY_WAITING_START_AUTONOMOUS_CYCLING)
         {
-            unsigned char responseCode = msg[6];
             RelayMsgState = RLY_ACKED_START_AUTONOMOUS_CYCLING;
-            if(responseCode == SUCCESS)
-            {
-                httpCode = 200;
-            }
-            else
-            {
-                httpCode = 400;
-            }
-            ResponseReadyFlag = TRUE;
         }
     }
     else if(opcode1 == TERMINATE_AUTONOMOUS_CYCLING_CODE)
@@ -146,77 +138,87 @@ void IntermediateDRMessageHandler(unsigned char *msg)
         //if this is a response and we are expecting a response to this message type
         if(opcode2 == TERMINATE_AUTONOMOUS_CYCLING_REPLY_CODE && RelayMsgState == RLY_WAITING_TERMINATE_AUTONOMOUS_CYCLING)
         {
-            unsigned char responseCode = msg[6];
             RelayMsgState = RLY_ACKED_TERMINATE_AUTONOMOUS_CYCLING;
-            if(responseCode == SUCCESS)
-            {
-                httpCode = 200;
-            }
-            else
-            {
-                httpCode = 400;
-            }
         }
     }
     else if(opcode1 == SET_TEMPERATURE_OFFSET_CODE)
     {
         if(opcode2 == SET_TEMPERATURE_OFFSET_REPLY_CODE && RelayMsgState == RLY_WAITING_SET_TEMPERATURE_OFFSET)
         {
-            unsigned char responseCode = msg[6];
             RelayMsgState = RLY_ACKED_SET_TEMPERATURE_OFFSET;
-            if(responseCode == SUCCESS)
-            {
-                httpCode = 200;
-            }
-            else
-            {
-                httpCode = 400;
-            }
+                        
         }
     }
     else if(opcode1 == GET_TEMPERATURE_OFFSET_CODE)
     {
         if(opcode2 == GET_TEMPERATURE_OFFSET_REPLY_CODE && RelayMsgState == RLY_WAITING_GET_TEMPERATURE_OFFSET)
         {
-            unsigned char responseCode = msg[6];
-            unsigned char currentOffset = msg[7];
-            unsigned char units = msg[8];
-            if(responseCode == SUCCESS)
-            {
-                httpCode = 200;
-            }
-            else
-            {
-                httpCode = 400;
-            }
+            currentOffset = msg[7];
+            units = msg[8];
+            RelayMsgState = RLY_ACKED_GET_TEMPERATURE_OFFSET;
         }
     }
     else if(opcode1 == SET_SET_POINT_CODE)
     {
         if(opcode2 == SET_SET_POINT_REPLY_CODE && RelayMsgState == RLY_WAITING_SET_SET_POINT)
-        {
-            
+        {            
+            RelayMsgState = RLY_ACKED_SET_SET_POINT;            
         }
     }
     else if(opcode1 == GET_SET_POINT_CODE)
     {
         if(opcode2 == GET_SET_POINT_REPLY_CODE && RelayMsgState == RLY_WAITING_GET_SET_POINT)
-        {
+        {            
+            int mlen = msg[2]*256 + msg[3];
+            deviceType = msg[7] << 8 | msg[8];
+            units = msg[9];
+            setpoint1 = msg[10] << 8 | msg[11];
+            if(mlen > 8)
+            {
+                setpoint2 = msg[12] << 8 | msg[13];
+                nOptions = 1;
+            }
+            else
+            {
+                nOptions = 0;
+            }
             
+            RelayMsgState = RLY_ACKED_GET_SET_POINT;
         }
     }
     else if(opcode1 == SET_ENERGY_PRICE_CODE && RelayMsgState == RLY_WAITING_SET_ENERGY_PRICE)
     {
         if(opcode2 == SET_ENERGY_PRICE_REPLY_CODE)
         {
-            
+            RelayMsgState = RLY_ACKED_SET_ENERGY_PRICE;
         }
     }
     else if(opcode1 == GET_ENERGY_PRICE_CODE)
     {
         if(opcode2 == GET_ENERGY_PRICE_REPLY_CODE && RelayMsgState == RLY_WAITING_GET_ENERGY_PRICE)
         {
-            
+            int mlen = msg[2]*256 + msg[3];
+            currentPrice = msg[7] << 8 | msg[8];
+            currencyCode = msg[9] << 8 | msg[10];
+            digitsAfterPoint = msg[11];
+                                   
+            if(mlen > 8)
+            {
+                expirationTime = msg[12] << 24 | msg[13] << 16 | msg[14] << 8 | msg[15];
+                if(mlen > 12)
+                {
+                    nextPrice = msg[16] << 24 | msg[17] << 16 | msg[18] << 8 | msg[19];
+                    nOptions = 2;
+                }
+                else
+                {
+                    nOptions = 1;
+                }
+            }
+            else
+            {
+                nOptions = 0;
+            }
         }
     }
     else
@@ -403,7 +405,6 @@ void BasicDRMessageHandler(unsigned char * msg)
             default:
                 httpCode = 500;
                 break;
-
         }
         
     }
@@ -781,7 +782,42 @@ RelayMsg SendOutsideCommLost(void)
     BlockUntilReady();
     
     retval.httpCode = httpCode;
-    retval.codeByte - DEFAULT_RETURN_CODE;
+    retval.codeByte = DEFAULT_RETURN_CODE;
+    return retval;
+}
+
+RelayMsg SendSetCommodityRead(unsigned char code, long long rate, long long amount  )
+{
+    RelayMsg retval;
+    RelayMsgState = RLY_WAITING_SET_COMMODITY_READ;
+    ExpectedAckType = SET_COMMODITY_READ_CODE;
+    unsigned char messageBuffer[21];
+    memcpy(messageBuffer,SetCommodityRead,21);
+    
+    //set the commodity code
+    messageBuffer[6] = code;
+    
+    //set the rate
+    messageBuffer[7] = rate >> 40 | BYTE1;
+    messageBuffer[8] = rate >> 32 | BYTE1;
+    messageBuffer[9] = rate >> 24 | BYTE1;
+    messageBuffer[10] = rate >> 16 | BYTE1;
+    messageBuffer[11] = rate >> 8 | BYTE1;
+    messageBuffer[12] = rate | BYTE1;
+    
+    //set the cumulative amount
+    messageBuffer[13] = amount >> 40 | BYTE1;
+    messageBuffer[14] = amount >> 32 | BYTE1;
+    messageBuffer[15] = amount >> 24 | BYTE1;
+    messageBuffer[16] = amount >> 16 | BYTE1;
+    messageBuffer[17] = amount >> 8 | BYTE1;
+    messageBuffer[18] = amount | BYTE1;
+    
+    MCISendNeutral(messageBuffer);
+    
+    BlockUntilReady();
+    
+    retval.codeByte = responseCode;
     return retval;
 }
 
@@ -1009,6 +1045,39 @@ RelayMsg SendSetEnergyPrice(UINT16 currentPrice,
     retval.httpCode = httpCode;
     retval.codeByte = responseCode;
     return retval;
+}
+
+short int HandleIDRResponseCode(unsigned char code)
+{
+    short int http;
+    switch(code)
+    {
+        case IDRR_SUCCESS:
+            http = 200;
+            break;
+        case IDRR_COMMAND_NOT_IMPLEMENTED:
+            http = 501;
+            break;
+        case IDRR_BAD_VALUE:
+            http = 400;
+            break;
+        case IDRR_COMMAND_LENGTH_ERROR:
+            http = 414;
+            break;
+        case IDRR_RESPONSE_LENGTH_ERROR:
+            http = 414;
+            break;
+        case IDRR_BUSY_CODE:
+            http = 401;
+            break;
+        case IDRR_OTHER_ERROR:
+            http = 403;
+            break;
+        default:
+            http = 500;
+            break;
+    }
+    return http;
 }
 
 unsigned char MakeDurationByte(int eventDuration)

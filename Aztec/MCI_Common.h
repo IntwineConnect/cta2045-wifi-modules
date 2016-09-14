@@ -37,6 +37,8 @@
 //INTERMEDIATE
 #define GET_COMMODITY_READ_CODE                 0x06
 #define GET_COMMODITY_READ_REPLY_CODE           0x80
+#define SET_COMMODITY_READ_CODE                 0x06
+#define SET_COMMODITY_READ_REPLY_CODE           0x80
 #define START_AUTONOMOUS_CYCLING_CODE           0x04
 #define START_AUTONOMOUS_CYCLING_REPLY_CODE     0x80
 #define TERMINATE_AUTONOMOUS_CYCLING_CODE       0x04
@@ -86,6 +88,7 @@ extern unsigned char TimeSync[8];
 
 extern unsigned char SetEnergyPrice[13];
 extern unsigned char GetEnergyPrice[8];
+extern unsigned char SetCommodityRead[21];
 extern unsigned char GetCommodityRead[9];
 extern unsigned char GetCommodityReadGeneral[8];
 extern unsigned char StartAutonomousCycling[22];

@@ -307,7 +307,8 @@ HTTP_IO_RESULT HTTPExecutePost(void)
 	if(!memcmppgm2ram(filename, "configure.htm", 13))
 		return HTTPPostWifiConfig();
     #endif
-
+    
+    
     //for messages associated with the /load page
     if(!memcmppgm2ram(filename,"load.cgi",8))
     {
@@ -400,12 +401,94 @@ HTTP_IO_RESULT HTTPExecutePost(void)
                 
                 HTTPcodeHandler(retval.httpCode);  
                 break;
+            case LOAD_UP:
+                for(i = 0; i < itemCounter; i++)
+                {
+                    if(!memcmp(typeBuffer[i],"event_duration", 14))
+                    {
+                        intparam1 = atoi(valueBuffer[i]);
+                    }
+                }
+                retval = SendLoadUp(intparam1);
+                
+                HTTPcodeHandler(retval.httpCode);
+                break;                            
             default:
                 
                 break;
                 
         }
     }
+    
+    if(!memcmppgm2ram(filename,"comm.cgi", 8))
+    {
+        int i;
+        int itemCounter;
+        RelayMsg retval;
+        char typeBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+        char valueBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+        while(readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]) == 1)
+        {
+            itemCounter++;
+        }
+        
+        for(i = 0; i < itemCounter; i++)
+        {
+            if(!memcmp(typeBuffer[i], "commstate", 9))
+            {
+                if(!memcmp(valueBuffer[i], "good", 4))
+                {
+                    retval = SendOutsideCommGood();
+                }
+                else if(!memcmp(valueBuffer[i], "lost", 4))
+                {
+                    retval = SendOutsideCommLost();
+                }
+                else
+                {
+                    retval.httpCode = 400;
+                }
+            }
+        }
+        HTTPcodeHandler(retval.httpCode);
+    }
+    
+    if(!memcmppgm2ram(filename,"commodity.cgi", 13))
+    {
+        int i;
+        int itemCounter;
+        RelayMsg retval;
+        long long vlintparam1;
+        long long vlintparam2;
+        unsigned char commodity;
+        char typeBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+        char valueBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+        
+        while(readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]) == 1)
+        {
+            itemCounter++;
+        }
+        
+        for(i = 0; i < itemCounter; i++)
+        {
+            if(!memcmp(typeBuffer[i], "commodity_code", 14))
+            {
+                commodity = (unsigned char*) atoi(valueBuffer[i]);
+            }
+            else if(!memcmp(typeBuffer[i], "rate", 14))
+            {
+                vlintparam1 = atoll(valueBuffer[i]);
+            }
+            else if(!memcmp(typeBuffer[i], "cumulative", 10))
+            {
+                vlintparam2 = atoll(valueBuffer[i]);
+            }
+        }
+        retval = SendSetCommodityRead(commodity, vlintparam1, vlintparam2);
+        
+        HTTPcodeHandler(retval.codeByte);
+    }
+    
     
     //for messages associated with the /price page
     if(!memcmppgm2ram(filename,"price.cgi", 9))

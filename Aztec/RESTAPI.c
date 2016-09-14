@@ -29,6 +29,18 @@ int parseEventName(char *buffer)
     {
         eventType = END_SHED;
     }
+    else if(!memcmp(buffer,"load_up"))
+    {
+        eventType = LOAD_UP;
+    }
+    else if(!memcmp(buffer,"get_commodity"))
+    {
+        eventType = GET_COMMODITY_READ;
+    }
+    else if(!memcmp(buffer,"set_commodity"))
+    {
+        eventType = SET_COMMODITY_READ;
+    }
     else
     {
         //if we end up here, we've got an unsupported type
