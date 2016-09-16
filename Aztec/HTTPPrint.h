@@ -73,6 +73,9 @@ void HTTPPrint_btn(WORD);
 void HTTPPrint_LoadResults(void);
 void HTTPPrint_code(void);
 void HTTPPrint_meaning(void);
+void HTTPPrint_commodity(void);
+void HTTPPrint_rate(void);
+void HTTPPrint_cumulative(void);
 
 void HTTPPrint(DWORD callbackID)
 {
@@ -146,6 +149,15 @@ void HTTPPrint(DWORD callbackID)
 			break;
         case 0x00000016:
 			HTTPPrint_meaning();
+			break;
+        case 0x00000017:
+			HTTPPrint_commodity();
+			break;
+        case 0x00000018:
+			HTTPPrint_rate();
+			break;
+        case 0x00000019:
+			HTTPPrint_cumulative();
 			break;
 		default:
 			// Output notification for undefined values

@@ -1036,6 +1036,20 @@ void HTTPPrint_meaning(void)
     TCPPutString(sktHTTP, stateMeaning);
 }
 
+void HTTPPrint_commodity(void)
+{
+    
+}
+
+void HTTPPrint_rate(void)
+{
+    
+}
+
+void HTTPPrint_cumulative(void)
+{
+    
+}
 
 // ======================================
 // = Sends the FW version     =
