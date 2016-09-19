@@ -314,9 +314,8 @@ int main(void)
             FirstTime = FALSE;
             
         
-        }
-        
-
+        }        
+         
          if (AppConfig.networkType == WF_SOFT_AP || AppConfig.networkType == WF_INFRASTRUCTURE) {
             if (g_scan_done) {
                 if (g_prescan_waiting) {
@@ -332,7 +331,7 @@ int main(void)
                      g_prescan_waiting = 0;
                 }
             }
-         }
+         }         
 
         #if defined (EZ_CONFIG_STORE)
         // Hold SW0 for 4 seconds to reset to defaults.

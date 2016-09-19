@@ -261,9 +261,12 @@ HTTP_IO_RESULT HTTPExecuteGet(void)
         else
         {
             // impossible to get here
-        }  
-
+        } 
 	}
+    if(!memcmppgm2ram(filename, "temperature.cgi", 15))
+    {
+        //handles request for setpoint and setpoint offset queries
+    }
     if(!memcmppgm2ram(filename, "state_sgd.cgi", 13))
     {
         LED1_ON()
@@ -307,13 +310,12 @@ HTTP_IO_RESULT HTTPExecutePost(void)
 	if(!memcmppgm2ram(filename, "configure.htm", 13))
 		return HTTPPostWifiConfig();
     #endif
-    
+    LED1_ON()
     
     //for messages associated with the /load page
     if(!memcmppgm2ram(filename,"load.cgi",8))
     {
         LED1_ON()
-        
         char typeBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
         char valueBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
         int itemCounter = 0; 
@@ -325,13 +327,13 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         {            
             itemCounter++;
         }
+        itemCounter++;
         //go through the collected items, then find and determine the event type
-        while(found == 0 && i <= itemCounter)
+        while(i <= itemCounter)
         {
-            if(!memcmp(typeBuffer[i],"event", 5))
+            if(memcmp(typeBuffer[i],"event_name", 10)==0)
             {
                 parseEventName(valueBuffer[i]);
-                found = 1;
             }    
             i++;
         }
@@ -342,9 +344,14 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         switch(eventType)  
         {
             RelayMsg retval;
-            int intparam1;
-            int intparam2;
-            int intparam3;
+            int intparam1 = 0;
+            int intparam2 = 0;
+            int intparam3 = 0;
+            short int shortparam1 = 0;
+            unsigned char charparam1 = 0;
+            unsigned char charparam2 = 0;
+            unsigned char charparam3 = 0;
+            unsigned char charparam4 = 0;
             
             case SHED:
                             
@@ -365,7 +372,7 @@ HTTP_IO_RESULT HTTPExecutePost(void)
                 HTTPcodeHandler(retval.httpCode);
                 break;
             case CRITICAL_PEAK_EVENT:
-                for(i = 0; i < itemCounter; i++)
+                for(i = 0; i <= itemCounter; i++)
                 {
                     if(!memcmp(typeBuffer[i],"event_duration",14))
                     {
@@ -412,15 +419,68 @@ HTTP_IO_RESULT HTTPExecutePost(void)
                 retval = SendLoadUp(intparam1);
                 
                 HTTPcodeHandler(retval.httpCode);
-                break;                            
-            default:
+                break;   
+            case START_AUTONOMOUS_CYCLING:
                 
+                for(i = 0; i < itemCounter; i++)
+                {
+                    if(!memcmp(typeBuffer[i],"event_duration", 14))
+                    {
+                        shortparam1 = (short int) atoi(valueBuffer[i]);
+                    }
+                    else if(!memcmp(typeBuffer[i],"eventID", 7))
+                    {
+                        intparam1 = atoi(valueBuffer[i]);
+                    }
+                    else if(!memcmp(typeBuffer[i],"start_time", 10))
+                    {
+                        intparam2 = atoi(valueBuffer[i]);
+                    }
+                    else if(!memcmp(typeBuffer[i], "duty_cycle", 10))
+                    {
+                        charparam1 = (unsigned char) atoi(valueBuffer[i]);
+                    }
+                    else if(!memcmp(typeBuffer[i], "start_rand", 10))
+                    {
+                        charparam2 = (unsigned char) atoi(valueBuffer[i]);
+                    }
+                    else if(!memcmp(typeBuffer[i],"end_rand", 8))
+                    {
+                        charparam3 = (unsigned char) atoi(valueBuffer[i]);
+                    }
+                }
+                
+                retval = SendStartAutonomousCycling(intparam1, intparam2, shortparam1, charparam1, charparam2, charparam3, 0);
+                
+                HTTPcodeHandler(retval.httpCode);
+                
+                break;
+            case TERMINATE_AUTONOMOUS_CYCLING:
+                for(i = 0; i < itemCounter; i++)
+                {
+                    if(!memcmp(typeBuffer[i],"eventID", 7))
+                    {
+                        intparam1 = atoi(valueBuffer[i]);
+                    }
+                    else if(!memcmp(typeBuffer[i],"end_rand", 8))
+                    {
+                        charparam1 = (unsigned char) atoi(valueBuffer[i]);
+                    }
+                }
+                retval = SendTerminateAutonomousCycling(intparam1, charparam1);
+                
+                HTTPcodeHandler(retval.httpCode);
+                break;  
+            case UNKNOWN_TYPE:
+                HTTPcodeHandler(501);
+                break;
+            default: 
+                HTTPcodeHandler(400);
                 break;
                 
         }
-    }
-    
-    if(!memcmppgm2ram(filename,"comm.cgi", 8))
+    }    
+    else if(!memcmppgm2ram(filename,"comm.cgi", 8))
     {
         int i;
         int itemCounter;
@@ -451,9 +511,8 @@ HTTP_IO_RESULT HTTPExecutePost(void)
             }
         }
         HTTPcodeHandler(retval.httpCode);
-    }
-    
-    if(!memcmppgm2ram(filename,"commodity.cgi", 13))
+    }    
+    else if(!memcmppgm2ram(filename,"commodity.cgi", 13))
     {
         int i;
         int itemCounter;
@@ -488,10 +547,8 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         
         HTTPcodeHandler(retval.codeByte);
     }
-    
-    
     //for messages associated with the /price page
-    if(!memcmppgm2ram(filename,"price.cgi", 9))
+    else if(!memcmppgm2ram(filename,"price.cgi", 9))
     {
         char typeBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
         char valueBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
@@ -508,8 +565,9 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         {            
             itemCounter++;
         }
+        itemCounter++;
         
-        for(i = 0; i < itemCounter; i++)
+        for(i = 0; i <= itemCounter; i++)
         {
             if (!memcmp(typeBuffer[i], "cur_price", 9)) 
             {
@@ -533,10 +591,9 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         }
         HTTPcodeHandler(retval.httpCode);            
 
-    }
-    
+    }    
     //for message types associated with the /time page
-    if(!memcmppgm2ram(filename,"time.cgi", 8))
+    else if(!memcmppgm2ram(filename,"time.cgi", 8))
     {
         char typeBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
         char valueBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
@@ -552,7 +609,8 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         {            
             itemCounter++;
         }
-        for(i = 0; i < itemCounter; i++) 
+        itemCounter++;
+        for(i = 0; i <= itemCounter; i++) 
         {
             if (!memcmp(typeBuffer[i], "day", 3)) 
             {
@@ -566,6 +624,11 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         retval = SendTimeSync(intparam1, intparam2);
                 
         HTTPcodeHandler(retval.httpCode);
+    }
+    else
+    {
+        LED2_ON()
+        HTTPcodeHandler(501);
     }
 
 	return HTTP_IO_DONE;
@@ -1445,7 +1508,7 @@ int readLine(char *typeBuffer, char *valueBuffer)
     //lenA = TCPFindEx(sktHTTP, '\n', 0, 0, FALSE);
     
     //if this is the last line
-    if(lenB > lenC)
+    if(lenB > lenC || lenB == 0xFFFF)
     {
         lenB = lenC;
         last = 1;
@@ -1504,7 +1567,6 @@ int readLine(char *typeBuffer, char *valueBuffer)
     //check to see if we're done reading
     if (last) 
     {
-        LED1_OFF()
         return 0;        
     } 
     else

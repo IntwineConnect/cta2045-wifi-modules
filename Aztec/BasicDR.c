@@ -470,12 +470,6 @@ RelayMsg SendShedCommand( int eventDuration)
     
     memcpy(messageBuffer, ShedCommand,8);  
     
-    if(eventDuration = 45)
-    {
-        LED1_OFF()
-        LED2_OFF()
-    }
-    
     opcode2 = MakeDurationByte(eventDuration);
     messageBuffer[5] = opcode2;
     
@@ -1083,19 +1077,22 @@ short int HandleIDRResponseCode(unsigned char code)
 unsigned char MakeDurationByte(int eventDuration)
 {
     unsigned char opcode2 = 0;
+    float temp;
     
-    eventDuration = sqrtf(.5*eventDuration);
     
-    if(eventDuration > 256)
+    temp = sqrtf(.5*((float)eventDuration));
+    eventDuration = (int) temp;
+    
+    if(eventDuration > 255)
     {
-            eventDuration = 256;
+            eventDuration = 255;
     }
     else if(eventDuration < 0)
     {
             eventDuration = 0;
     }
     
-    opcode2 = (unsigned char) ceil(eventDuration);
+    opcode2 = (unsigned char) eventDuration;
     
     return opcode2;
 }
