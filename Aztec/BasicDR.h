@@ -88,8 +88,25 @@ typedef struct CommodityReadData_t{
     long long cumulativeAmount;
 }CommodityReadData;
 
+typedef struct DeviceInfo_t{
+    short int CTAver;
+    short int vendorID;
+    short int deviceType;
+    short int deviceRev;
+    int capbmp;
+    unsigned char reserved;
+    char modelNumber[6];
+    char serialNumber[16];
+    unsigned char firmwareYear;
+    unsigned char firmwareMonth;
+    unsigned char firmwareDay;
+    unsigned char firmwareMajor;
+    unsigned char firmwareMinor;    
+} DeviceInfo;
+
 //define an externally visible variable for commodity data to be stored in
 extern CommodityReadData commodityResponse[10];
+extern DeviceInfo DeviceInformation;
 
 typedef struct CommodityRelayMsg_t{
     short int httpCode;

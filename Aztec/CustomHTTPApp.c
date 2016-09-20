@@ -276,6 +276,10 @@ HTTP_IO_RESULT HTTPExecuteGet(void)
         
         HTTPcodeHandler(retval.httpCode);
     }
+    if(!memcmppgm2ram(filename,"info_sgd.cgi", 12))
+    {
+        
+    }
 	
 	return HTTP_IO_DONE;
 }
@@ -624,6 +628,10 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         retval = SendTimeSync(intparam1, intparam2);
                 
         HTTPcodeHandler(retval.httpCode);
+    }
+    else if(!memcmppgm2ram(filename,"commodity.cgi", 13))
+    {
+        
     }
     else
     {
@@ -1112,6 +1120,20 @@ void HTTPPrint_rate(void)
 void HTTPPrint_cumulative(void)
 {
     
+}
+
+void HTTPPrint_deviceInformation(void)
+{
+    unsigned char buffer[300];
+    snprintf(buffer, 300,"{\"CEA-2045 Ver\": %d,\n\"Vendor ID\": %d,\n\"Device Type\": %d,\
+\n\"Device Revision\": %d,\n\"Capability Bitmap\": %d,\n\"Model Number\": %d,\
+\n\"Serial Number\": %d,\n\"Firmware Year\": 20%d,\n\"Firmware Month\": %d,\
+\n\"Firmware Day\": %d,\n\"Firmware Major\": %d,\n\"Firmware Minor\": %d}",
+DeviceInfo.CTAver,DeviceInfo.vendorID,DeviceInfo.deviceType,DeviceInfo.deviceRev,
+DeviceInfo.capbmp,DeviceInfo.modelNumber,DeviceInfo.serialNumber,DeviceInfo.firmwareYear,
+DeviceInfo.firmwareMonth,DeviceInfo.firmwareDay,DeviceInfo.firmwareMajor,DeviceInfo.firmwareMinor);
+    
+    TCPPutString(sktHTTP, buffer)
 }
 
 // ======================================

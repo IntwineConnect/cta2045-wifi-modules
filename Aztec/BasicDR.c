@@ -64,7 +64,9 @@ volatile enum _RelayMsgState
     RLY_WAITING_GET_ENERGY_PRICE,
             RLY_ACKED_GET_ENERGY_PRICE,
     RLY_WAITING_SET_ENERGY_PRICE,
-            RLY_ACKED_SET_ENERGY_PRICE
+            RLY_ACKED_SET_ENERGY_PRICE,
+    RLY_WAITING_INFO_REQUEST,
+            RLY_ACKED_INFO_REQUEST
             
 } RelayMsgState;
 
@@ -73,6 +75,8 @@ unsigned char nOptions = 0;
 
 //storage for commodity data
 CommodityReadData commodityResponse[10];
+
+DeviceInformation DeviceInfo;
 
 void IntermediateDRMessageHandler(unsigned char *msg)
 {
@@ -116,6 +120,27 @@ void IntermediateDRMessageHandler(unsigned char *msg)
             //copy received data to buffer
             memcpy(commodityResponse, commodityDataArray, COMMODITY_DATA_BUFFER_LENGTH*sizeof(CommodityReadData));  
             
+        }
+    }
+    else if(opcode1 == INFO_REQUEST_CODE)
+    {
+        if(opcode2 == INFO_REQUEST_REPLY_CODE && RelayMsgState == RLY_WAITING_INFO_REQUEST)
+        {
+            RelayMsgState = RLY_ACKED_INFO_REQUEST;
+            responseCode = msg[6];
+            
+            DeviceInfo.CTAver = msg[7] << 8 | msg[8];
+            DeviceInfo.vendorID = msg[9] << 8 | msg[10];
+            DeviceInfo.deviceType = msg[11] << 8 | msg[12];
+            DeviceInfo.deviceRev = msg[13] << 8 | msg[14];
+            DeviceInfo.capbmp = msg[15] << 24 | msg[16] << 16 | msg[17] << 8 | msg[18];
+            DeviceInfo.modelNumber = 
+            DeviceInfo.serialNumber =
+            DeviceInfo.firmwareYear = 
+            DeviceInfo.firmwareMonth = 
+            DeviceInfo.firmwareDay = 
+            DeviceInfo.firmwareMajor = 
+            DeviceInfo.firmwareMinor =
         }
     }
     else if(opcode1 == SET_COMMODITY_READ_CODE)
@@ -749,6 +774,22 @@ RelayMsg SendQueryOpState(void)
     retval.httpCode = httpCode;
     retval.codeByte = codeByte;
     return retval;
+}
+
+DeviceInfoRelayMsg SendInfoRequest()
+{
+    DeviceInfoRelayMsg retval;
+    RelayMsgState = RLY_WAITING_INFO_REQUEST;
+    ExpectedAckType = INFO_REQUEST_CODE;
+    
+    MCISendNeutral(InfoRequest);
+    
+    BlockUntilReady();
+    
+    retval.httpCode = httpCode;
+    retval.responseCode = codeByte;
+    return retval;
+    
 }
 
 RelayMsg SendOutsideCommGood(void)
