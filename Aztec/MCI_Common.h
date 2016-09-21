@@ -55,6 +55,8 @@
 #define SET_ENERGY_PRICE_REPLY_CODE             0x80
 #define GET_ENERGY_PRICE_CODE                   0x03
 #define GET_ENERGY_PRICE_REPLY_CODE             0x80
+#define INFO_REQUEST_CODE                       0x01
+#define INFO_REQUEST_REPLY_CODE                 0x81
 
 #define DEFAULT_RETURN_CODE                     0xff
 
@@ -97,7 +99,7 @@ extern unsigned char SetTemperatureOffset[10];
 extern unsigned char GetTemperatureOffset[8];
 extern unsigned char GetSetPoint[8];
 extern unsigned char SetSetPoint[16];
-
+extern unsigned char InfoRequest[8];
 
 
 extern short int httpCode;

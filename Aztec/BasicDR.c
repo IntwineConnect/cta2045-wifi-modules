@@ -9,6 +9,7 @@
 #include <math.h>
 
 #include "debugging.h"
+#include "DeviceInfo.h"
 
 volatile enum _RelayMsgState
 {
@@ -128,19 +129,77 @@ void IntermediateDRMessageHandler(unsigned char *msg)
         {
             RelayMsgState = RLY_ACKED_INFO_REQUEST;
             responseCode = msg[6];
+            unsigned char mnBuffer[17];
+            unsigned char srBuffer[17];
+            memcpy(mnBuffer,&msg[20],16);
+            mnBuffer[16] ='\0';
+            memcpy(srBuffer,&msg[36],16);
+            srBuffer[16] = '\0';
+                   
+            
             
             DeviceInfo.CTAver = msg[7] << 8 | msg[8];
             DeviceInfo.vendorID = msg[9] << 8 | msg[10];
             DeviceInfo.deviceType = msg[11] << 8 | msg[12];
             DeviceInfo.deviceRev = msg[13] << 8 | msg[14];
             DeviceInfo.capbmp = msg[15] << 24 | msg[16] << 16 | msg[17] << 8 | msg[18];
-            DeviceInfo.modelNumber = 
-            DeviceInfo.serialNumber =
-            DeviceInfo.firmwareYear = 
-            DeviceInfo.firmwareMonth = 
-            DeviceInfo.firmwareDay = 
-            DeviceInfo.firmwareMajor = 
-            DeviceInfo.firmwareMinor =
+            DeviceInfo.modelNumber = atoll(mnBuffer);
+            DeviceInfo.serialNumber = atoll(srBuffer);
+            DeviceInfo.firmwareYear = msg[52];
+            DeviceInfo.firmwareMonth = msg[53];
+            DeviceInfo.firmwareDay = msg[54];
+            DeviceInfo.firmwareMajor = msg[55];
+            DeviceInfo.firmwareMinor = msg[56];
+        }
+        else if(opcode2 == INFO_REQUEST_CODE) //if the message is a request for info from the UCM
+        {
+            unsigned char msg[59];
+            int temp;
+            short int stemp;
+            
+            //IDR response
+            msg[0] = 0x08;
+            msg[1] = 0x02;
+            //payload length
+            msg[2] = 0x00;
+            msg[3] = 0x35; //53
+            //begin payload
+            msg[4] = INFO_REQUEST_CODE;
+            msg[5] = INFO_REQUEST_REPLY_CODE;
+            msg[6] = 0x00;
+            //cta version
+            msg[7] = 0x00;
+            msg[8] = 0x00;
+            //vendor ID
+            stemp = AztecUCMInfo.vendorID;
+            ReverseByteOrder(stemp, sizeof(stemp));
+            memcpy(&msg[9],&stemp,sizeof(stemp));
+            //device type
+            stemp = AztecUCMInfo.deviceType;
+            ReverseByteOrder(&stemp, sizeof(stemp));
+            memcpy(&msg[11],&stemp,sizeof(stemp));
+            //device revision
+            stemp = AztecUCMInfo.deviceRev;
+            ReverseByteOrder(&stemp, sizeof(stemp));
+            memcpy(&msg[13],&stemp,sizeof(stemp));
+            //capability bitmap
+            temp = AztecUCMInfo.capbmp;
+            ReverseByteOrder(&temp,sizeof(temp));
+            memcpy(&msg[15], &temp, sizeof(temp));
+            msg[19] = 0x00;  //reserved
+            snprintf(&msg[20], 16, "%016llu", AztecUCMInfo.modelNumber);
+            snprintf(&msg[36], 16,"%016llu", AztecUCMInfo.serialNumber);
+            msg[52] = AztecUCMInfo.firmwareYear;
+            msg[53] = AztecUCMInfo.firmwareMonth;
+            msg[54] = AztecUCMInfo.firmwareDay;
+            msg[55] = AztecUCMInfo.firmwareMajor;
+            msg[56] = AztecUCMInfo.firmwareMinor;
+            //checksum fields
+            msg[57] = 0xff;
+            msg[58] = 0xff;
+            
+            MCISendNeutral(msg);       
+            
         }
     }
     else if(opcode1 == SET_COMMODITY_READ_CODE)
@@ -786,6 +845,7 @@ DeviceInfoRelayMsg SendInfoRequest()
     
     BlockUntilReady();
     
+    retval.DevInfo = DeviceInfo;
     retval.httpCode = httpCode;
     retval.responseCode = codeByte;
     return retval;

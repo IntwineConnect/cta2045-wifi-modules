@@ -278,7 +278,10 @@ HTTP_IO_RESULT HTTPExecuteGet(void)
     }
     if(!memcmppgm2ram(filename,"info_sgd.cgi", 12))
     {
+        DeviceInfoRelayMsg retval;
         
+        retval = SendInfoRequest();
+        HTTPcodeHandler(retval.httpCode);
     }
 	
 	return HTTP_IO_DONE;
@@ -1133,7 +1136,7 @@ DeviceInfo.CTAver,DeviceInfo.vendorID,DeviceInfo.deviceType,DeviceInfo.deviceRev
 DeviceInfo.capbmp,DeviceInfo.modelNumber,DeviceInfo.serialNumber,DeviceInfo.firmwareYear,
 DeviceInfo.firmwareMonth,DeviceInfo.firmwareDay,DeviceInfo.firmwareMajor,DeviceInfo.firmwareMinor);
     
-    TCPPutString(sktHTTP, buffer)
+    TCPPutString(sktHTTP, buffer);
 }
 
 // ======================================

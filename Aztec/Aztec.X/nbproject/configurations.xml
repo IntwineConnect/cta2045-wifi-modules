@@ -27,6 +27,7 @@
       <itemPath>../BasicDR.h</itemPath>
       <itemPath>../debugging.h</itemPath>
       <itemPath>../RESTAPI.h</itemPath>
+      <itemPath>../DeviceInfo.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -129,6 +130,7 @@
       <itemPath>../BasicDR.c</itemPath>
       <itemPath>../debugging.c</itemPath>
       <itemPath>../RESTAPI.c</itemPath>
+      <itemPath>../DeviceInfo.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

@@ -5,4 +5,5 @@ build/default/production/_ext/1472/BasicDR.o:  \
  ../HardwareProfile.h  \
 ../Microchip/Include/Compiler.h  \
 ../BasicDR.h  \
- ../debugging.h 
+ ../debugging.h  \
+../DeviceInfo.h 

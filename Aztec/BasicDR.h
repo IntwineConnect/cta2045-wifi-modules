@@ -3,6 +3,12 @@
  * 
  * This file contains definitions for BasicDR.c
  */
+#ifndef __GENERIC_TYPE_DEFS_H_
+#include "GenericTypeDefs.h"
+#endif
+
+#define BASICDR
+
 #define COMMODITY_DATA_BUFFER_LENGTH      10
 
 #define opc1index     4
@@ -73,6 +79,7 @@ typedef struct EnergyPriceRelayMsg_t{
     int nextPrice;
 }EnergyPriceRelayMsg;
 
+
 typedef struct TempSetpointRelayMsg_t{
     short int httpCode;
     unsigned char responseCode;
@@ -88,25 +95,30 @@ typedef struct CommodityReadData_t{
     long long cumulativeAmount;
 }CommodityReadData;
 
-typedef struct DeviceInfo_t{
+typedef struct DeviceInformation_t{
     short int CTAver;
     short int vendorID;
     short int deviceType;
     short int deviceRev;
     int capbmp;
-    unsigned char reserved;
-    char modelNumber[6];
-    char serialNumber[16];
+    long long modelNumber;
+    long long int serialNumber;
     unsigned char firmwareYear;
     unsigned char firmwareMonth;
     unsigned char firmwareDay;
     unsigned char firmwareMajor;
     unsigned char firmwareMinor;    
-} DeviceInfo;
+} DeviceInformation;
+
+typedef struct DeviceInfoRelayMsg_t{
+    short int httpCode;
+    unsigned char responseCode;
+    DeviceInformation DevInfo;
+}DeviceInfoRelayMsg;
 
 //define an externally visible variable for commodity data to be stored in
 extern CommodityReadData commodityResponse[10];
-extern DeviceInfo DeviceInformation;
+extern DeviceInformation DeviceInfo;
 
 typedef struct CommodityRelayMsg_t{
     short int httpCode;
@@ -144,7 +156,7 @@ TempSetpointRelayMsg SendGetSetPoint(void);
 RelayMsg SendSetSetPoint(UINT16 deviceType, UINT8 units, UINT16 setpoint1, UINT16 setpoint2);
 EnergyPriceRelayMsg SendGetEnergyPrice(void);
 RelayMsg SendSetEnergyPrice(UINT16 currentPrice, UINT16 currencyCode, UINT8 digitsAfterPoint, UINT32 expirationTime, UINT32 nextPrice);
-
+DeviceInfoRelayMsg SendInfoRequest(void);
 
 unsigned char MakeDurationByte(int duration);
 void ReverseByteOrder(void *ptr, int length);
