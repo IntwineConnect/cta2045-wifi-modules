@@ -1,4 +1,4 @@
-#define MAX_ITEM_BUFFERS    4
+#define MAX_ITEM_BUFFERS    8
 #define ITEM_BUFFER_LENGTH  20
 
 

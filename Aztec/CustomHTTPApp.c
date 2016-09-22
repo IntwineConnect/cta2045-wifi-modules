@@ -269,7 +269,6 @@ HTTP_IO_RESULT HTTPExecuteGet(void)
     }
     if(!memcmppgm2ram(filename, "state_sgd.cgi", 13))
     {
-        LED1_ON()
         RelayMsg retval;
         
         retval = SendQueryOpState();
@@ -317,12 +316,10 @@ HTTP_IO_RESULT HTTPExecutePost(void)
 	if(!memcmppgm2ram(filename, "configure.htm", 13))
 		return HTTPPostWifiConfig();
     #endif
-    LED1_ON()
     
     //for messages associated with the /load page
     if(!memcmppgm2ram(filename,"load.cgi",8))
     {
-        LED1_ON()
         char typeBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
         char valueBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
         int itemCounter = 0; 
@@ -336,11 +333,12 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         }
         itemCounter++;
         //go through the collected items, then find and determine the event type
-        while(i <= itemCounter)
+        while(i <= itemCounter && found == 0)
         {
             if(memcmp(typeBuffer[i],"event_name", 10)==0)
             {
                 parseEventName(valueBuffer[i]);
+                found = 1;
             }    
             i++;
         }
@@ -351,28 +349,33 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         switch(eventType)  
         {
             RelayMsg retval;
-            int intparam1 = 0;
-            int intparam2 = 0;
-            int intparam3 = 0;
+            unsigned int intparam1 = 0;
+            unsigned int intparam2 = 0;
+            unsigned int intparam3 = 0;
             short int shortparam1 = 0;
             unsigned char charparam1 = 0;
             unsigned char charparam2 = 0;
             unsigned char charparam3 = 0;
             unsigned char charparam4 = 0;
-            
+
             case SHED:
-                            
-                for(i = 0; i < itemCounter; i++)
+                if (override == 1) 
                 {
-                    if(!memcmp(typeBuffer[i],"event_duration",14))
+                    HTTPcodeHandler(400);
+                } 
+                else 
+                {
+                    for (i = 0; i <= itemCounter; i++) 
                     {
-                        intparam1 = atoi(valueBuffer[i]);
+                        if (!memcmp(typeBuffer[i], "event_duration", 14)) 
+                        {
+                            intparam1 = atoi(valueBuffer[i]);
+                        }
                     }
+                    retval = SendShedCommand(intparam1);
+
+                    HTTPcodeHandler(retval.httpCode);
                 }
-                retval = SendShedCommand(intparam1);
-                
-                HTTPcodeHandler(retval.httpCode);                
-                
                 break;
             case END_SHED:
                 retval = SendEndShedCommand();
@@ -392,7 +395,7 @@ HTTP_IO_RESULT HTTPExecutePost(void)
                 
                 break;
             case GRID_EMERGENCY:
-                for(i = 0; i < itemCounter; i++)
+                for(i = 0; i <= itemCounter; i++)
                 {
                     if(!memcmp(typeBuffer[i],"event_duration",14))
                     {
@@ -404,7 +407,7 @@ HTTP_IO_RESULT HTTPExecutePost(void)
                 HTTPcodeHandler(retval.httpCode);  
                 break;
             case REQUEST_POWER_LEVEL:
-                for(i = 0; i < itemCounter; i++)
+                for(i = 0; i <= itemCounter; i++)
                 {
                     if(!memcmp(typeBuffer[i],"load_percent",12))
                     {
@@ -416,7 +419,7 @@ HTTP_IO_RESULT HTTPExecutePost(void)
                 HTTPcodeHandler(retval.httpCode);  
                 break;
             case LOAD_UP:
-                for(i = 0; i < itemCounter; i++)
+                for(i = 0; i <= itemCounter; i++)
                 {
                     if(!memcmp(typeBuffer[i],"event_duration", 14))
                     {
@@ -428,12 +431,11 @@ HTTP_IO_RESULT HTTPExecutePost(void)
                 HTTPcodeHandler(retval.httpCode);
                 break;   
             case START_AUTONOMOUS_CYCLING:
-                
-                for(i = 0; i < itemCounter; i++)
+                for(i = 0; i <= itemCounter; i++)
                 {
                     if(!memcmp(typeBuffer[i],"event_duration", 14))
                     {
-                        shortparam1 = (short int) atoi(valueBuffer[i]);
+                        shortparam1 = (unsigned short int) atoi(valueBuffer[i]);
                     }
                     else if(!memcmp(typeBuffer[i],"eventID", 7))
                     {
@@ -463,7 +465,7 @@ HTTP_IO_RESULT HTTPExecutePost(void)
                 
                 break;
             case TERMINATE_AUTONOMOUS_CYCLING:
-                for(i = 0; i < itemCounter; i++)
+                for(i = 0; i <= itemCounter; i++)
                 {
                     if(!memcmp(typeBuffer[i],"eventID", 7))
                     {
@@ -498,8 +500,9 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         {
             itemCounter++;
         }
+        itemCounter++;
         
-        for(i = 0; i < itemCounter; i++)
+        for(i = 0; i <= itemCounter; i++)
         {
             if(!memcmp(typeBuffer[i], "commstate", 9))
             {
@@ -534,8 +537,9 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         {
             itemCounter++;
         }
+        itemCounter++;
         
-        for(i = 0; i < itemCounter; i++)
+        for(i = 0; i <= itemCounter; i++)
         {
             if(!memcmp(typeBuffer[i], "commodity_code", 14))
             {
@@ -617,6 +621,7 @@ HTTP_IO_RESULT HTTPExecutePost(void)
             itemCounter++;
         }
         itemCounter++;
+        
         for(i = 0; i <= itemCounter; i++) 
         {
             if (!memcmp(typeBuffer[i], "day", 3)) 
@@ -638,7 +643,6 @@ HTTP_IO_RESULT HTTPExecutePost(void)
     }
     else
     {
-        LED2_ON()
         HTTPcodeHandler(501);
     }
 
@@ -1128,9 +1132,9 @@ void HTTPPrint_cumulative(void)
 void HTTPPrint_deviceInformation(void)
 {
     unsigned char buffer[300];
-    snprintf(buffer, 300,"{\"CEA-2045 Ver\": %d,\n\"Vendor ID\": %d,\n\"Device Type\": %d,\
-\n\"Device Revision\": %d,\n\"Capability Bitmap\": %d,\n\"Model Number\": %d,\
-\n\"Serial Number\": %d,\n\"Firmware Year\": 20%d,\n\"Firmware Month\": %d,\
+    snprintf(buffer, 300,"{\"CEA-2045 Ver\": %d,\n\"Vendor ID\": 0x%x,\n\"Device Type\": 0x%x,\
+\n\"Device Revision\": 0x%x,\n\"Capability Bitmap\": %x,\n\"Model Number\": %016llu,\
+\n\"Serial Number\": %016llu,\n\"Firmware Year\": 20%02d,\n\"Firmware Month\": %d,\
 \n\"Firmware Day\": %d,\n\"Firmware Major\": %d,\n\"Firmware Minor\": %d}",
 DeviceInfo.CTAver,DeviceInfo.vendorID,DeviceInfo.deviceType,DeviceInfo.deviceRev,
 DeviceInfo.capbmp,DeviceInfo.modelNumber,DeviceInfo.serialNumber,DeviceInfo.firmwareYear,

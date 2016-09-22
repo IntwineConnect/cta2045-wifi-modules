@@ -19,6 +19,7 @@
 #include "MCI_Common.h"
 #include "EPRI_UARTLayer.h"
 #include "LinkLayerMessaging.h"
+#include "DeviceInfo.h"
 
 #include "debugging.h"
 
@@ -30,7 +31,6 @@ unsigned char rxmessage[RX_BUF_SIZE];   // RxBuf double buffer.
 unsigned char txmessage[TX_MSG_SIZE];   // Current TX message. Reused for Retries.
 int RxBytesReceived = 0;
 
-int OverRide = 0;
 int OptOutEvent = 0;
 int OptInEvent = 0;
 int IdleNormal;
@@ -87,7 +87,6 @@ void EPRI_UART_init()
     NullRSBuf.LLResponseValid = 0;
     NullRSBuf.AppResponseValid = 0;
 
-    OverRide = 0;
     IdleNormal = 0;
     RunningNormal = 0;
 }
@@ -371,6 +370,7 @@ void rxMessageHandler(MCIResponse * lastSentPacket)
     // if it wasn't a data link ack/nak...
     else
     {
+        
         // check the checksum
         if (ChecksumDecode(rxmessage, len) == 0) // bad shape
         {
@@ -378,7 +378,7 @@ void rxMessageHandler(MCIResponse * lastSentPacket)
             DL_Nak(CHECKSUM_ERROR);
         }
         else // Message good
-        {          
+        {   
             if ( rxmessage[0] < 0xF0 && (TxMsgState != TX_IDLE))
 			// Save the application response
 			// In most cases, it should be an application ack
@@ -423,30 +423,31 @@ void rxMessageHandler(MCIResponse * lastSentPacket)
                     //link layer ack/nak is sent from handler
                 }
 
-
             }
             else if (RxMsgState == RX_SEND_LL_ACK)
             {
+                LED1_ON()
                 DL_Ack();
-
             }
             else if (RxMsgState == RX_SEND_APP_ACK)
             {
-
+                LED2_ON()
                 if (rxmessage[0] < 0xF0)
                 {
-
                     // Per Chuck Thomas use override as define in CEA-2045 Draft v08
                     // OptOutEvent and OptInEvent get set on change of state and 
                     // get cleared in OpenADRClient.c
                     if (rxmessage[4] == OVERRIDE_OPCODE1)
                     {
-                        if (!OverRide && rxmessage[5])
-                            OptOutEvent = 1;
-                        else if (OverRide && !rxmessage[5])
-                            OptInEvent = 1;
-                         
-                        OverRide = (int) rxmessage[5];
+                        if(rxmessage[5] == 0)
+                        {
+                            override = 0;
+                        }
+                        else
+                        {
+                            override = 1;
+                            TimeMonitorRegisterI(10,OVERRIDE_DURATION, OverrideTimeoutCallback);
+                        }
                     }
     
                     AppAckMsg[2] = 0;
@@ -605,10 +606,11 @@ void MCI_Wait_Callback()
             rxMessageHandler(&AsyncRxRSBuf);
 
             RxMsgState = RX_WAIT_APP_ACK_DLY;
-            TimeMonitorRegisterI(3, AL_RESPONSE_MIN_TIME_OUT_MS, MCI_Wait_Callback);
+            TimeMonitorRegisterI(11, AL_RESPONSE_MIN_TIME_OUT_MS, MCI_Wait_Callback);
             break;
 
         case RX_WAIT_APP_ACK_DLY:
+            LED2_ON()
             RxMsgState = RX_SEND_APP_ACK;
             rxMessageHandler(&AsyncRxRSBuf);
 

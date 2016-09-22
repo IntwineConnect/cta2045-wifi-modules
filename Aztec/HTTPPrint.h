@@ -76,6 +76,7 @@ void HTTPPrint_meaning(void);
 void HTTPPrint_commodity(void);
 void HTTPPrint_rate(void);
 void HTTPPrint_cumulative(void);
+void HTTPPrint_deviceInformation(void);
 
 void HTTPPrint(DWORD callbackID)
 {
@@ -158,6 +159,9 @@ void HTTPPrint(DWORD callbackID)
 			break;
         case 0x00000019:
 			HTTPPrint_cumulative();
+			break;
+        case 0x0000001a:
+			HTTPPrint_deviceInformation();
 			break;
 		default:
 			// Output notification for undefined values

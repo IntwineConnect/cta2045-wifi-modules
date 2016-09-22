@@ -40,6 +40,14 @@ int parseEventName(char *buffer)
     {
         eventType = SET_COMMODITY_READ;
     }
+    else if(memcmp(buffer,"start_cycling", 13) == 0)
+    {
+        eventType = START_AUTONOMOUS_CYCLING;
+    }
+    else if(memcmp(buffer,"stop_cycling", 12) == 0)
+    {
+        eventType = TERMINATE_AUTONOMOUS_CYCLING;
+    }
     else
     {
         //if we end up here, we've got an unsupported type

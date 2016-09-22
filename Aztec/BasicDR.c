@@ -73,6 +73,7 @@ volatile enum _RelayMsgState
 
 unsigned char ExpectedAckType;
 unsigned char nOptions = 0;
+unsigned char override = 0;
 
 //storage for commodity data
 CommodityReadData commodityResponse[10];
@@ -131,14 +132,17 @@ void IntermediateDRMessageHandler(unsigned char *msg)
             responseCode = msg[6];
             unsigned char mnBuffer[17];
             unsigned char srBuffer[17];
+            unsigned char ctaBuffer[3];
             memcpy(mnBuffer,&msg[20],16);
             mnBuffer[16] ='\0';
             memcpy(srBuffer,&msg[36],16);
             srBuffer[16] = '\0';
+            memcpy(ctaBuffer,&msg[7],2);
+            ctaBuffer[3] = '\0';
                    
             
             
-            DeviceInfo.CTAver = msg[7] << 8 | msg[8];
+            DeviceInfo.CTAver = (unsigned short int) atoi(ctaBuffer);
             DeviceInfo.vendorID = msg[9] << 8 | msg[10];
             DeviceInfo.deviceType = msg[11] << 8 | msg[12];
             DeviceInfo.deviceRev = msg[13] << 8 | msg[14];
@@ -320,7 +324,15 @@ void BasicDRMessageHandler(unsigned char * msg)
     
     if(opcode1 == CUSTOMER_OVERRIDE_CODE) //customer override
     {
-        
+        if(opcode2 == 0)
+        {
+            override = 0;
+        }
+        else
+        {
+            override = 1;
+            TimeMonitorRegisterI(10,OVERRIDE_DURATION,OverrideTimeoutCallback);
+        }
     }
     else if (opcode1 == RESPONSE_OP_STATE_CODE) //opstate response
     {
@@ -500,14 +512,19 @@ void BasicDRMessageHandler(unsigned char * msg)
  * there is no timely response from the MCI layer.
  */
 void RelayTimeoutCallback(void)
-{
-    //httpCode = 200;  
-    //codeByte = 4;
-    
-    httpCode = 400;    
-             
+{    
+    httpCode = 400;                 
             
     ResponseReadyFlag = TRUE;
+}
+
+/**
+ * this terminates a customer override after a period of time has passed
+ * 
+ */
+void OverrideTimeoutCallback(void)
+{
+    override = 0;
 }
 
 /**
@@ -962,6 +979,7 @@ RelayMsg SendStartAutonomousCycling(UINT32 ID,         //event ID 32 bit uint
                                     UINT8 crit                //reserved for future use
                                     )
 {
+    LED2_ON()
     RelayMsg retval;
     unsigned char messageBuffer[22];
     memcpy(messageBuffer, StartAutonomousCycling, 22);

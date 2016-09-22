@@ -96,13 +96,13 @@ typedef struct CommodityReadData_t{
 }CommodityReadData;
 
 typedef struct DeviceInformation_t{
-    short int CTAver;
-    short int vendorID;
-    short int deviceType;
-    short int deviceRev;
-    int capbmp;
-    long long modelNumber;
-    long long int serialNumber;
+    unsigned short int CTAver;
+    unsigned short int vendorID;
+    unsigned short int deviceType;
+    unsigned short int deviceRev;
+    unsigned int capbmp;
+    unsigned long long modelNumber;
+    unsigned long long int serialNumber;
     unsigned char firmwareYear;
     unsigned char firmwareMonth;
     unsigned char firmwareDay;
@@ -128,6 +128,7 @@ typedef struct CommodityRelayMsg_t{
 }CommodityRelayMsg;
 
 extern unsigned char nOptions;
+extern unsigned char override;
 
 void BasicDRMessageHandler(unsigned char * msg);
 void IntermediateDRMessageHandler(unsigned char *msg);
@@ -164,3 +165,4 @@ short int HandleIDRResponseCode(unsigned char code);
 void RelayTimeoutCallback(void);
 BOOL CheckDataValid(void);
 void BlockUntilReady(void);
+void OverrideTimeoutCallback(void);
