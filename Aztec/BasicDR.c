@@ -608,37 +608,36 @@ RelayMsg SendEndShedCommand(void)
  * @param percent: the percentage of rated power that will be consumed
  * @param produce: 1 if the device should be producing power, 0 if consuming power
  */
-RelayMsg SendRequestForPowerLevel(double percent, int produce)
+RelayMsg SendRequestForPowerLevel(int percent)
 {
     RelayMsg retval;
+    int produce = 0;
     unsigned char opcode2 = 0x00;
     unsigned char messageBuffer[8];               
     memcpy(messageBuffer, RequestPowerLevel,8);
     
+    if(percent < 0)
+    {
+        produce = 1;
+        percent = -1*percent;
+    }
     //limit percent value to 100%
-    if(percent > 100.0)
-    {
-        percent = 100.0;
-    }
-    else if (percent < 0.0)
-    {
-        percent = 0.0;
-    }    
-    percent = 1.27 * percent;
-
-        
-    opcode2 = (unsigned char) percent; 
     
-    if(produce != 0)
+    if(percent > 100)
     {
-        opcode2 = opcode2 | (1 << 7);   //set MSB according to specifications
+        percent = 100;
     }
+     
+    percent = (int) (1.27*(float)percent);
+            
+    opcode2 = (unsigned char) ((produce << 7) | percent); 
+    
+    
     
     messageBuffer[5] = opcode2;
     
     RelayMsgState = RLY_WAITING_REQUEST_POWER_LEVEL;
     MCISendNeutral(messageBuffer);
-    
     
     BlockUntilReady();
     
@@ -1199,8 +1198,7 @@ unsigned char MakeDurationByte(int eventDuration)
     float temp;
     
     
-    temp = sqrtf(.5*((float)eventDuration));
-    eventDuration = (int) temp;
+    temp = ceil(sqrtf(.5*((float)eventDuration)));
     
     if(eventDuration > 255)
     {
@@ -1211,7 +1209,7 @@ unsigned char MakeDurationByte(int eventDuration)
             eventDuration = 0;
     }
     
-    opcode2 = (unsigned char) eventDuration;
+    opcode2 = (unsigned char) temp;    
     
     return opcode2;
 }

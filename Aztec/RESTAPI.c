@@ -48,6 +48,10 @@ int parseEventName(char *buffer)
     {
         eventType = TERMINATE_AUTONOMOUS_CYCLING;
     }
+    else if(memcmp(buffer,"opt_out", 7) == 0)
+    {
+        eventType = OPT_OUT;
+    }
     else
     {
         //if we end up here, we've got an unsupported type

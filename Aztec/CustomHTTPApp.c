@@ -352,6 +352,7 @@ HTTP_IO_RESULT HTTPExecutePost(void)
             unsigned int intparam1 = 0;
             unsigned int intparam2 = 0;
             unsigned int intparam3 = 0;
+            int intparam4 = 0;
             short int shortparam1 = 0;
             unsigned char charparam1 = 0;
             unsigned char charparam2 = 0;
@@ -411,10 +412,10 @@ HTTP_IO_RESULT HTTPExecutePost(void)
                 {
                     if(!memcmp(typeBuffer[i],"load_percent",12))
                     {
-                        intparam1 = atoi(valueBuffer[i]);
+                        intparam4 = atoi(valueBuffer[i]);
                     }
                 }
-                retval = SendRequestForPowerLevel(intparam1, 0);
+                retval = SendRequestForPowerLevel(intparam4);
                 
                 HTTPcodeHandler(retval.httpCode);  
                 break;

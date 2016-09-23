@@ -135,7 +135,7 @@ void IntermediateDRMessageHandler(unsigned char *msg);
 
 RelayMsg SendShedCommand(int eventDuration);
 RelayMsg SendEndShedCommand(void);
-RelayMsg SendRequestForPowerLevel(double percent, int produce);
+RelayMsg SendRequestForPowerLevel(int percent);
 RelayMsg SendPresentRelativePrice(double rpi);
 RelayMsg SendNextPeriodRelativePrice(double rpi);
 RelayMsg SendTimeRemainingInPresentPricePeriod(int eventDuration);
