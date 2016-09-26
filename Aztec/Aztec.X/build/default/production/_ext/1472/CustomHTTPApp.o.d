@@ -4,6 +4,9 @@ build/default/production/_ext/1472/CustomHTTPApp.o:  \
 ../Configs/TCPIP_MRF24W.h  \
  ../Microchip/Include/GenericTypeDefs.h  \
 ../Microchip/Include/Compiler.h  \
+ ../BasicDR.h  \
+../MCI_Common.h  \
+../RESTAPI.h  \
  ../Microchip/Include/TCPIP_Stack/TCPIP.h  \
 ../HardwareProfile.h  \
  ../TCPIPConfig.h  \

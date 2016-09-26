@@ -50,6 +50,8 @@
 #include "HardwareProfile.h"
 #include "TCPIPConfig.h"
 
+#include "debugging.h"
+
 #if defined(WF_CS_TRIS)
 
 #include <string.h> /* for memcpy */

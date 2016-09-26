@@ -15,7 +15,7 @@
 int tmMillisecondsPerTick = (TIME_MONITOR_TICK_PER_SECOND / 1000);
 unsigned long tmTimeMonitorClock = 0;
 
-#define MAX_TIMER_CALLBACKS 6
+#define MAX_TIMER_CALLBACKS 11
 int tmTickDownTimeIndex0 = 0;
 int tmTickDownTimeI[MAX_TIMER_CALLBACKS];
 void (*tmCallbackFunctionI[MAX_TIMER_CALLBACKS])(void);
@@ -101,6 +101,7 @@ void TimeMonitorInit(void)
 
 void TimeMonitorRegisterI(int index, unsigned int callback_time_ms, void (*callback_function)(void))
 {
+    
   // Steps to registering for a callback
   // 1) Disable interrupt
   // 2) Set callback time - add 1 tick time for interrupt aliasing

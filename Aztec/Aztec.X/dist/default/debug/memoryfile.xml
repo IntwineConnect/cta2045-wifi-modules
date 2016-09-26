@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<project>                                  
+  <executable name="dist/default/debug/Aztec.X.debug.elf">                 
+    <memory name="program">                 
+      <units>bytes</units>                 
+      <length>269824</length>                 
+      <used>225365</used>                     
+      <free>44459</free>                     
+    </memory>                              
+    <memory name="data">              
+      <units>bytes</units>                 
+      <length>65536</length>                 
+      <used>18952</used>                     
+      <free>46584</free>                     
+    </memory>                              
+  </executable>                            
+</project>                                 

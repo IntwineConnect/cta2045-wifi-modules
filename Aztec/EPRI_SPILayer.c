@@ -5,6 +5,7 @@
  * Author: Jordan Murray
  * Date: 5/10/2016
  */
+#ifdef DC_CEA2045
 
 #include <string.h>
 
@@ -17,6 +18,7 @@
 #include "MCI_Common.h"
 #include "EPRI_SPILayer.h"
 
+#include "debugging.h"
 
 int OK_TO_READ_SPI = 0;
 int SPI_position_counter = 0;
@@ -95,36 +97,16 @@ void EPRI_SPI_init()
     
 }
 
-void EPRI_SPI_configure(void)
+void EPRI_SPI_startup(void)
 {
-      // SPI3CON - bits
-      // 3    2    2    1    1    1    0    0
-      // 1    7    3    9    5    1    7    3
-      // 000x xxxx xxxx xxxx xxxx xxxx xxxx xxxx - no Framed SPI support
-      // xxx0 0000 0000 00xx xxxx xxxx xxxx xxxx - reserved
-      // xxxx xxxx xxxx xx0x xxxx xxxx xxxx xxxx - no Framed SPI support
-      // xxxx xxxx xxxx xxx0 xxxx xxxx xxxx xxxx - reserved
-      // xxxx xxxx xxxx xxxx 1xxx xxxx xxxx xxxx - Enabled
-      // xxxx xxxx xxxx xxxx x0xx xxxx xxxx xxxx - No Freeze
-      // xxxx xxxx xxxx xxxx xx0x xxxx xxxx xxxx - Continue in idle mode
-      // xxxx xxxx xxxx xxxx xxx0 xxxx xxxx xxxx - SDOx control by SPI module
-      // xxxx xxxx xxxx xxxx xxxx 00xx xxxx xxxx - 8 bit data width
-      // xxxx xxxx xxxx xxxx xxxx xx0x xxxx xxxx - Input sampled at middle
-      // xxxx xxxx xxxx xxxx xxxx xxx0 xxxx xxxx - CKE = 0 (clock edge, 0=change from idle to active, 1 = change from active to idle) REQUIRED FOR MODE 0
-      // xxxx xxxx xxxx xxxx xxxx xxxx 0xxx xxxx - SSEN = 0
-      // xxxx xxxx xxxx xxxx xxxx xxxx x0xx xxxx - CKP = 0 (clock polarity, 0 = idle low, active high)  REQUIRED FOR MODE 0
-      // xxxx xxxx xxxx xxxx xxxx xxxx xx0x xxxx - MSTEN = 0, the SCG is the master of the bus, not the UCM
-      // xxxx xxxx xxxx xxxx xxxx xxxx xxx0 xxxx - SDIx control by SPI module
-      // xxxx xxxx xxxx xxxx xxxx xxxx xxxx 0000 - used for enhanced buffer mode
-
-      // 0000 0000 0000 0000 0000 0000 0000 0000 = 0x00000000
-      SPI3CON = 0x00000000;
-    
-      // Baud rate is Fpb / (2 * (SPIxBRG+1)) at 9 bits = max divisor of 1024
-      // mwn - determine the correct value for this
-      SPI3BRG = 5; // 512;
+    //SpiChnOpen(SPI_CHANNEL3, SPI_CON_SLVEN | SPI_CON_MODE8 | SPI_CON_ON, 1024);
+    SpiChnOpen(SPI_CHANNEL3, SPI_CONFIG_ENHBUF | SPI_CONFIG_ON, 1024);
 }
 
+void EPRI_SPI_shutdown(void)
+{
+    SpiChnClose(SPI_CHANNEL3);
+}
 
 /**
  * Interrupt handler for chip select assertion
@@ -142,6 +124,10 @@ void __ISR(_CHANGE_NOTICE_VECTOR, ipl6) ChipSelect_ISR(void)
     {     
         SPI_ATTN_ASSERT
         SPIBusState = SLAVE_READY;
+        
+        //start SPI to prepare to receive data
+        EPRI_SPI_startup();
+        
     }
 }
 
@@ -174,29 +160,31 @@ void EPRI_SPI_write(unsigned char *message, int length)
     SPI_ATTN_ASSERT
     SPIBusState = SLAVE_WAITING;
     
-    //configure SPI
-    EPRI_SPI_configure();  
-    
+
     //wait for SCG to be ready - set callback in case the SCG doesn't respond
-    TimeMonitorRegisterI(1,CS_ASSERT_TIMEOUT_MS, SPI_Message_Timeout_Callback);
+    TimeMonitorRegisterI(5,CS_ASSERT_TIMEOUT_MS, SPI_Message_Timeout_Callback);
+    /* temporary comment 
     while(SPIBusState == SLAVE_WAITING)  //the timeout callback will change the state to something else
     {
         BusMasterCheck();
     }
+     */
+    SPIBusState = MASTER_READY;
     
     if(SPIBusState == MASTER_READY)
     {   
         SPI3BUF = 0;            //clear SPI data buffer
         
         //start SPI channel 3    
-        SpiChnEnable(SPI_CHANNEL3,SPI_ENABLE);
-    
+        EPRI_SPI_startup();
+                
         //call function to write data
         SPI3WriteBinaryData(message, length);
-        SPIBusState == BUS_IDLE;
+         SPIBusState == BUS_IDLE;
+        while(1);
         
         //stop and reset SPI channel 3
-        SpiChnEnable(SPI_CHANNEL3,SPI_DISABLE);
+        EPRI_SPI_shutdown();
     }
 
         
@@ -223,7 +211,7 @@ void SPI3_ISR(void)
             i = SpiChnGetC(SPI_CHANNEL3);
                     if(OK_TO_READ_SPI)
                     {
-                        TimeMonitorRegisterI(2, 20, SPI_MCI_Sync_Callback);
+                        TimeMonitorRegisterI(6, 20, SPI_MCI_Sync_Callback);
                         
                         SPIRxBuf[SPI_position_counter] = i;
                         SPIRxBuf[SPI_position_counter + 1] = '/0';
@@ -289,7 +277,7 @@ void MCISendAsyncSPI(unsigned char * msg)
     
     //send initial message to start Tx state machine
     EPRI_SPI_write(SPItxmessage, (payloadLen + 6));
-    TimeMonitorRegisterI(1,INTER_MESSAGE_TIMEOUT_MS, SPI_Message_Timeout_Callback);
+    TimeMonitorRegisterI(5,INTER_MESSAGE_TIMEOUT_MS, SPI_Message_Timeout_Callback);
     
     TxSPIMsgState = TX_WAIT_LL_ACK;
 }
@@ -548,17 +536,17 @@ void SPI_MCI_Sync_Callback()
             //link layer ACK OK. Wait for application ack
             {
                 TxSPIMsgState = TX_WAIT_APP_ACK;
-                TimeMonitorRegisterI(1, APP_ACK_WAIT_TIME_MS, SPI_Message_Timeout_Callback);
+                TimeMonitorRegisterI(5, APP_ACK_WAIT_TIME_MS, SPI_Message_Timeout_Callback);
             }
             else //LL NAK or worse. Set quick timeout for end of message clean up
             {
-                TimeMonitorRegisterI(1,9,SPI_Message_Timeout_Callback);
+                TimeMonitorRegisterI(5,9,SPI_Message_Timeout_Callback);
             }
             break;
         case TX_WAIT_APP_ACK:
             TimeMonitorCancelI(1);         // cancel timeout callback
             TxSPIMsgState = TX_WAIT_LL_ACK_DLY;
-            TimeMonitorRegisterI(3, LINK_ACK_DELAY_MS, SPI_MCI_Wait_Callback);
+            TimeMonitorRegisterI(7, LINK_ACK_DELAY_MS, SPI_MCI_Wait_Callback);
             break;
         default:
             break;
@@ -577,8 +565,8 @@ void SPI_MCI_Sync_Callback()
                 SPIrxMessageHandler(&AsyncRxSPIBuf);    // send ACK/NAK
                 
                 RxSPIMsgState = RX_WAIT_LL_ACK_DLY;
-                TimeMonitorRegisterI(1, APP_ACK_WAIT_TIME_MS, SPI_Message_Timeout_Callback);
-                TimeMonitorRegisterI(3, LINK_ACK_DELAY_MS, SPI_MCI_Wait_Callback);
+                TimeMonitorRegisterI(5, APP_ACK_WAIT_TIME_MS, SPI_Message_Timeout_Callback);
+                TimeMonitorRegisterI(7, LINK_ACK_DELAY_MS, SPI_MCI_Wait_Callback);
                 break;
             case RX_RECEIVE_LL_ACK:
                 TimeMonitorCancelI(1);          //Cancel message timeout callback
@@ -615,7 +603,7 @@ void SPI_MCI_Wait_Callback()
             SPIrxMessageHandler(&AsyncRxSPIBuf);
             
             RxSPIMsgState = RX_WAIT_APP_ACK_DLY;
-            TimeMonitorRegisterI(4, APP_ACK_WAIT_TIME_MS, SPI_MCI_Wait_Callback);
+            TimeMonitorRegisterI(7, APP_ACK_WAIT_TIME_MS, SPI_MCI_Wait_Callback);
             break;
         case RX_WAIT_APP_ACK_DLY:
             RxSPIMsgState = RX_SEND_APP_ACK;
@@ -642,7 +630,7 @@ void SPI_Message_Timeout_Callback()
         {
             //resend
             TxSPIMsgState = TX_WAIT_RETRY_DLY;
-            TimeMonitorRegisterI(3, MESSAGE_RETRY_DELAY_MS, SPI_MCI_Wait_Callback);            
+            TimeMonitorRegisterI(7, MESSAGE_RETRY_DELAY_MS, SPI_MCI_Wait_Callback);            
         }
     }
     
@@ -669,3 +657,5 @@ SPI3WriteBinaryData(unsigned char *data_block, int length)
         length--;
     }
 }
+
+#endif

@@ -52,6 +52,9 @@
 #define __CUSTOMHTTPAPP_C
 
 #include "TCPIPConfig.h"
+#include "BasicDR.h"
+#include "MCI_Common.h"
+#include "RESTAPI.h"
 
 #if defined(STACK_USE_HTTP2_SERVER)
 #include "TCPIP_Stack/TCPIP.h"
@@ -258,9 +261,27 @@ HTTP_IO_RESULT HTTPExecuteGet(void)
         else
         {
             // impossible to get here
-        }  
-
+        } 
 	}
+    if(!memcmppgm2ram(filename, "temperature.cgi", 15))
+    {
+        //handles request for setpoint and setpoint offset queries
+    }
+    if(!memcmppgm2ram(filename, "state_sgd.cgi", 13))
+    {
+        RelayMsg retval;
+        
+        retval = SendQueryOpState();
+        
+        HTTPcodeHandler(retval.httpCode);
+    }
+    if(!memcmppgm2ram(filename,"info_sgd.cgi", 12))
+    {
+        DeviceInfoRelayMsg retval;
+        
+        retval = SendInfoRequest();
+        HTTPcodeHandler(retval.httpCode);
+    }
 	
 	return HTTP_IO_DONE;
 }
@@ -282,6 +303,7 @@ HTTP_IO_RESULT HTTPExecutePost(void)
 {
 	// Resolve which function to use and pass along
 	BYTE filename[20];
+    int moreToRead = 1;
 	
 	// Load the file name
 	// Make sure BYTE filename[] above is large enough for your longest name
@@ -294,6 +316,336 @@ HTTP_IO_RESULT HTTPExecutePost(void)
 	if(!memcmppgm2ram(filename, "configure.htm", 13))
 		return HTTPPostWifiConfig();
     #endif
+    
+    //for messages associated with the /load page
+    if(!memcmppgm2ram(filename,"load.cgi",8))
+    {
+        char typeBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+        char valueBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+        int itemCounter = 0; 
+        int i;
+        unsigned char found = 0;
+        
+        //get the parameters out of the buffer and strip their formatting
+        while(readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]) == 1)
+        {            
+            itemCounter++;
+        }
+        itemCounter++;
+        //go through the collected items, then find and determine the event type
+        while(i <= itemCounter && found == 0)
+        {
+            if(memcmp(typeBuffer[i],"event_name", 10)==0)
+            {
+                parseEventName(valueBuffer[i]);
+                found = 1;
+            }    
+            i++;
+        }
+        
+        /*with the event type determined, get the parameters necessary to 
+         * construct the message, then call the API function to send it */
+        
+        switch(eventType)  
+        {
+            RelayMsg retval;
+            unsigned int intparam1 = 0;
+            unsigned int intparam2 = 0;
+            unsigned int intparam3 = 0;
+            int intparam4 = 0;
+            short int shortparam1 = 0;
+            unsigned char charparam1 = 0;
+            unsigned char charparam2 = 0;
+            unsigned char charparam3 = 0;
+            unsigned char charparam4 = 0;
+
+            case SHED:
+                if (override == 1) 
+                {
+                    HTTPcodeHandler(400);
+                } 
+                else 
+                {
+                    for (i = 0; i <= itemCounter; i++) 
+                    {
+                        if (!memcmp(typeBuffer[i], "event_duration", 14)) 
+                        {
+                            intparam1 = atoi(valueBuffer[i]);
+                        }
+                    }
+                    retval = SendShedCommand(intparam1);
+
+                    HTTPcodeHandler(retval.httpCode);
+                }
+                break;
+            case END_SHED:
+                retval = SendEndShedCommand();
+                HTTPcodeHandler(retval.httpCode);
+                break;
+            case CRITICAL_PEAK_EVENT:
+                for(i = 0; i <= itemCounter; i++)
+                {
+                    if(!memcmp(typeBuffer[i],"event_duration",14))
+                    {
+                        intparam1 = atoi(valueBuffer[i]);
+                    }
+                }
+                retval = SendCriticalPeakEvent(intparam1);
+                
+                HTTPcodeHandler(retval.httpCode);                
+                
+                break;
+            case GRID_EMERGENCY:
+                for(i = 0; i <= itemCounter; i++)
+                {
+                    if(!memcmp(typeBuffer[i],"event_duration",14))
+                    {
+                        intparam1 = atoi(valueBuffer[i]);
+                    }
+                }
+                retval = SendGridEmergency(intparam1);
+                
+                HTTPcodeHandler(retval.httpCode);  
+                break;
+            case REQUEST_POWER_LEVEL:
+                for(i = 0; i <= itemCounter; i++)
+                {
+                    if(!memcmp(typeBuffer[i],"load_percent",12))
+                    {
+                        intparam4 = atoi(valueBuffer[i]);
+                    }
+                }
+                retval = SendRequestForPowerLevel(intparam4);
+                
+                HTTPcodeHandler(retval.httpCode);  
+                break;
+            case LOAD_UP:
+                for(i = 0; i <= itemCounter; i++)
+                {
+                    if(!memcmp(typeBuffer[i],"event_duration", 14))
+                    {
+                        intparam1 = atoi(valueBuffer[i]);
+                    }
+                }
+                retval = SendLoadUp(intparam1);
+                
+                HTTPcodeHandler(retval.httpCode);
+                break;   
+            case START_AUTONOMOUS_CYCLING:
+                for(i = 0; i <= itemCounter; i++)
+                {
+                    if(!memcmp(typeBuffer[i],"event_duration", 14))
+                    {
+                        shortparam1 = (unsigned short int) atoi(valueBuffer[i]);
+                    }
+                    else if(!memcmp(typeBuffer[i],"eventID", 7))
+                    {
+                        intparam1 = atoi(valueBuffer[i]);
+                    }
+                    else if(!memcmp(typeBuffer[i],"start_time", 10))
+                    {
+                        intparam2 = atoi(valueBuffer[i]);
+                    }
+                    else if(!memcmp(typeBuffer[i], "duty_cycle", 10))
+                    {
+                        charparam1 = (unsigned char) atoi(valueBuffer[i]);
+                    }
+                    else if(!memcmp(typeBuffer[i], "start_rand", 10))
+                    {
+                        charparam2 = (unsigned char) atoi(valueBuffer[i]);
+                    }
+                    else if(!memcmp(typeBuffer[i],"end_rand", 8))
+                    {
+                        charparam3 = (unsigned char) atoi(valueBuffer[i]);
+                    }
+                }
+                
+                retval = SendStartAutonomousCycling(intparam1, intparam2, shortparam1, charparam1, charparam2, charparam3, 0);
+                
+                HTTPcodeHandler(retval.httpCode);
+                
+                break;
+            case TERMINATE_AUTONOMOUS_CYCLING:
+                for(i = 0; i <= itemCounter; i++)
+                {
+                    if(!memcmp(typeBuffer[i],"eventID", 7))
+                    {
+                        intparam1 = atoi(valueBuffer[i]);
+                    }
+                    else if(!memcmp(typeBuffer[i],"end_rand", 8))
+                    {
+                        charparam1 = (unsigned char) atoi(valueBuffer[i]);
+                    }
+                }
+                retval = SendTerminateAutonomousCycling(intparam1, charparam1);
+                
+                HTTPcodeHandler(retval.httpCode);
+                break;  
+            case UNKNOWN_TYPE:
+                HTTPcodeHandler(501);
+                break;
+            default: 
+                HTTPcodeHandler(400);
+                break;
+                
+        }
+    }    
+    else if(!memcmppgm2ram(filename,"comm.cgi", 8))
+    {
+        int i;
+        int itemCounter;
+        RelayMsg retval;
+        char typeBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+        char valueBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+        while(readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]) == 1)
+        {
+            itemCounter++;
+        }
+        itemCounter++;
+        
+        for(i = 0; i <= itemCounter; i++)
+        {
+            if(!memcmp(typeBuffer[i], "commstate", 9))
+            {
+                if(!memcmp(valueBuffer[i], "good", 4))
+                {
+                    retval = SendOutsideCommGood();
+                }
+                else if(!memcmp(valueBuffer[i], "lost", 4))
+                {
+                    retval = SendOutsideCommLost();
+                }
+                else
+                {
+                    retval.httpCode = 400;
+                }
+            }
+        }
+        HTTPcodeHandler(retval.httpCode);
+    }    
+    else if(!memcmppgm2ram(filename,"commodity.cgi", 13))
+    {
+        int i;
+        int itemCounter;
+        RelayMsg retval;
+        long long vlintparam1;
+        long long vlintparam2;
+        unsigned char commodity;
+        char typeBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+        char valueBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+        
+        while(readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]) == 1)
+        {
+            itemCounter++;
+        }
+        itemCounter++;
+        
+        for(i = 0; i <= itemCounter; i++)
+        {
+            if(!memcmp(typeBuffer[i], "commodity_code", 14))
+            {
+                commodity = (unsigned char*) atoi(valueBuffer[i]);
+            }
+            else if(!memcmp(typeBuffer[i], "rate", 14))
+            {
+                vlintparam1 = atoll(valueBuffer[i]);
+            }
+            else if(!memcmp(typeBuffer[i], "cumulative", 10))
+            {
+                vlintparam2 = atoll(valueBuffer[i]);
+            }
+        }
+        retval = SendSetCommodityRead(commodity, vlintparam1, vlintparam2);
+        
+        HTTPcodeHandler(retval.codeByte);
+    }
+    //for messages associated with the /price page
+    else if(!memcmppgm2ram(filename,"price.cgi", 9))
+    {
+        char typeBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+        char valueBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+        int itemCounter = 0; 
+        int i;
+        unsigned char found = 0;
+        RelayMsg retval;
+        int intparam1;
+        double doubleparam1;
+                
+        
+        //get the parameters out of the buffer and strip their formatting
+        while(readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]) == 1)
+        {            
+            itemCounter++;
+        }
+        itemCounter++;
+        
+        for(i = 0; i <= itemCounter; i++)
+        {
+            if (!memcmp(typeBuffer[i], "cur_price", 9)) 
+            {
+                doubleparam1 = atof(valueBuffer[i]);
+                retval = SendPresentRelativePrice(doubleparam1);
+            }
+            else if(!memcmp(typeBuffer[i],"time_remaining", 14))
+            {
+                intparam1 = atoi(valueBuffer[i]);
+                retval = SendTimeRemainingInPresentPricePeriod(intparam1);
+            }
+            else if(!memcmp(typeBuffer[i], "next_price", 10))
+            {
+                doubleparam1 = atof(valueBuffer[i]);
+                retval = SendNextPeriodRelativePrice(doubleparam1);
+            }
+            else
+            {
+                
+            }
+        }
+        HTTPcodeHandler(retval.httpCode);            
+
+    }    
+    //for message types associated with the /time page
+    else if(!memcmppgm2ram(filename,"time.cgi", 8))
+    {
+        char typeBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+        char valueBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+        int itemCounter = 0; 
+        int i;
+        unsigned char found = 0;
+        int intparam1;
+        int intparam2;
+        RelayMsg retval;
+        
+        //get the parameters out of the buffer and strip their formatting
+        while(readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]) == 1)
+        {            
+            itemCounter++;
+        }
+        itemCounter++;
+        
+        for(i = 0; i <= itemCounter; i++) 
+        {
+            if (!memcmp(typeBuffer[i], "day", 3)) 
+            {
+                intparam1 = atoi(valueBuffer[i]);
+            }
+            else if(!memcmp(typeBuffer[i], "hour", 4))
+            {
+                intparam2 = atoi(valueBuffer[i]);
+            }
+        }
+        retval = SendTimeSync(intparam1, intparam2);
+                
+        HTTPcodeHandler(retval.httpCode);
+    }
+    else if(!memcmppgm2ram(filename,"commodity.cgi", 13))
+    {
+        
+    }
+    else
+    {
+        HTTPcodeHandler(501);
+    }
 
 	return HTTP_IO_DONE;
 }
@@ -742,6 +1094,56 @@ void HTTPPrint_scan(void)
     TCPPutString(sktHTTP, scanInProgressString);
 }
 
+//===================================
+// = set SGD state code
+//===================================
+void HTTPPrint_code(void)
+{
+    BYTE stateCode[2];
+    
+    uitoa(codeByte, stateCode);
+    TCPPutString(sktHTTP, stateCode);
+}
+
+//====================================
+// = set SGD meaning string
+//====================================
+void HTTPPrint_meaning(void)
+{
+    char stateMeaning[30];
+    ProvideMeaning(codeByte, stateMeaning, sizeof(stateMeaning));
+    TCPPutString(sktHTTP, stateMeaning);
+}
+
+void HTTPPrint_commodity(void)
+{
+    
+}
+
+void HTTPPrint_rate(void)
+{
+    
+}
+
+void HTTPPrint_cumulative(void)
+{
+    
+}
+
+void HTTPPrint_deviceInformation(void)
+{
+    unsigned char buffer[300];
+    snprintf(buffer, 300,"{\"CEA-2045 Ver\": %d,\n\"Vendor ID\": 0x%x,\n\"Device Type\": 0x%x,\
+\n\"Device Revision\": 0x%x,\n\"Capability Bitmap\": %x,\n\"Model Number\": %016llu,\
+\n\"Serial Number\": %016llu,\n\"Firmware Year\": 20%02d,\n\"Firmware Month\": %d,\
+\n\"Firmware Day\": %d,\n\"Firmware Major\": %d,\n\"Firmware Minor\": %d}",
+DeviceInfo.CTAver,DeviceInfo.vendorID,DeviceInfo.deviceType,DeviceInfo.deviceRev,
+DeviceInfo.capbmp,DeviceInfo.modelNumber,DeviceInfo.serialNumber,DeviceInfo.firmwareYear,
+DeviceInfo.firmwareMonth,DeviceInfo.firmwareDay,DeviceInfo.firmwareMajor,DeviceInfo.firmwareMinor);
+    
+    TCPPutString(sktHTTP, buffer);
+}
+
 // ======================================
 // = Sends the FW version     =
 // ======================================
@@ -1012,6 +1414,14 @@ void HTTPPrint_nextWLAN(void)
 }
 
 // ==========================
+// = Sends the return code =
+// ==========================
+void HTTPPrint_LoadResults(void)
+{
+	TCPPutROMString(sktHTTP, (ROM BYTE*)"HTTP RETURN CODE");
+}
+
+// ==========================
 // = Sends the Demo Version =
 // ==========================
 void HTTPPrint_Demoversion(void)
@@ -1073,6 +1483,174 @@ void HTTPPrint_aplist(void)
         TCPPutString(sktHTTP, strString);
         TCPPutROMString(sktHTTP, (ROM BYTE*)"</strength>\n");
         TCPPutROMString(sktHTTP, (ROM BYTE*)"</bss>\n");
+    }
+}
+
+void HTTPcodeHandler(short int httpCode)
+{
+    if(httpCode == 200) 
+    {
+        curHTTP.httpStatus = HTTP_GET;
+    } 
+    else if(httpCode == 302)
+    {
+        curHTTP.httpStatus = HTTP_REDIRECT;
+    }
+    else if (httpCode == 400) 
+    {
+        curHTTP.httpStatus = HTTP_BAD_REQUEST;
+    }
+    else if(httpCode == 401)
+    {
+        curHTTP.httpStatus = HTTP_UNAUTHORIZED;
+    }
+    else if (httpCode == 403) 
+    {
+        curHTTP.httpStatus = HTTP_SSL_REQUIRED;
+    }
+    else if(httpCode == 414)
+    {
+        curHTTP.httpStatus = HTTP_OVERFLOW;
+    }
+    else if(httpCode == 500)
+    {
+        curHTTP.httpStatus = HTTP_INTERNAL_SERVER_ERROR;
+    }
+    else if(httpCode == 501)
+    {
+        curHTTP.httpStatus = HTTP_NOT_IMPLEMENTED;
+    }
+    else 
+    {
+        curHTTP.httpStatus = httpCode;
+    }
+}
+
+int readLine(char *typeBuffer, char *valueBuffer)
+{
+    int lenA, lenB, lenC;
+    int last = 0;
+    char trashBuffer[40];
+    
+    //get end of item
+    lenB = TCPFindEx(sktHTTP, ',', 0, 0, FALSE);
+    lenC = TCPFindEx(sktHTTP, '}', 0, 0, FALSE);
+    //lenA = TCPFindEx(sktHTTP, '\n', 0, 0, FALSE);
+    
+    //if this is the last line
+    if(lenB > lenC || lenB == 0xFFFF)
+    {
+        lenB = lenC;
+        last = 1;
+    }
+    
+    //get colon location
+    lenC = TCPFindEx(sktHTTP, ':', 0, 0, FALSE);
+    //get ID open quote
+    lenA = TCPFindEx(sktHTTP, '"', 0, 0, FALSE);
+    if (lenA > lenB) //item delimiter comes too soon
+    {
+
+    }
+    if (lenA > lenC) //ID/value separator comes too soon
+    {
+
+    }
+    
+    //get the ID open quote out of the buffer
+    TCPGetArray(sktHTTP, trashBuffer, lenA + 1);
+    lenB -= lenA;
+    lenC -= lenA;
+    //get the location of the ID close quote
+    lenA = TCPFindEx(sktHTTP, '"', 0, 0, FALSE);
+
+    TCPGetArray(sktHTTP, typeBuffer, lenA);
+    lenB -= lenA;
+    lenC -= lenA;
+    //get the location of the value open quote (skip the next character, which is an old quote)
+    lenA = TCPFindEx(sktHTTP, '"', 1, 0, FALSE);
+    
+    if (lenA < lenC) //value open quote comes too soon
+    {
+
+    }
+    if (lenA > lenB) // item delimiter comes too soon
+    {
+
+    }
+    //get the value open quote out of the buffer
+    TCPGetArray(sktHTTP, trashBuffer, lenA + 1);
+    lenB -= lenA;
+
+    //get the location of the value close quote
+    lenA = TCPFindEx(sktHTTP, '"', 0, 0, FALSE);
+    
+    if (lenA > lenB) // item delimiter comes too soon
+    {
+
+    }
+
+    TCPGetArray(sktHTTP, valueBuffer, lenA);
+    lenB -= lenA;
+    //clean up the rest of this line            
+    TCPGetArray(sktHTTP, trashBuffer, lenB);
+    //check to see if we're done reading
+    if (last) 
+    {
+        return 0;        
+    } 
+    else
+    {
+        return 1;
+    }
+}
+
+void ProvideMeaning(unsigned char stateCode, char *buffer, int bufferlength)
+{
+    switch(stateCode)
+    {
+        case IDLE_NORMAL:
+            strcpy(buffer,"Idle Normal");
+        break;
+        case RUNNING_NORMAL:
+            strcpy(buffer,"Running Normal");
+        break;
+        case RUNNING_CURTAILED:
+            strcpy(buffer,"Running Curtailed");
+            break;
+        case RUNNING_HEIGHTENED:
+            strcpy(buffer,"Running Heightened");
+            break;
+        case IDLE_CURTAILED:
+            strcpy(buffer,"Idle Curtailed");
+            break;
+        case SGD_ERROR_CONDITION:
+            strcpy(buffer,"SGD Error Condition");
+            break;
+        case IDLE_HEIGHTENED:
+            strcpy(buffer,"Idle Heightened");
+            break;
+        case CYCLING_ON:
+            strcpy(buffer,"Cycling On");
+            break;
+        case CYCLING_OFF:
+            strcpy(buffer,"Cycling Off");
+            break;
+        case VARIABLE_FOLLOWING:
+            strcpy(buffer,"Variable Following");
+            break;
+        case VARIABLE_NOT_FOLLOWING:
+            strcpy(buffer,"Variable Not Following");
+            break;
+        case IDLE_OPTED_OUT:
+            strcpy(buffer,"Idle, Opted Out");
+            break;
+        case RUNNING_OPTED_OUT:
+            strcpy(buffer,"Running, Opted Out");
+            break;
+        default:
+            strcpy(buffer,"ERR-unexpected");
+            break;
     }
 }
 

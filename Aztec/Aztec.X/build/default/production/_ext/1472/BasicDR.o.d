@@ -4,4 +4,6 @@ build/default/production/_ext/1472/BasicDR.o:  \
 ../Microchip/Include/GenericTypeDefs.h  \
  ../HardwareProfile.h  \
 ../Microchip/Include/Compiler.h  \
-../BasicDR.h 
+../BasicDR.h  \
+ ../debugging.h  \
+../DeviceInfo.h 

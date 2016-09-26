@@ -659,6 +659,7 @@ static void HTTPProcess(void)
 						isDone = TRUE;
 						break;
 					}
+                    
 				}
 				
 				// Clear the rest of the line, and call the loop again
@@ -723,7 +724,7 @@ static void HTTPProcess(void)
 			// Move on to POST data
 			smHTTP = SM_HTTP_PROCESS_POST;
 
-		case SM_HTTP_PROCESS_POST:
+		case SM_HTTP_PROCESS_POST: 
 
 			#if defined(HTTP_USE_POST)
 			

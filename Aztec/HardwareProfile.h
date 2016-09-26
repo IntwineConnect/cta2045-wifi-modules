@@ -34,6 +34,7 @@
 #define AC_CEA2045
 //#define DC_CEA2045
 
+
 //#define DFW                         // Enable downloadable firmware
 
 #define MRF24WG
@@ -88,10 +89,12 @@
 //----------------------------
 // MCI SPI pins
 //----------------------------
+#ifdef DC_CEA2045
+
 #define SPI_ATTN_TRIS           (TRISBbits.TRISB2) //  ATTN pin  (#23)
 #define SPI_ATTN_IO             (LATBbits.LATB2)
-#define SPI_ATTN_INACTIVE      LATBSET = BIT_2;
-#define SPI_ATTN_ASSERT        LATBCLR = BIT_2;
+#define SPI_ATTN_INACTIVE      LATBSET = BIT_2; //LATBSET = BIT_2;
+#define SPI_ATTN_ASSERT        LATBCLR = BIT_2; //LATBSET = BIT_2;
 
 #define SPI_CS_TRIS              (TRISDbits.TRISD14) //CS pin     (#47)   (CN20)
 #define SPI_CS_IO                (PORTDbits.RD14)
@@ -99,6 +102,7 @@
 #define CN_TURN_ON                 CNCONSET = BIT_15;    // to turn on the CN module
 #define CN_INT_ENABLE           (IEC1bits.CNIE) = 1;  // enable CN interrupts
 
+#endif
 //----------------------------
 // LED and Button I/O pins
 //----------------------------

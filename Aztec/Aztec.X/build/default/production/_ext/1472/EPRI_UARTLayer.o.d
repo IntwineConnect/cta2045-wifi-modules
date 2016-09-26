@@ -9,4 +9,7 @@ build/default/production/_ext/1472/EPRI_UARTLayer.o:  \
 ../EPRI_Queue.h  \
 ../MCI_Common.h  \
 ../EPRI_UARTLayer.h  \
- ../LinkLayerMessaging.h 
+ ../LinkLayerMessaging.h  \
+../DeviceInfo.h  \
+../BasicDR.h  \
+../debugging.h 
