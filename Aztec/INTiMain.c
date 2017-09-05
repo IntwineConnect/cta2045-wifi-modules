@@ -4,14 +4,14 @@
 
 #include <plib.h>
 #include <stdio.h>
-#include <peripheral\int_5xx_6xx_7xx.h>
-#include <peripheral\uart.h>
+#include <peripheral/int_5xx_6xx_7xx.h>
+#include <peripheral/uart.h>
 #include "Assert.h"
-#include "Metrics.h"
 #include "INTiAPI.h"
 
 void (*UART2RxCallbackFunction)(void) = NULL;
 void (*SPI3RxCallbackFunction)(void) = NULL;
+void (*SPI3TxCallbackFunction)(void) = NULL;
 
 /*
 * Function:         void INTiRegisterUART2RxCallbackFunction(void (*HandlerFunction)(void))
@@ -24,14 +24,25 @@ void INTiRegisterUART2RxCallbackFunction(void (*HandlerFunction)(void))
     UART2RxCallbackFunction = HandlerFunction;
 }
 /*
-* Function:         void INTiRegisterSPI3CallbackFunction(void (*HandlerFunction)(void))
+* Function:         void INTiRegisterSPI3RxCallbackFunction(void (*HandlerFunction)(void))
 * Description:      Register an external handler for SPI3InterruptServiceRoutine
 * Creation Date:    11/04/2011
 * Author:           Bill Barnett
 */
-void INTiRegisterSPI3CallbackFunction(void (*HandlerFunction)(void))
+void INTiRegisterSPI3RxCallbackFunction(void (*HandlerFunction)(void))
 {
     SPI3RxCallbackFunction = HandlerFunction;
+}
+
+/*
+* Function:         void INTiRegisterSPI3TxCallbackFunction(void (*HandlerFunction)(void))
+* Description:      Register an external handler for SPI3InterruptServiceRoutine
+* Creation Date:    11/04/2011
+* Author:           Bill Barnett
+*/
+void INTiRegisterSPI3TxCallbackFunction(void (*HandlerFunction)(void))
+{
+    SPI3TxCallbackFunction = HandlerFunction;
 }
 
 /*
@@ -61,53 +72,44 @@ void __ISR(_UART_2_VECTOR, ipl5) UART2InterruptServiceRoutine(void)
 */
 void __ISR(_SPI_3_VECTOR, ipl4) SPI3InterruptServiceRoutine(void)
 {
-    int count = 1;
-    if(INTGetFlag(INT_SPI3RX))
-    {
-        if(SPI3RxCallbackFunction != NULL)
+    if(INTGetFlag(INT_SPI3) && INTGetEnable(INT_SPI3)){
+        int count = 0;
+        if(INTGetFlag(INT_SPI3RX) && INTGetEnable(INT_SPI3RX))
         {
-            (*SPI3RxCallbackFunction)();
+            if(SPI3RxCallbackFunction != NULL)
+            {
+                (*SPI3RxCallbackFunction)();
+            }
+            INTClearFlag(INT_SPI3RX);
+            count |= 1;
         }
-        INTClearFlag(INT_SPI3RX);
+        if(INTGetFlag(INT_SPI3E) && INTGetEnable(INT_SPI3E))
+        {
+            // TODO escalate?
+            if(SPI3STAT >> 8 & 0x1 == 0x1){
+                SPI3STATCLR = 1 << 8;
+                SPI3BUF=0xFF;
+            }
+            if(SPI3STAT >> 6 & 0x1 == 0x1){
+                SPI3BUF;
+                SPI3STATCLR = 1 << 6;
+            }
+
+            INTClearFlag(INT_SPI3E);
+            count |= 2;
+        }
+        if(INTGetFlag(INT_SPI3TX) && INTGetEnable(INT_SPI3TX))
+        {
+            if(SPI3TxCallbackFunction != NULL)
+            {
+                (*SPI3TxCallbackFunction)();
+            }
+            INTClearFlag(INT_SPI3TX);
+            count |= 3;
+        }
+    } else {
+        // Wat
+        Nop();
     }
-    if(INTGetFlag(INT_SPI3E))
-    {
-        INTClearFlag(INT_SPI3E);
-        count = 2;
-
-        // Ruff!, mwn - add recovery for this
-//        ASRT_INT(0, "SPI3 error", WATCHDOG_SPI3_ERROR);
-        while(1);
-    }
-    if(INTGetFlag(INT_SPI3TX))
-    {
-        INTClearFlag(INT_SPI3TX);
-        count = 3;
-    }
-}
-
-void SPI3EnableInterrupts(void)
-{
-    // Steps to enabling SPI interrupts
-    // 1) Ensure they are disabled
-    // 2) Clear all interrupt flags
-    // 3) Setup priorities
-    // 4) Re-enable - just want Rx and Error
-
-    SPI3DisableInterrupts();
-
-    // Enable Rx and Error interrupts, no Tx
-    INTClearFlag(INT_SPI3E);
-    INTClearFlag(INT_SPI3TX);
-    INTClearFlag(INT_SPI3RX);
-
-    INTEnable(INT_SOURCE_SPI_RX(SPI_CHANNEL3), INT_ENABLED);
-    INTEnable(INT_SOURCE_SPI_ERROR(SPI_CHANNEL3), INT_ENABLED);
-}
-
-void SPI3DisableInterrupts(void)
-{
-    // Enable Rx and Error interrupts, no Tx
-    INTEnable(INT_SOURCE_SPI_RX(SPI_CHANNEL3), INT_DISABLED);
-    INTEnable(INT_SOURCE_SPI_ERROR(SPI_CHANNEL3), INT_DISABLED);
+    INTClearFlag(INT_SPI3); //maybE? 
 }

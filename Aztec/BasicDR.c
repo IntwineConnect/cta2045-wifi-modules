@@ -326,7 +326,7 @@ RelayMsg SendEndShedCommand(void)
     //the second opcode byte isn't used by the End Shed command
     MCISendNeutral(EndShedCommand);    
     
-    BlockUntilReady();
+//    BlockUntilReady();  // BH: It's unclear to me how this will ever return...
     
     retval.httpCode = httpCode;
     retval.codeByte = DEFAULT_RETURN_CODE;

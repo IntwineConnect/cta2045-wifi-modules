@@ -315,7 +315,9 @@ void InitOpenADRComm( void )
 
     DebugCnt = 0;
     
+#ifdef CEA_AC2045
     EPRI_UART_init();
+#endif
     
 //    TCPInitializeBuffer();
 

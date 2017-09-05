@@ -31,8 +31,8 @@
 //#define INTWINE_PROGRAMMABLE_THERMOSTAT
 //#define USER_BUTTON_SCENARIO_2
 
-#define AC_CEA2045
-//#define DC_CEA2045
+//#define AC_CEA2045
+#define DC_CEA2045
 
 //#define DFW                         // Enable downloadable firmware
 
@@ -88,16 +88,21 @@
 //----------------------------
 // MCI SPI pins
 //----------------------------
-#define SPI_ATTN_TRIS           (TRISBbits.TRISB2) //  ATTN pin  (#23)
-#define SPI_ATTN_IO             (LATBbits.LATB2)
-#define SPI_ATTN_INACTIVE      LATBSET = BIT_2;
-#define SPI_ATTN_ASSERT        LATBCLR = BIT_2;
+#if defined(DC_CEA2045)
 
+#define SPI_MISO_TRIS          (TRISFbits.TRISF8)    //SDI pin    (#52))
+#define SPI_MOSI_TRIS          (TRISFbits.TRISF2)    //SDI pin    (#52))
+#define SPI_ATTN_INACTIVE      { LATBSET = BIT_2; TRISBbits.TRISB2 = 1; }    // Pin has a pull-up that deasserts
+#define SPI_ATTN_ASSERT        { LATBCLR = BIT_2; TRISBbits.TRISB2 = 0; }
+
+#define SPI_SCLK_TRIS              (TRISDbits.TRISD15) //SCLK pin     (#48)
 #define SPI_CS_TRIS              (TRISDbits.TRISD14) //CS pin     (#47)   (CN20)
 #define SPI_CS_IO                (PORTDbits.RD14)
 #define SPI_CS_INT_ENABLE      CNENSET = BIT_20;     // to enable CN interrupts on pin47
 #define CN_TURN_ON                 CNCONSET = BIT_15;    // to turn on the CN module
 #define CN_INT_ENABLE           (IEC1bits.CNIE) = 1;  // enable CN interrupts
+
+#endif
 
 //----------------------------
 // LED and Button I/O pins
@@ -232,7 +237,7 @@
 // JK - modified to support UART1 when using UART2 for AC-CEA2045
 // note: SENSOR_UART is the debug uart defined by the Wifi G demo board. Need to 
 //       preserve names as much as posible so we don't break the TCP/IP Stack
-#if defined AC_CEA2045
+#if defined(AC_CEA2045)
     #define SENSOR_UART         UART1
     #define UARTTX_TRIS   (TRISFbits.TRISRF8) 
     #define UARTTX_IO   (PORTFbits.RF8) 
@@ -248,7 +253,10 @@
     #define DataRdyUART()       DataRdyUART1() 
     #define ReadUART()          ReadUART1()
     #define WriteUART(a)        WriteUART1(a)
-#else
+    #define UART_REMAPPED 1
+#endif
+
+#if !defined(DC_CEA2045) && !defined(AC_CEA2045)
     #define SENSOR_UART         UART2
     #define UARTTX_TRIS   (TRISFbits.TRISF5) 
     #define UARTTX_IO   (PORTFbits.RF5) 
@@ -264,6 +272,26 @@
     #define DataRdyUART()       DataRdyUART2() 
     #define ReadUART()          ReadUART2()
     #define WriteUART(a)        WriteUART2(a)
+    #define UART_REMAPPED 1
+#endif
+
+#if !defined(UART_REMAPPED)
+    #define SENSOR_UART   
+    #define UARTTX_TRIS   
+    #define UARTTX_IO   
+    #define UARTRX_TRIS 
+    #define UARTRX_IO   
+    #define UBRG    U2BRG 
+    #define UMODE    U2MODE 
+    #define USTA    U2STA 
+    #define BusyUART()          
+    #define putcUART(a)         
+    #define putrsUART(a)        
+    #define putsUART(a)         
+    #define DataRdyUART()       
+    #define ReadUART()          
+    #define WriteUART(a)        
+    #define UART_REMAPPED 1
 #endif
 
 #endif // #ifndef HARDWARE_PROFILE_H

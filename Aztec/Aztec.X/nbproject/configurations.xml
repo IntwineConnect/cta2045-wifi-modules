@@ -25,6 +25,9 @@
       <itemPath>../MCI_Common.h</itemPath>
       <itemPath>../LinkLayerMessaging.h</itemPath>
       <itemPath>../BasicDR.h</itemPath>
+      <itemPath>C:/Program Files (x86)/Microchip/xc32/v1.42/pic32-libs/include/plib.h</itemPath>
+      <itemPath>C:/Program Files (x86)/Microchip/xc32/v1.42/pic32-libs/include/peripheral/int_5xx_6xx_7xx.h</itemPath>
+      <itemPath>C:/Program Files (x86)/Microchip/xc32/v1.42/pic32-libs/include/peripheral/uart.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -137,6 +140,8 @@
     <Elem>..\MicroChip\TCPIP_Stack</Elem>
     <Elem>..\Configs</Elem>
     <Elem>..\MicroChip\TCPIP_Stack\WiFi</Elem>
+    <Elem>C:/Program Files (x86)/Microchip/xc32/v1.42/pic32-libs/include</Elem>
+    <Elem>C:/</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -148,7 +153,7 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>ICD3PlatformTool</platformTool>
         <languageToolchain>XC32</languageToolchain>
-        <languageToolchainVersion>1.40</languageToolchainVersion>
+        <languageToolchainVersion>1.42</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <compileType>

@@ -82,7 +82,7 @@ extern RelayMsgData ICG_RelayMsgData;
 
 extern short int httpCode;
 extern unsigned char codeByte;
-extern BOOL ResponseReadyFlag;
+extern volatile BOOL ResponseReadyFlag;
 
 
 

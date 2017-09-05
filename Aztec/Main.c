@@ -154,9 +154,6 @@ int main(void)
 //    ReadI2C( I2C_BUS, SI7005_ADDRESS, 1, Si7005Data, 2);
 //    Temp = Si7005Data[0] << 8 + Si7005Data[1];
 
-    // 1ms tick for timed callback functions
-    TimeMonitorInit();
-
     // Initialize TCP/IP stack timer
     TickInit();
 
@@ -192,7 +189,7 @@ int main(void)
     WFInitScan();
     #endif
 
-    // WF_PRESCAN: Pre-scan before starting up as SoftAP mode
+//    // WF_PRESCAN: Pre-scan before starting up as SoftAP mode
     WF_CASetScanType(MY_DEFAULT_SCAN_TYPE);
     WF_CASetChannelList(channelList, sizeof(channelList));
 
@@ -241,57 +238,65 @@ int main(void)
     // job.
     // If a task needs very long time to do its job, it must be broken
     // down into smaller pieces so that other tasks can have CPU time.
+    int ctr = 0;
     AppTaskInit();
     while(1)
     {
         ClearWDT();
         
-        if(FirstTime == TRUE)
-        {
-            //DL_Nak(0x89);
-            DelayMs(100);
-            retval = SendShedCommand(247);
-            DelayMs(100);
-            retval = SendEndShedCommand();
-            DelayMs(100);
-            retval = SendRequestForPowerLevel(76.1,1);
-            DelayMs(100);
-            retval = SendPresentRelativePrice(8.2);
-            DelayMs(100);
-            retval = SendTimeRemainingInPresentPricePeriod(356);
-            DelayMs(100);
-            retval = SendCriticalPeakEvent(465);
-            DelayMs(100);
-            retval = SendGridEmergency(222);
-            DelayMs(100);
-            retval = SendLoadUp(2889);            
-            DelayMs(100);
-            retval = SendQueryOpState();
-            
-         
-            
-            
-            /*
-            DelayMs(100);
-            SendSendNextCommandToSlot(2);
-            DelayMs(100);
-            SendQueryGetAvailableSlotNumbers();
-            DelayMs(100);
-            SendQueryGetSGDSlotNumber();
-            DelayMs(100);
-            SendQueryMaximumPayloadLength();
-            DelayMs(100);
-            SendResponseMaximumPayloadLength();
-            DelayMs(100);
-            SendRequestDifferentPowerMode(2);
-            DelayMs(100);
-            SendRequestDifferentBitRate(0);
-            */
-            
-            
-            FirstTime = FALSE;
+        SPI_Driver_Task();
         
+        if (ctr == 1000){
+            SendEndShedCommand();
         }
+        ctr++;
+        
+//        if(FirstTime == TRUE)
+//        {
+//            //DL_Nak(0x89);
+//            DelayMs(100);
+//            retval = SendShedCommand(247);
+//            DelayMs(100);
+//            retval = SendEndShedCommand();
+//            DelayMs(100);
+//            retval = SendRequestForPowerLevel(76.1,1);
+//            DelayMs(100);
+//            retval = SendPresentRelativePrice(8.2);
+//            DelayMs(100);
+//            retval = SendTimeRemainingInPresentPricePeriod(356);
+//            DelayMs(100);
+//            retval = SendCriticalPeakEvent(465);
+//            DelayMs(100);
+//            retval = SendGridEmergency(222);
+//            DelayMs(100);
+//            retval = SendLoadUp(2889);            
+//            DelayMs(100);
+//            retval = SendQueryOpState();
+//            
+//         
+//            
+//            
+//            /*
+//            DelayMs(100);
+//            SendSendNextCommandToSlot(2);
+//            DelayMs(100);
+//            SendQueryGetAvailableSlotNumbers();
+//            DelayMs(100);
+//            SendQueryGetSGDSlotNumber();
+//            DelayMs(100);
+//            SendQueryMaximumPayloadLength();
+//            DelayMs(100);
+//            SendResponseMaximumPayloadLength();
+//            DelayMs(100);
+//            SendRequestDifferentPowerMode(2);
+//            DelayMs(100);
+//            SendRequestDifferentBitRate(0);
+//            */
+//            
+//            
+//            FirstTime = FALSE;
+//        
+//        }
 
          if (AppConfig.networkType == WF_SOFT_AP || AppConfig.networkType == WF_INFRASTRUCTURE) {
             if (g_scan_done) {
@@ -457,12 +462,6 @@ static void InitializeBoard(void)
     LED0_TRIS = 0;
     LED1_TRIS = 0;
     LED2_TRIS = 0;
-
-#ifdef DC_CEA2045
-    //SPI ATTN
-    SPI_ATTN_TRIS = 0;
-    SPI_ATTN_INACTIVE
-#endif
     
     // Push Button
     SW0_TRIS = 1;
@@ -480,9 +479,11 @@ static void InitializeBoard(void)
     CNEN = 0x00000000;
     CNCON = 0x00000000;
 
+#ifdef AC_CEA2045
     UARTiConfigure(UART1, 19200);
     UARTiConfigure(UART2, 19200);
-
+#endif
+    
     // Note: Interrupt priority, 1 is lowest priority to 7 which is highest priority
 
     // Enable the interrupt sources
@@ -498,44 +499,44 @@ static void InitializeBoard(void)
 
     IFS0CLR = 0xffffffff;
     IFS1CLR = 0xffffffff;
-    IFS0CLR = 0xffffffff;
+    IFS2CLR = 0xffffffff;
     
 #ifdef DC_CEA2045
-    //configure change notification interrupts for DC_CEA2045
-    //the order of these steps is recommended in sectino 12.3.3.1 of the PIC32 family reference manual
-    
+     //configure change notification interrupts for DC_CEA2045    
     SPI_CS_TRIS = 1;
     CN_TURN_ON                 //turn on CN module
     SPI_CS_INT_ENABLE     //configure SPI chip select pin for CN interrupts 
-    CN_INT_ENABLE         //enable CN interrupts
-            
-    //create interrupt for chip select change notification    
-    INTSetVectorPriority(INT_CHANGE_NOTICE_VECTOR,INT_PRIORITY_LEVEL_6);
-    INTSetVectorSubPriority(INT_CHANGE_NOTICE_VECTOR,INT_SUB_PRIORITY_LEVEL_0);
-            
+    
+    INTSetVectorPriority(INT_CHANGE_NOTICE_VECTOR, INT_PRIORITY_LEVEL_6);
+    INTSetVectorSubPriority(INT_CHANGE_NOTICE_VECTOR, INT_SUB_PRIORITY_LEVEL_0);
+    INTClearFlag(INT_CN);
+    INTEnable(INT_CN, INT_ENABLED);
 #endif
 
-            
+#if defined(AC_CEA2045)            
     INTSetVectorPriority(INT_UART_2_VECTOR, INT_PRIORITY_LEVEL_5);
     INTSetVectorSubPriority(INT_UART_2_VECTOR,INT_SUB_PRIORITY_LEVEL_0);
-#if defined(AC_CEA2045)
     INTEnable(INT_SOURCE_UART_RX(UART2), INT_ENABLED);
 #endif
 
-    INTSetVectorPriority(INT_SPI_3_VECTOR, INT_PRIORITY_LEVEL_4);  
-    INTSetVectorSubPriority(INT_SPI_3_VECTOR, INT_SUB_PRIORITY_LEVEL_0);    
-#if defined(INTWINE_CONNECTED_OUTLET) || defined(INTWINE_CONNECTED_LOAD_CONTROL)
-    SPI3EnableInterrupts();
+#if defined(DC_CEA2045) || defined(INTWINE_CONNECTED_OUTLET) || defined(INTWINE_CONNECTED_LOAD_CONTROL)
+    INTSetVectorPriority(INT_SPI_3_VECTOR, INT_PRIORITY_LEVEL_4);
+    INTSetVectorSubPriority(INT_SPI_3_VECTOR, INT_SUB_PRIORITY_LEVEL_0);
+    INTClearFlag(INT_SPI3RX);
+    INTClearFlag(INT_SPI3TX);
+    INTClearFlag(INT_SPI3E);
 #endif
+    
+    TimeMonitorInit();
 
     INTSetVectorPriority(INT_TIMER_2_VECTOR, INT_PRIORITY_LEVEL_1);  
     INTSetVectorSubPriority(INT_TIMER_2_VECTOR, INT_SUB_PRIORITY_LEVEL_0);	
     
-
     // Enable multi-vectored interrupts
+    INTConfigureSystem(INT_SYSTEM_CONFIG_MULT_VECTOR);
     INTEnableSystemMultiVectoredInt();
+    INTEnableInterrupts();
     
-
 
 /****************************************************************************
  Bits RF4 and RF4 are multifunction:
@@ -551,6 +552,11 @@ static void InitializeBoard(void)
     // TX inactive high
     TRISFCLR = BIT_5;
     LATFSET = BIT_5;
+#endif
+    
+#ifdef DC_CEA2045
+    // Initialize SPI I/Os and state machine
+    SPI_Driver_Task();
 #endif
 
 #ifdef INTWINE_CONNECTED_OUTLET
@@ -600,7 +606,9 @@ static void InitializeBoard(void)
     SI7005_IO = 0;  // Enable Si7005 and delay 15 ms
     DelayMs(15);
 
+#ifdef putrsUART
     putrsUART("\r\n\r\n\r\nAztec Init Complete\r\n");
+#endif
 }
 
 static ROM BYTE SerializedMACAddress[6] = {MY_DEFAULT_MAC_BYTE1, MY_DEFAULT_MAC_BYTE2, MY_DEFAULT_MAC_BYTE3, MY_DEFAULT_MAC_BYTE4, MY_DEFAULT_MAC_BYTE5, MY_DEFAULT_MAC_BYTE6};

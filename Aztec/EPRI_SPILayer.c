@@ -6,320 +6,372 @@
  * Date: 5/10/2016
  */
 
+
+#include "EPRI_SPILayer.h"
 #include <string.h>
+
+#include <xc.h>
+#include <sys/attribs.h>
 
 #include "HardwareProfile.h"
 
 #include "TimeMonitor.h"
 
-#include "INTiAPI.h"
-#include "spi.h"
+#define RX_BUF_SIZE 300
+#define TX_MSG_SIZE 10
+
+//#include "EPRI_SPILayer.h"
+
+#include "plib.h"
 #include "MCI_Common.h"
-#include "EPRI_SPILayer.h"
+//#include "Compiler.h"
+
+#define MESSAGE_TYPE_LENGTH 2 
+#define PAYLOAD_LENGTH_LENGTH 2
+#define CHECKSUM_LENGTH 2
 
 
-int OK_TO_READ_SPI = 0;
-int SPI_position_counter = 0;
-int SPI_numBytes = 0;
-unsigned char SPIRxBuf[RX_BUF_SIZE];
-unsigned char SPIrxmessage[RX_BUF_SIZE];
-unsigned char SPItxmessage[TX_MSG_SIZE];
-int SPIRxBytesReceived = 0;
-
-int SPI_OverRide = 0;
-int SPI_OptOutEvent = 0;
-int SPI_OptInEvent = 0;
-int SPI_IdleNormal;
-int SPI_RunningNormal;
-
-
-MCIResponse AsyncTxSPIBuf;
-MCIResponse AsyncRxSPIBuf;
-MCIResponse NullSPIBuf;
-
-volatile enum _TxSPIMsgState
+enum PhysicalLayerStateEnum
 {
-    TX_IDLE = 0,
-    TX_SEND_CMD,
-    TX_WAIT_LL_ACK,
-    TX_WAIT_APP_ACK,
-    TX_WAIT_LL_ACK_DLY,
-    TX_SEND_LL_ACK,
-    TX_WAIT_RETRY_DLY
-} TxSPIMsgState;
+    PHY_LAYER_INIT = 0,
+    PHY_LAYER_IDLE,
+    PHY_LAYER_RECEIVE,
+    PHY_LAYER_TRANSMIT,
+    PHY_LAYER_TRANSMIT_WAIT_TO_DEASSERT
+};
+typedef enum PhysicalLayerStateEnum PhysicalLayerStateEnum;
+typedef struct _PhysicalLayerInternals {
+    volatile PhysicalLayerStateEnum state;
+    volatile PhysicalLayerStateEnum nextState;
+    volatile PhysicalLayerStateEnum lastState;
+    volatile int rxRequest;     
+    volatile int rxLinkLayerDone;
+    volatile int rxComplete;    
+    volatile int txRequest;     
+    volatile int txLinkLayerDone; 
+    volatile int txComplete;   
+    volatile int txTimeout;
+    volatile int timerTimeout;  
+    volatile int txLastByteLoaded;
+    volatile int txLastByteTransferred;
+} PhysicalLayerInternals;
+volatile PhysicalLayerInternals physicalLayerInternals;
 
-volatile enum _RxSPIMsgState
-{
-    RX_IDLE = 0,
-    RX_CMD_RECEIVED,
-    RX_WAIT_LL_ACK_DLY,
-    RX_SEND_LL_ACK,
-    RX_WAIT_APP_ACK_DLY,
-    RX_SEND_APP_ACK,
-    RX_RECEIVE_LL_ACK
-} RxSPIMsgState;
+// Handy defines to keep the state machine code clean-ish
+#define ENTERING_SPI_PHYSICAL_LAYER_TASK_STATE (physicalLayerInternals.state != physicalLayerInternals.lastState)
+#define EXITING_SPI_PHYSICAL_LAYER_TASK_STATE (physicalLayerInternals.nextState != physicalLayerInternals.state)
 
-volatile enum _SPIBusState
-{
-    BUS_IDLE,
-    MASTER_WAITING,
-    SLAVE_WAITING,
-    MASTER_READY,
-    SLAVE_READY
-} SPIBusState;
+// Handshakes for Physical_Link_Layer_Task
+volatile int SPI_CS_RISING_EDGE = 0;         // Always written 1 form the change notification ISR; always read and reset to 0 from SPI_Physical_Layer_Task
 
-
-UINT16 MakeChecksumSPI(unsigned char * message, int len);
-void MCI_Wait_Callback();
-void App_Ack(unsigned char * message, int len);
-/** 
- * init function
- */
-void EPRI_SPI_init()
-{
-    
-    INTiRegisterSPI3CallbackFunction(SPI3_ISR);
-    
-    SPIrxbuffer_initialize();
-    SPI_position_counter = 0;
-    OK_TO_READ_SPI = 1;
-    
-    NullSPIBuf.numTries = 0;
-    NullSPIBuf.numBytesReceived = 0;
-    NullSPIBuf.LLResponseValid = 0;
-    NullSPIBuf.AppResponseValid = 0;
-    
-    SPI_OverRide = 0;
-    SPI_IdleNormal = 0;
-    SPI_RunningNormal = 0;
-    
+#define SPI_PHYSICAL_LAYER_TIME_MONITOR_IDX 7
+void SPI_Physical_Layer_Timeout_Callback(){
+    physicalLayerInternals.timerTimeout = 1;
 }
+#define SPI_START_PHYSICAL_LAYER_TIMER(timeout) { TimeMonitorDisableInterrupt(); physicalLayerInternals.timerTimeout = 0; TimeMonitorRegisterI(SPI_PHYSICAL_LAYER_TIME_MONITOR_IDX,timeout,SPI_Physical_Layer_Timeout_Callback); }
+#define SPI_CANCEL_PHYSICAL_LAYER_TIMER { TimeMonitorCancelI(SPI_PHYSICAL_LAYER_TIME_MONITOR_IDX); }
 
-void EPRI_SPI_configure(void)
+enum LinkLayerStateEnum
 {
-      // SPI3CON - bits
-      // 3    2    2    1    1    1    0    0
-      // 1    7    3    9    5    1    7    3
-      // 000x xxxx xxxx xxxx xxxx xxxx xxxx xxxx - no Framed SPI support
-      // xxx0 0000 0000 00xx xxxx xxxx xxxx xxxx - reserved
-      // xxxx xxxx xxxx xx0x xxxx xxxx xxxx xxxx - no Framed SPI support
-      // xxxx xxxx xxxx xxx0 xxxx xxxx xxxx xxxx - reserved
-      // xxxx xxxx xxxx xxxx 1xxx xxxx xxxx xxxx - Enabled
-      // xxxx xxxx xxxx xxxx x0xx xxxx xxxx xxxx - No Freeze
-      // xxxx xxxx xxxx xxxx xx0x xxxx xxxx xxxx - Continue in idle mode
-      // xxxx xxxx xxxx xxxx xxx0 xxxx xxxx xxxx - SDOx control by SPI module
-      // xxxx xxxx xxxx xxxx xxxx 00xx xxxx xxxx - 8 bit data width
-      // xxxx xxxx xxxx xxxx xxxx xx0x xxxx xxxx - Input sampled at middle
-      // xxxx xxxx xxxx xxxx xxxx xxx0 xxxx xxxx - CKE = 0 (clock edge, 0=change from idle to active, 1 = change from active to idle) REQUIRED FOR MODE 0
-      // xxxx xxxx xxxx xxxx xxxx xxxx 0xxx xxxx - SSEN = 0
-      // xxxx xxxx xxxx xxxx xxxx xxxx x0xx xxxx - CKP = 0 (clock polarity, 0 = idle low, active high)  REQUIRED FOR MODE 0
-      // xxxx xxxx xxxx xxxx xxxx xxxx xx0x xxxx - MSTEN = 0, the SCG is the master of the bus, not the UCM
-      // xxxx xxxx xxxx xxxx xxxx xxxx xxx0 xxxx - SDIx control by SPI module
-      // xxxx xxxx xxxx xxxx xxxx xxxx xxxx 0000 - used for enhanced buffer mode
+    LINK_LAYER_INIT = 0,                // Valid transitions out: LINK_LAYER_IDLE
+    LINK_LAYER_IDLE,                    // Valid transitions out: LINK_LAYER_RECEIVE_MESSAGE_TYPE, LINK_LAYER_TRANSMIT
+    LINK_LAYER_RECEIVE_MESSAGE_TYPE,    // Valid transitions out: LINK_LAYER_RECEIVE_PAYLOAD_LENGTH, LINK_LAYER_TIMEOUT
+    LINK_LAYER_RECEIVE_PAYLOAD_LENGTH,  // Valid transitions out: LINK_LAYER_RECEIVE_PAYLOAD, LINK_LAYER_TIMEOUT
+    LINK_LAYER_RECEIVE_PAYLOAD,         // Valid transitions out: LINK_LAYER_RECEIVE_CHECKSUM, LINK_LAYER_TIMEOUT
+    LINK_LAYER_RECEIVE_CHECKSUM,        // Valid transitions out: LINK_LAYER_RECEIVE_DELAY_ACK_NAK, LINK_LAYER_TIMEOUT
+    LINK_LAYER_RECEIVE_DELAY_ACK_NAK,        // Valid transitions out: LINK_LAYER_TIMEOUT
+    LINK_LAYER_RECEIVE_REPLY_ACK_NAK,
+    LINK_LAYER_TRANSMIT_MESSAGE,
+    LINK_LAYER_TRANSMIT_WAIT_FOR_ACK_NAK,
+    LINK_LAYER_TRANSMIT_WAIT_FOR_RETRY_TIMER,
+    LINK_LAYER_TIMEOUT
+};
+typedef enum LinkLayerStateEnum LinkLayerStateEnum;
 
-      // 0000 0000 0000 0000 0000 0000 0000 0000 = 0x00000000
-      SPI3CON = 0x00000000;
-    
-      // Baud rate is Fpb / (2 * (SPIxBRG+1)) at 9 bits = max divisor of 1024
-      // mwn - determine the correct value for this
-      SPI3BRG = 5; // 512;
+typedef struct _LinkLayerInternals {
+   volatile LinkLayerStateEnum state;
+   volatile LinkLayerStateEnum nextState;
+   volatile LinkLayerStateEnum lastState;
+   volatile int enableReceivingBytes;
+   volatile int rxBytePosition;
+   volatile unsigned char volatile rxMessage[RX_BUF_SIZE];
+   volatile int parsedRxMessageLength;
+   volatile int checksumValid;
+   volatile int txBytePosition;
+   volatile unsigned char volatile txMessage[TX_MSG_SIZE];
+   volatile int txMessageLength;
+   volatile int txMessageResponseReceived;
+   volatile int txMessageRetries;
+   volatile int txMessageRetryCounter;
+   volatile LinkLayerStateEnum txMessageRetryTargetState;
+   volatile int timerTimeout;
+} LinkLayerInternals;                  // This struct contains state variables that persist from call to call of Link_Layer_Task
+volatile LinkLayerInternals linkLayerInternals; // The only code that ever writes and updates this variable is Link_Layer_Task and the SPI RX ISR
+
+// Handy defines to keep the state machine code clean-ish
+#define ENTERING_SPI_LINK_LAYER_TASK_STATE (linkLayerInternals.state != linkLayerInternals.lastState)
+#define EXITING_SPI_LINK_LAYER_TASK_STATE (linkLayerInternals.nextState != linkLayerInternals.state)
+
+// Handshakes for SPI_Link_Layer_Task
+volatile int SGD_TO_UCM_MESSAGE_REQUEST = 0; // Always written 1 from change notification ISR; always read and reset to 0 from SPI_Link_Layer_Task
+volatile int UCM_TO_SGD_MESSAGE_REQUEST = 0; // Always written 1 from MCISendAsyncSPI; always read and reset to 0 from SPI_Link_Layer_Task
+volatile int UCM_TO_SGD_ACK_NAK_REQUEST = 0; // Always written 1 from Link_Layer_Send_ACK_NAK; always reset to 0 from SPI_Link_Layer_Task
+
+#define SPI_LINK_LAYER_TIME_MONITOR_IDX 6
+void SPI_Link_Layer_Timeout_Callback(){
+    linkLayerInternals.timerTimeout = 1;
 }
+#define SPI_START_LINK_LAYER_TIMER(timeout) { TimeMonitorDisableInterrupt(); linkLayerInternals.timerTimeout = 0; TimeMonitorRegisterI(SPI_LINK_LAYER_TIME_MONITOR_IDX,timeout,SPI_Link_Layer_Timeout_Callback); }
 
+#define TIME_MIN_WAIT_TIME_TO_SEND_ACK_NAK_IN_MS 40                 // T_ma, min
+#define TIME_MAX_WAIT_TIME_FOR_ACK_NAK_IN_MS 500                    // T_ma, max
+#define TIME_MIN_WAIT_TIME_TO_SEND_RESPONSE_AFTER_ACK_NAK_IN_MS 100 // T_ar, min
+#define TIME_MIN_WAIT_TIME_TO_SEND_ANOTHER_MESSAGE_IN_MS 100        // T_im, min
+#define TIME_MAX_MESSAGE_DURATION_IN_MS 500                         // T_ml, max
+#define TIME_MAX_WAIT_TIME_FOR_PARTNER_IN_MS 100                    // Per 15.3.1.9
 
 /**
  * Interrupt handler for chip select assertion
  */
-
 void __ISR(_CHANGE_NOTICE_VECTOR, ipl6) ChipSelect_ISR(void)
-{
-    INTClearFlag(INT_CN);
-    if(SPI_CS_IO)    //transition was a rising edge
-    {
-        SPI_ATTN_INACTIVE
-        SPIBusState = BUS_IDLE;
-    }
-    else
-    {     
-        SPI_ATTN_ASSERT
-        SPIBusState = SLAVE_READY;
-    }
-}
-
-
-/**
- * void BusMasterCheck(void)
- * 
- * checks to see if the CTA2045 bus master is aware that a slave wants to send
- * if the chip select pin is pulled low, set the SPIBusState to MASTER_READY
- * 
- * Jordan Murray   May 17, 2016
- */
-void BusMasterCheck()
-{
-    if(SPI_CS_IO == 0)
-    {
-        SPIBusState == MASTER_READY;
-    }
-    else
-    {
-        SPIBusState == SLAVE_WAITING;
-    }
-}
-
-
-
-void EPRI_SPI_write(unsigned char *message, int length)
-{
-    //ASSERT ATTN PIN
-    SPI_ATTN_ASSERT
-    SPIBusState = SLAVE_WAITING;
-    
-    //configure SPI
-    EPRI_SPI_configure();  
-    
-    //wait for SCG to be ready - set callback in case the SCG doesn't respond
-    TimeMonitorRegisterI(1,CS_ASSERT_TIMEOUT_MS, SPI_Message_Timeout_Callback);
-    while(SPIBusState == SLAVE_WAITING)  //the timeout callback will change the state to something else
-    {
-        BusMasterCheck();
-    }
-    
-    if(SPIBusState == MASTER_READY)
-    {   
-        SPI3BUF = 0;            //clear SPI data buffer
-        
-        //start SPI channel 3    
-        SpiChnEnable(SPI_CHANNEL3,SPI_ENABLE);
-    
-        //call function to write data
-        SPI3WriteBinaryData(message, length);
-        SPIBusState == BUS_IDLE;
-        
-        //stop and reset SPI channel 3
-        SpiChnEnable(SPI_CHANNEL3,SPI_DISABLE);
-    }
-
-        
-    SPI_ATTN_INACTIVE
-
-
-}
-
-/*
- *Function:  void SPI3_ISR(void)
- *Description: ISR for SPI3
- *Creation Data:  5/11/2016
- *Author: Jordan Murray
- */
-void SPI3_ISR(void)
-{
-    unsigned char i;
-    
-    //check receiver
-    if(INTGetFlag(INT_SPI3RX) && INTGetEnable(INT_SPI3RX))  //something in the receive buffer?
-    {
-        while(!SpiChnRxBuffEmpty(SPI_CHANNEL3))        //while there is data in the RxBuffer, keep reading from the common buffer
+{ 
+    if(INTGetFlag(INT_CN) && INTGetEnable(INT_CN)){
+        mCNClearIntFlag();
+        if(SPI_CS_IO)
         {
-            i = SpiChnGetC(SPI_CHANNEL3);
-                    if(OK_TO_READ_SPI)
-                    {
-                        TimeMonitorRegisterI(2, 20, SPI_MCI_Sync_Callback);
-                        
-                        SPIRxBuf[SPI_position_counter] = i;
-                        SPIRxBuf[SPI_position_counter + 1] = '/0';
-                        SPI_position_counter++;
-                    }
+            // If we se CS go high (this was a low to high transition) and 
+            // we're currently receiving or transmitting, disable the SPI TX
+            // and RX interrupts and handshake this info to the physical
+            // layer state machine
+            if(physicalLayerInternals.state == PHY_LAYER_RECEIVE) {
+                INTEnable(INT_SOURCE_SPI_TX(SPI_CHANNEL3), INT_DISABLED);
+                INTClearFlag(INT_SOURCE_SPI_TX(SPI_CHANNEL3));
+            } else if(physicalLayerInternals.state == PHY_LAYER_TRANSMIT) {
+                INTEnable(INT_SOURCE_SPI_RX(SPI_CHANNEL3), INT_DISABLED);
+                INTClearFlag(INT_SOURCE_SPI_RX(SPI_CHANNEL3));
+            }
+            SPI_CS_RISING_EDGE = 1;            
+        }
+        else
+        {
+            // CS was asserted - this means the SGD wants to send us a message
+            if( (linkLayerInternals.state == LINK_LAYER_IDLE || linkLayerInternals.state == LINK_LAYER_TRANSMIT_WAIT_FOR_ACK_NAK) && physicalLayerInternals.state == PHY_LAYER_IDLE){
+                SGD_TO_UCM_MESSAGE_REQUEST = 1;
+            }
         }
     }
 }
 
-
-
-/**
- * Construct and send an MCI packet via the UART, blocking
- * 
- */
-
-MCIResponse MCISendSPI(unsigned char * msg)
+void SPI3_RX_ISR(void)
 {
-    if (MCI_IsSendingSPI())
-        return NullSPIBuf;
-    
-    MCISendAsyncSPI(msg);
-    
-    while(TxSPIMsgState != TX_IDLE);
-    
-    return AsyncTxSPIBuf;
+    unsigned char i;
+    if(INTGetFlag(INT_SPI3RX) && INTGetEnable(INT_SPI3RX))
+    {   
+        if(physicalLayerInternals.state == PHY_LAYER_RECEIVE){
+            while( SPI3STAT & 0x1 ){
+                // Always read the byte, even if we don't care about it (or
+                // can't fit it in the buffer) - this helps avoid SPI RX error
+                // interrupts.
+                i = SPI3BUF;
+                if(linkLayerInternals.rxBytePosition + 1 < RX_BUF_SIZE){
+                    linkLayerInternals.rxMessage[linkLayerInternals.rxBytePosition] = i;
+                    linkLayerInternals.rxBytePosition += 1;
+                    linkLayerInternals.rxMessage[linkLayerInternals.rxBytePosition] = '/0';
+                }
+            }
+        }
+    } 
 }
 
-/*
- * construct and send an MCI packet via SPI3, non-blocking
- * call is non-blocking with timeouts specified in MCI 2.0 spec
- * 
- */
-void MCISendAsyncSPI(unsigned char * msg)
+void SPI3_TX_ISR(void)
 {
-    int i = 0;
-    
-    if(RxSPIMsgState != RX_IDLE)
-        return;
-    
-    if(TxSPIMsgState == TX_IDLE)
-    {
-        //first try - clear buffer
-        AsyncTxSPIBuf.numTries = 1;
-        AsyncTxSPIBuf.numBytesReceived = 0;
-        AsyncTxSPIBuf.LLResponseValid = 0;
-        AsyncTxSPIBuf.AppResponseValid = 0;
+    if(INTGetFlag(INT_SPI3TX) && INTGetEnable(INT_SPI3TX))  //something in the receive buffer?
+    {   
+        if(physicalLayerInternals.state == PHY_LAYER_TRANSMIT){
+            if(!physicalLayerInternals.txLastByteLoaded &&
+               linkLayerInternals.txBytePosition < linkLayerInternals.txMessageLength && 
+               ((SPI3STAT >> 3) & 0x1)){      // in enhanced buffer mode, SPI3STAT[1] will be 0 when there is room in buffer, 1 when the buffer is full
+                if(linkLayerInternals.txBytePosition < TX_MSG_SIZE){
+                    SPI3BUF = linkLayerInternals.txMessage[linkLayerInternals.txBytePosition++];
+                }
+            } else if(physicalLayerInternals.txLastByteLoaded){
+                // This is the interrupt after we transmitted the very last byte. 
+                // We're completely finished transmitting data.
+                INTEnable(INT_SOURCE_SPI_TX(SPI_CHANNEL3), INT_DISABLED);
+                physicalLayerInternals.txLastByteTransferred = 1;
+            }
+            if(linkLayerInternals.txBytePosition >= linkLayerInternals.txMessageLength) {
+                // We're completely finished loading data for transfer.
+                // Not necessarily done transmitting the last byte of the message!
+                physicalLayerInternals.txLastByteLoaded = 1;
+            }
+            
+        }
     }
-    else
-        AsyncTxSPIBuf.numTries++;
-    
-    TxSPIMsgState = TX_SEND_CMD;
-    
-    //2nd two bytes of message are length of payload
-    int payloadLen = msg[2] * 256 + msg[3];
-    
-    for(i = 0; i< payloadLen+4; i++)
-    {
-        SPItxmessage[i] = msg[i];
+}
+
+int SPI_Physical_Layer_Task(void){ 
+    unsigned char throwAway;
+    int continueProcessing;
+
+    // By default, the next state is the current state. This avoids duplicating this line of code in every state.
+    physicalLayerInternals.nextState = physicalLayerInternals.state;
+
+    switch(physicalLayerInternals.state){
+        case PHY_LAYER_INIT:
+            // Initialize pins and peripherals
+            // * Set SCLK, Input
+            
+            SPI_MISO_TRIS = 0;  // MISO is SDO, Output
+            SPI_MOSI_TRIS = 1;  // MOSI is SDI, Input
+            SPI_SCLK_TRIS = 1;  // SCLK is Input
+            SPI_CS_TRIS = 1;    // CS is input
+
+            SPI_ATTN_INACTIVE   // ATTENTION is three-state. INACTIVE deasserts and tristates the line.
+
+            // * Register ISRs
+            INTiRegisterSPI3RxCallbackFunction(SPI3_RX_ISR);
+            INTiRegisterSPI3TxCallbackFunction(SPI3_TX_ISR);
+
+            SpiChnEnable(3, 0);
+            SpiChnConfigure(3, SPI_CONFIG_SLVEN|SPI_CONFIG_CKE_REV);
+
+            physicalLayerInternals.rxRequest = 0;
+            physicalLayerInternals.txRequest = 0;
+
+            physicalLayerInternals.nextState = PHY_LAYER_IDLE;
+            break;
+        case PHY_LAYER_IDLE:
+            // Wait for a RX interrupt or a TX command                
+            if(physicalLayerInternals.rxRequest){
+                physicalLayerInternals.rxComplete = 0;
+                physicalLayerInternals.rxLinkLayerDone = 0;
+                linkLayerInternals.rxBytePosition = 0;
+                SPI_CS_RISING_EDGE = 0;
+                physicalLayerInternals.nextState = PHY_LAYER_RECEIVE;
+            }
+
+            if(physicalLayerInternals.txRequest){
+                physicalLayerInternals.txComplete = 0;
+                physicalLayerInternals.txLastByteLoaded = 0;
+                physicalLayerInternals.txLastByteTransferred = 0;
+                physicalLayerInternals.txTimeout = 0;
+                physicalLayerInternals.txLinkLayerDone = 0;
+                linkLayerInternals.txBytePosition = 0;
+                SPI_CS_RISING_EDGE = 0;
+                physicalLayerInternals.nextState = PHY_LAYER_TRANSMIT;
+            }
+
+            break;
+        case PHY_LAYER_TRANSMIT:
+            // Precondition: Link Layer wants to send a message
+            if(ENTERING_SPI_PHYSICAL_LAYER_TASK_STATE){
+                physicalLayerInternals.txRequest = 0;
+                SPI3STATCLR = 1 << 8;
+                SPI3STATCLR = 1 << 6;
+//                    IEC0SET = BIT_28;
+                SpiChnEnable(3, 1);
+                SPI3BUF = linkLayerInternals.txMessage[linkLayerInternals.txBytePosition++];                
+                INTEnable(INT_SOURCE_SPI_TX(SPI_CHANNEL3), INT_ENABLED);
+                SPI_ATTN_ASSERT
+                SPI_START_PHYSICAL_LAYER_TIMER(TIME_MAX_WAIT_TIME_FOR_PARTNER_IN_MS)
+            }
+
+            // We don't do anything here - the SPI TX interrupt handler will be pulling bytes from the Link Layer until the entire message is transmitted...
+
+            if(!SPI_CS_IO){
+                // Our partner asserted chip select - disable the timer
+                SPI_CANCEL_PHYSICAL_LAYER_TIMER
+            }
+
+            if(physicalLayerInternals.timerTimeout && SPI_CS_IO){
+                // Timed out waiting for our partner to assert CS
+                physicalLayerInternals.txTimeout = 1;
+                // Link layer state machine must assert txLinkLayerDone and we'll go back to idle below
+            }
+
+            // Exit condition: Link Layer has transmitted the entire message
+            // Exit condition: SGD deasserts CS
+            if(physicalLayerInternals.txLastByteTransferred || SPI_CS_RISING_EDGE){ 
+                physicalLayerInternals.nextState = PHY_LAYER_TRANSMIT_WAIT_TO_DEASSERT;
+            }
+                
+            if(physicalLayerInternals.txLinkLayerDone){
+                // We were abnormally canceled from transmitting from the link
+                // layer. Probably due to a link layer timeout.
+                physicalLayerInternals.nextState = PHY_LAYER_IDLE;
+                physicalLayerInternals.txComplete = 1;
+            }
+
+            if(EXITING_SPI_PHYSICAL_LAYER_TASK_STATE && physicalLayerInternals.nextState == PHY_LAYER_IDLE){
+                SPI_ATTN_INACTIVE
+                SpiChnEnable(3, 0);
+                INTEnable(INT_SOURCE_SPI_TX(SPI_CHANNEL3), INT_DISABLED);
+            }
+            break;
+        case PHY_LAYER_TRANSMIT_WAIT_TO_DEASSERT:
+            if(ENTERING_SPI_PHYSICAL_LAYER_TASK_STATE){
+                // 19.2 kbps is roughly 2 bytes per millisecond
+                // We have to wait for one full byte to transfer at the slowest
+                // speed of 19.2 kbps.
+                // To be safe, I choose a delay of 2ms
+                SPI_START_PHYSICAL_LAYER_TIMER(2)
+            }
+            
+            if(physicalLayerInternals.timerTimeout){
+                physicalLayerInternals.nextState = PHY_LAYER_IDLE;
+                physicalLayerInternals.txComplete = 1;
+            }
+            
+            if(EXITING_SPI_PHYSICAL_LAYER_TASK_STATE){
+                SPI_ATTN_INACTIVE
+                SpiChnEnable(3, 0);
+                INTEnable(INT_SOURCE_SPI_TX(SPI_CHANNEL3), INT_DISABLED);
+            }
+            break;
+        case PHY_LAYER_RECEIVE:
+            // Precondition: CS was asserted by SGD
+            if(ENTERING_SPI_PHYSICAL_LAYER_TASK_STATE){
+                physicalLayerInternals.rxRequest = 0; // This acknowledges the RX request
+                SPI3STATCLR = 1 << 8;
+                SPI3STATCLR = 1 << 6;
+                while((SPI3STAT >> 0) & 0x1){
+                    throwAway = SPI3BUF;
+                }
+                INTEnable(INT_SOURCE_SPI_RX(SPI_CHANNEL3), INT_ENABLED);
+                SpiChnEnable(3, 1);
+                SPI_ATTN_ASSERT
+            }
+
+            // We don't do anything here - the SPI RX interrupt handler will be pushing bytes to the Link Layer until the Link Layer has received a full message...
+
+            // Exit condition: Link Layer has received a the entire message
+            if(physicalLayerInternals.rxLinkLayerDone){
+                physicalLayerInternals.nextState = PHY_LAYER_IDLE;
+                physicalLayerInternals.rxComplete = 1;
+            }
+
+            // Exit condition: SGD deasserts CS
+            if(SPI_CS_RISING_EDGE){
+                physicalLayerInternals.nextState = PHY_LAYER_IDLE;
+                physicalLayerInternals.rxComplete = 1;
+            }
+
+            if(EXITING_SPI_PHYSICAL_LAYER_TASK_STATE){
+                SPI_ATTN_INACTIVE
+                SpiChnEnable(3, 0);
+                INTEnable(INT_SOURCE_SPI_RX(SPI_CHANNEL3), INT_DISABLED);
+            }
+            break;
+        default:
+            Nop();
+            break;
     }
-    //add 4 to payload length to get message length
-    MakeChecksumSPI(SPItxmessage, (payloadLen + 4));
+    continueProcessing = physicalLayerInternals.state != physicalLayerInternals.nextState;
+    physicalLayerInternals.lastState = physicalLayerInternals.state;
+    physicalLayerInternals.state = physicalLayerInternals.nextState;
     
-    //send initial message to start Tx state machine
-    EPRI_SPI_write(SPItxmessage, (payloadLen + 6));
-    TimeMonitorRegisterI(1,INTER_MESSAGE_TIMEOUT_MS, SPI_Message_Timeout_Callback);
-    
-    TxSPIMsgState = TX_WAIT_LL_ACK;
-}
-
-/*
- * Check to see if transmit is in progress
- * 
- */
-BOOL MCI_IsSendingSPI()
-{
-    if(TxSPIMsgState == TX_IDLE)
-        return FALSE;
-    else
-        return TRUE;
-}
-
-
-/*
- * Send a time sync to SGD, non-blocking
- * 
- */
-BOOL SendTimeSyncSPI(int weekday, int hour)
-{
-    if(MCI_IsSendingSPI())
-        return FALSE;
-    
-    TimeSyncMsg[5] = (weekday << 4) + hour;
-    MCISendAsyncSPI(TimeSyncMsg);
-    
-    return TRUE;
+    return continueProcessing;
 }
 
 /**
@@ -329,8 +381,7 @@ BOOL SendTimeSyncSPI(int weekday, int hour)
  * @param len the length of the string.
  * @return 1 for good checksum, 0 for bad checksum
  */
-
-int ChecksumDecodeSPI(unsigned char * message, int len)
+int IsChecksumValid(unsigned char * message, int len)
 {
     // see MCI-V1-6.pdf page 68 for explanation
     int check1 = 0xAA;
@@ -356,15 +407,368 @@ int ChecksumDecodeSPI(unsigned char * message, int len)
     }
 }
 
+int SPI_Link_Layer_Task(void){
+    int continueProcessing;
+    
+    // By default, the next state is the current state. This avoids duplicating this line of code in every state.
+    linkLayerInternals.nextState = linkLayerInternals.state;
+
+    switch(linkLayerInternals.state){
+        case LINK_LAYER_INIT:
+            // * Init variables
+            SGD_TO_UCM_MESSAGE_REQUEST = 0;
+            UCM_TO_SGD_MESSAGE_REQUEST = 0;
+            UCM_TO_SGD_ACK_NAK_REQUEST = 0;
+
+            linkLayerInternals.rxBytePosition = 0;            
+            linkLayerInternals.txBytePosition = 0;
+            linkLayerInternals.txMessageRetries = 3;
+
+            linkLayerInternals.nextState = LINK_LAYER_IDLE;
+            break;
+        case LINK_LAYER_IDLE:
+            // Exit condition: MCISendAsyncSPI has been called and has a message to transmit
+            if(UCM_TO_SGD_MESSAGE_REQUEST == 1 && physicalLayerInternals.state == PHY_LAYER_IDLE){
+                linkLayerInternals.nextState = LINK_LAYER_TRANSMIT_MESSAGE;
+                linkLayerInternals.txMessageRetryTargetState = LINK_LAYER_TRANSMIT_MESSAGE;
+                linkLayerInternals.txMessageRetryCounter = linkLayerInternals.txMessageRetries;
+            }
+
+            // Exit condition: The port change ISR indicates that the SGD wants to send us a message
+            // Or we got back to this case and CS was still low...
+            if(SGD_TO_UCM_MESSAGE_REQUEST == 1 && physicalLayerInternals.state == PHY_LAYER_IDLE){
+                linkLayerInternals.nextState = LINK_LAYER_RECEIVE_MESSAGE_TYPE;
+            }
+
+            // Exit condition: the app layer wants to send an ACK / NAK
+            if(UCM_TO_SGD_ACK_NAK_REQUEST == 1 && physicalLayerInternals.state == PHY_LAYER_IDLE){
+                linkLayerInternals.nextState = LINK_LAYER_RECEIVE_REPLY_ACK_NAK;
+                linkLayerInternals.txMessageRetryTargetState = LINK_LAYER_RECEIVE_REPLY_ACK_NAK;
+                linkLayerInternals.txMessageRetryCounter = linkLayerInternals.txMessageRetries;
+            }
+
+            break;
+        case LINK_LAYER_RECEIVE_MESSAGE_TYPE:
+            if(ENTERING_SPI_LINK_LAYER_TASK_STATE){
+                SGD_TO_UCM_MESSAGE_REQUEST = 0;
+                linkLayerInternals.rxBytePosition = 0;
+                linkLayerInternals.parsedRxMessageLength = 0;
+                linkLayerInternals.checksumValid = 0;
+                physicalLayerInternals.rxRequest = 1;
+                
+                // Note that all future read states depend on this timer being
+                // set. Be careful if you change it or remove it.
+                SPI_START_LINK_LAYER_TIMER(TIME_MAX_MESSAGE_DURATION_IN_MS)
+            }
+
+            // Exit condition: we have received the message type
+            //      path 1: the message type is an ACK/NAK, go to idle
+            //      path 2: go to LINK_LAYER_RECEIVE_PAYLOAD_LENGTH
+            if(linkLayerInternals.rxBytePosition >= MESSAGE_TYPE_LENGTH){
+                // Did a wild ACK / NAK appear? This really shouldn't happen, 
+                // but we'll be relaxed for our SGD and just go back to idle, 
+                // pretending it never happened.
+                if(linkLayerInternals.rxMessage[0] == 0x06 && linkLayerInternals.rxMessage[1] == 0x00){
+                    // ACK
+                    linkLayerInternals.txMessageResponseReceived = 1;
+                    linkLayerInternals.nextState = LINK_LAYER_IDLE;
+                }else if(linkLayerInternals.rxMessage[0] == 0x15){
+                    // NAK
+                    linkLayerInternals.txMessageResponseReceived = 1;
+                    linkLayerInternals.nextState = LINK_LAYER_IDLE;
+                } else {
+                    // Message type received, carry on.
+                    linkLayerInternals.nextState = LINK_LAYER_RECEIVE_PAYLOAD_LENGTH;
+                }
+            }
+
+            // Exit condition: timeout
+            //      path 1: go to LINK_LAYER_ERROR
+            if(linkLayerInternals.timerTimeout){
+                linkLayerInternals.nextState = LINK_LAYER_TIMEOUT;
+            }
+
+            if(EXITING_SPI_LINK_LAYER_TASK_STATE && (linkLayerInternals.nextState == LINK_LAYER_IDLE || linkLayerInternals.nextState == LINK_LAYER_TIMEOUT)){
+                physicalLayerInternals.rxLinkLayerDone = 1;
+            }
+
+            break;
+        case LINK_LAYER_RECEIVE_PAYLOAD_LENGTH:  // Valid transitions out: LINK_LAYER_RECEIVE_PAYLOAD, LINK_LAYER_TIMEOUT
+            // This state can timeout if the timer that was set in 
+            // LINK_LAYER_RECEIVE_MESSAGE_TYPE lapses
+            
+            // Exit condition: we have received the message length
+            //      path 1: the length is too long for us to support, go send a NAK
+            //      path 2: go to LINK_LAYER_RECEIVE_PAYLOAD
+            if(linkLayerInternals.rxBytePosition >= MESSAGE_TYPE_LENGTH + PAYLOAD_LENGTH_LENGTH){
+                linkLayerInternals.parsedRxMessageLength = ((linkLayerInternals.rxMessage[2] << 8) | linkLayerInternals.rxMessage[3]) & 0x1FFF; // Only the bottom 13 bits of the payload length are valid
+                if(linkLayerInternals.parsedRxMessageLength > RX_BUF_SIZE){
+                    linkLayerInternals.txMessage[0] = 0x15; // NAK
+                    linkLayerInternals.txMessage[1] = 0x02; // Invalid length
+                    linkLayerInternals.txMessageLength = 2;
+                    linkLayerInternals.nextState = LINK_LAYER_RECEIVE_DELAY_ACK_NAK;
+                } else {
+                    linkLayerInternals.nextState = LINK_LAYER_RECEIVE_PAYLOAD;
+                }
+            }
+
+            // Exit condition: timeout
+            //      path 1: go to LINK_LAYER_ERROR
+            if(linkLayerInternals.timerTimeout){
+                linkLayerInternals.nextState = LINK_LAYER_TIMEOUT;
+            }
+
+            if(EXITING_SPI_LINK_LAYER_TASK_STATE && (linkLayerInternals.nextState == LINK_LAYER_RECEIVE_DELAY_ACK_NAK || linkLayerInternals.nextState == LINK_LAYER_TIMEOUT)){
+                physicalLayerInternals.rxLinkLayerDone = 1;
+            }
+
+            break;
+        case LINK_LAYER_RECEIVE_PAYLOAD:         // Valid transitions out: LINK_LAYER_RECEIVE_CHECKSUM, LINK_LAYER_TIMEOUT
+            // This state can timeout if the timer that was set in 
+            // LINK_LAYER_RECEIVE_MESSAGE_TYPE lapses
+            
+            // Exit condition: the entire payload has been received
+            //      path 1: go to LINK_LAYER_RECEIVE_CHECKSUM
+            if(linkLayerInternals.rxBytePosition >= linkLayerInternals.parsedRxMessageLength + MESSAGE_TYPE_LENGTH + PAYLOAD_LENGTH_LENGTH){
+                linkLayerInternals.nextState = LINK_LAYER_RECEIVE_CHECKSUM;
+            }
+
+            // Exit condition: timeout
+            //      path 1: go to LINK_LAYER_ERROR
+            if(linkLayerInternals.timerTimeout){
+                linkLayerInternals.nextState = LINK_LAYER_TIMEOUT;
+            }
+
+            if(EXITING_SPI_LINK_LAYER_TASK_STATE && linkLayerInternals.nextState == LINK_LAYER_TIMEOUT){
+                physicalLayerInternals.rxLinkLayerDone = 1;
+            }
+
+            break;
+        case LINK_LAYER_RECEIVE_CHECKSUM:        // Valid transitions out: LINK_LAYER_RECEIVE_DELAY_ACK_NAK, LINK_LAYER_TIMEOUT
+            // This state can timeout if the timer that was set in 
+            // LINK_LAYER_RECEIVE_MESSAGE_TYPE lapses
+            
+            // Exit condition: we received the checksum bytes
+            //      path 1: Send an ACK
+            //      path 2: Send a NAK
+            if(linkLayerInternals.rxBytePosition >= linkLayerInternals.parsedRxMessageLength + MESSAGE_TYPE_LENGTH + PAYLOAD_LENGTH_LENGTH + CHECKSUM_LENGTH){
+                linkLayerInternals.checksumValid = IsChecksumValid(linkLayerInternals.rxMessage, linkLayerInternals.parsedRxMessageLength + MESSAGE_TYPE_LENGTH + PAYLOAD_LENGTH_LENGTH + CHECKSUM_LENGTH);
+                if(linkLayerInternals.checksumValid){
+                    linkLayerInternals.txMessage[0] = 0x06; // ACK
+                    linkLayerInternals.txMessage[1] = 0x00;
+                    linkLayerInternals.txMessageLength = 2;
+                    linkLayerInternals.nextState = LINK_LAYER_RECEIVE_DELAY_ACK_NAK;
+                } else {
+                    linkLayerInternals.txMessage[0] = 0x15; // NAK
+                    linkLayerInternals.txMessage[1] = 0x03; // Checksum error
+                    linkLayerInternals.txMessageLength = 2;
+                    linkLayerInternals.nextState = LINK_LAYER_RECEIVE_DELAY_ACK_NAK;
+                }
+            }
+
+            // Exit condition: timeout
+            //      path 1: go to LINK_LAYER_ERROR
+            if(linkLayerInternals.timerTimeout){
+                linkLayerInternals.nextState = LINK_LAYER_TIMEOUT;
+            }
+
+            if(EXITING_SPI_LINK_LAYER_TASK_STATE && (linkLayerInternals.nextState == LINK_LAYER_TIMEOUT || linkLayerInternals.nextState == LINK_LAYER_RECEIVE_DELAY_ACK_NAK)){
+                physicalLayerInternals.rxLinkLayerDone = 1;
+            }
+
+            break;
+        case LINK_LAYER_RECEIVE_DELAY_ACK_NAK:        // Valid transitions out: LINK_LAYER_IDLE, LINK_LAYER_TIMEOUT
+            if(ENTERING_SPI_LINK_LAYER_TASK_STATE){
+                UCM_TO_SGD_ACK_NAK_REQUEST = 0;                
+                
+                SPI_START_LINK_LAYER_TIMER(TIME_MIN_WAIT_TIME_TO_SEND_ACK_NAK_IN_MS)
+            }
+
+            if(linkLayerInternals.timerTimeout){
+                linkLayerInternals.nextState = LINK_LAYER_RECEIVE_REPLY_ACK_NAK;
+            }
+            break;
+        case LINK_LAYER_RECEIVE_REPLY_ACK_NAK:
+            // Precondition: linkLayerInternals.txMessage and 
+            // linkLayerInternals.txMessageLength have been set with ACK or 
+            // NAK + NAK Code                               
+
+            // Timeout for this state is handled by the physical layer's 
+            // txTimeout flag
+            
+            if(ENTERING_SPI_LINK_LAYER_TASK_STATE){
+                linkLayerInternals.txBytePosition = 0;
+                linkLayerInternals.txMessageResponseReceived = 0;
+                physicalLayerInternals.txRequest = 1;
+            }
+            
+            // We don't do anything here - the Physical Layer state machine will enable the TX ISR, and it will pick up our TX message
+           
+            if(physicalLayerInternals.txComplete){   
+                linkLayerInternals.nextState = LINK_LAYER_IDLE;
+            }
+
+            if(physicalLayerInternals.txTimeout){
+                linkLayerInternals.nextState = LINK_LAYER_TIMEOUT;
+            }
+            
+            if(EXITING_SPI_LINK_LAYER_TASK_STATE){
+                physicalLayerInternals.txLinkLayerDone = 1;
+            }
+
+            break;
+        case LINK_LAYER_TRANSMIT_MESSAGE:   // Valid transitions out: LINK_LAYER_TRANSMIT_PAYLOAD, LINK_LAYER_TIMEOUT            
+            // Precondition: linkLayerInternals.txMessage is set with message contents and the appropriate checksum has been inserted into txMessage
+            // Precondition: linkLayerInternals.txMessageLength has been set
+            
+            // Timeout for this state is handled by the physical layer's 
+            // txTimeout flag
+
+            if(ENTERING_SPI_LINK_LAYER_TASK_STATE){
+                linkLayerInternals.txMessageRetryCounter--;
+                UCM_TO_SGD_MESSAGE_REQUEST = 0;
+                
+                linkLayerInternals.txBytePosition = 0;
+                linkLayerInternals.txMessageResponseReceived = 0;
+
+                // This kicks off the physical layer to do the work:
+                physicalLayerInternals.txComplete = 0;
+                physicalLayerInternals.txRequest = 1;
+            }
+
+            // We don't do anything here - the Physical Layer state machine will enable the TX ISR, and it will pick up our TX message, reporting when it's complete or timed out...
+            
+            if(physicalLayerInternals.txComplete){   
+                linkLayerInternals.nextState = LINK_LAYER_TRANSMIT_WAIT_FOR_ACK_NAK;
+            }
+
+            // Exit condition: timeout
+            //      path 1: go to LINK_LAYER_TIMEOUT
+            if(physicalLayerInternals.txTimeout){
+                linkLayerInternals.nextState = LINK_LAYER_TIMEOUT;
+            }
+
+            if(EXITING_SPI_LINK_LAYER_TASK_STATE){
+                physicalLayerInternals.txLinkLayerDone = 1;
+            }
+
+            break;
+        case LINK_LAYER_TRANSMIT_WAIT_FOR_ACK_NAK:
+            if(ENTERING_SPI_LINK_LAYER_TASK_STATE){
+                linkLayerInternals.rxBytePosition = 0;
+                linkLayerInternals.parsedRxMessageLength = 0;
+                linkLayerInternals.checksumValid = 0;
+                
+                // Reset the SPI_CS_IO rising edge detector.
+                SGD_TO_UCM_MESSAGE_REQUEST = 0;
+
+                SPI_START_LINK_LAYER_TIMER(TIME_MAX_WAIT_TIME_FOR_ACK_NAK_IN_MS)
+            }
+            
+            // This waits for the ISR to do notice a falling edge on SPI_CS_IO
+            // Prefer to do this on an edge, but level is adequate.
+            if(SGD_TO_UCM_MESSAGE_REQUEST){
+                SGD_TO_UCM_MESSAGE_REQUEST = 0;
+                physicalLayerInternals.rxRequest = 1;
+            }
+
+            // Exit condition: we have received bytes that may be the checksum
+            //      path 1: the message type is an ACK/NAK, go to idle
+            //      path 2: checksum failed on recipient side - retry
+            //      path 3: another NAK, do not retry
+            if(linkLayerInternals.rxBytePosition >= MESSAGE_TYPE_LENGTH){
+                linkLayerInternals.txMessageResponseReceived = 1;
+                if(linkLayerInternals.rxMessage[0] == 0x06 && linkLayerInternals.rxMessage[1] == 0x00){
+                    // ACK
+                    linkLayerInternals.nextState = LINK_LAYER_IDLE;
+                }else if(linkLayerInternals.rxMessage[0] == 0x15 && linkLayerInternals.rxMessage[1] == 0x03){
+                    // NAK that indicates a checksum failure - we should retry sending our message again
+                    // Note: The LINK_LAYER_TIMEOUT state has state entry logic to initiate the TX retry if possible
+                    linkLayerInternals.nextState = LINK_LAYER_TIMEOUT;
+                }else if(linkLayerInternals.rxMessage[0] == 0x15){
+                    // Another NAK but wasn't a checksum failure; various reasons that are not addressed with a retry
+                    linkLayerInternals.nextState = LINK_LAYER_IDLE;
+                }
+            }
+
+            // Exit condition: the checksum hasn't been received within the required time window
+            //      path 1: timeout error and potentially retry
+            if(linkLayerInternals.timerTimeout){
+                // Note: The LINK_LAYER_TIMEOUT state has state entry logic to initiate the TX retry if possible
+                linkLayerInternals.nextState = LINK_LAYER_TIMEOUT;
+            }
+
+            if(EXITING_SPI_LINK_LAYER_TASK_STATE){
+                physicalLayerInternals.rxLinkLayerDone = 1;
+            }
+
+            break;
+        case LINK_LAYER_TRANSMIT_WAIT_FOR_RETRY_TIMER:
+            if(ENTERING_SPI_LINK_LAYER_TASK_STATE){
+                // * ToDo: Choose a random delay between 100 mS to 2000 mS (for now, 250 is fine))
+                SPI_START_LINK_LAYER_TIMER(250)
+                        
+                // I'm really not a huge fan of setting these here, 
+                // but without introducing an additional state or an additional
+                // handshake, this must be done:
+                physicalLayerInternals.txComplete = 0;
+                physicalLayerInternals.txTimeout = 0;
+            }
+
+            if(linkLayerInternals.timerTimeout && 
+               physicalLayerInternals.state == PHY_LAYER_IDLE){ // the PHY_LAYER_IDLE compare is superfluous, but safe.
+                linkLayerInternals.nextState = linkLayerInternals.txMessageRetryTargetState;
+            }
+            break;
+        case LINK_LAYER_TIMEOUT:
+            if(linkLayerInternals.lastState == LINK_LAYER_TRANSMIT_MESSAGE ||
+               linkLayerInternals.lastState == LINK_LAYER_TRANSMIT_WAIT_FOR_ACK_NAK ||
+               linkLayerInternals.lastState == LINK_LAYER_RECEIVE_DELAY_ACK_NAK){
+                // Check and see if there are retries left - and try if possible
+                if(linkLayerInternals.txMessageRetryCounter == 0){
+                    linkLayerInternals.nextState = LINK_LAYER_IDLE;
+                } else {
+                    linkLayerInternals.nextState = LINK_LAYER_TRANSMIT_WAIT_FOR_RETRY_TIMER;
+                }
+            } else {
+                // We get here if one of the multiple receive states timeout
+                linkLayerInternals.nextState = LINK_LAYER_IDLE;
+            }
+            break;
+        default:
+            break;
+    }
+
+    continueProcessing = linkLayerInternals.state != linkLayerInternals.nextState;
+    linkLayerInternals.lastState = linkLayerInternals.state;
+    linkLayerInternals.state = linkLayerInternals.nextState;
+    return continueProcessing;
+}
+
+void SPI_Driver_Task(void){
+    int morePhysicalWork;
+    int moreLinkWork;
+    
+    // Run the state machines as greedily as possible as long as there is logic
+    // to execute. As long as both tasks change states within a call, we'll
+    // call them again. As soon as they both stop changing states, then we 
+    // yield to the scheduler.
+    do {
+        morePhysicalWork = SPI_Physical_Layer_Task();
+        moreLinkWork = SPI_Link_Layer_Task();
+    } while (morePhysicalWork || moreLinkWork);
+}
+
+
 /**
- * Compute the checksum of an outgoing message. It is up to the user to append
- * the Int returned to the end of the string.
+ * Compute the checksum of an outgoing message. This also modifies the message
+ * payload to include the checksum
  *
  * @param message[] the message type bytes and payload.
  * @param lan string length.
  * @return checksum as two byte (integer) value
  */
-UINT16 MakeChecksumSPI(unsigned char * message, int len)
+UINT16 MakeChecksumSPI(volatile unsigned char * message, int len)
 {
     // see MCI-V1-6.pdf page 68 for explanation
     //putsUART("in MakeChecksumSPI \r\n");
@@ -392,280 +796,85 @@ UINT16 MakeChecksumSPI(unsigned char * message, int len)
     return (msb << 8) | lsb;
 }
 
-/**
- * handle a received packet.
- */
-void SPIrxMessageHandler(MCIResponse * lastSentPacket)
+MCIResponse SyncResponse;
+
+// Blocking/synchronous call
+MCIResponse MCISendSPI(unsigned char * msg)
 {
-    int len = SPIrxmessage[2] * 256;
-    len += SPIrxmessage[3];
-    len += 6;
+    int finished = 0;
+    int sent = 0;
     
-    if((TxSPIMsgState != TX_IDLE) && !SPIRxBytesReceived)  //timeout in MCISend
-    {
-        lastSentPacket->numBytesReceived = 0;
-        lastSentPacket->LLResponseValid = 0;
-        return;
-    }
-    
-    //check for data link ack or nak (we don't ack acks)
-    if(SPIrxmessage[0] == 0x06 && SPIrxmessage[1] == 0x00)
-    {
-        lastSentPacket->numBytesReceived = SPI_numBytes;
-        lastSentPacket->LLResponse[0] = 0x06;
-        lastSentPacket->LLResponse[1] = 0x00;
-        lastSentPacket->LLResponse[2] = '\0';
-        lastSentPacket->LLResponseValid = 1;
-    }
-    
-    //nack code is 0x15
-    else if(SPIrxmessage[0] == 0x15 && SPIrxmessage[2] == 0)
-    {
-        lastSentPacket->numBytesReceived = SPI_numBytes;
-        lastSentPacket->LLResponse[0] = SPIrxmessage[0];
-        lastSentPacket->LLResponse[1] = SPIrxmessage[1];
-        lastSentPacket->LLResponse[2] = SPIrxmessage[2];
-        lastSentPacket->LLResponseValid = '\0';
-        lastSentPacket->LLResponseValid = 1;
-    }
-    
-    //if it wasn't a data link message...
-    else
-    {
-        //check the checksum
-        if(ChecksumDecodeSPI(SPIrxmessage,len) == 0) //bad checksum
-        {
-            DL_Nak();
+    do {
+        if(linkLayerInternals.state == LINK_LAYER_IDLE && physicalLayerInternals.state == PHY_LAYER_IDLE && !sent){
+            MCISendAsyncSPI(msg);
+            sent = 1;
         }
-        else                                      //good checksum
-        {
-            if(SPIrxmessage[0] < 0xF0 && (TxSPIMsgState != TX_IDLE))
-            {
-                int y;
-                for(y = 0; y < 11; y++)
-                {
-                    lastSentPacket->AppResponse[y] = SPIrxmessage[y];
-                }
-                lastSentPacket->numBytesReceived = SPI_numBytes;
-                lastSentPacket->AppResponseValid = 1;
-                
-                //data link ack
-                DL_Ack();
-                
-                //stats for PGE hourly Load Factor
-                //SPI_IdleNormal & SPI_RunningNormal cleared hourly by MCI_One_Second_Callback()
-                if(SPIrxmessage[4] == OPSTATE_OPCODE1)
-                {
-                    if(SPIrxmessage[5] == IDLE_NORMAL)
-                        SPI_IdleNormal++;
-                    else if (SPIrxmessage[5] == RUNNING_NORMAL)
-                        SPI_RunningNormal++;
-                }
-                
-            }
-            else if(RxSPIMsgState == RX_SEND_LL_ACK)
-            {
-                DL_Ack();
-            }
-            else if(RxSPIMsgState == RX_SEND_APP_ACK)
-            {
-                if(SPIrxmessage[0] < 0xF0)
-                {
-                    //per Chuck Thomas use override as defined in CTA-2045 draft V08
-                    //SPI_OptOutEvent and SPI_OptInEvent get set on change of state and
-                    //get cleared in OpenADRClient.c
-                    if(SPIrxmessage[4] == OVERRIDE_OPCODE1)
-                    {
-                        if(!SPI_OverRide && SPIrxmessage[5])
-                            SPI_OptOutEvent = 1;
-                        else if(SPI_OverRide && !SPIrxmessage[5])
-                            SPI_OptInEvent = 1;
-                        
-                        SPI_OverRide = (int) SPIrxmessage[5];
-                    }
-                    
-                    AppAckMsg[2] = 0x00;
-                    AppAckMsg[3] = 0x02;
-                    AppAckMsg[4] = 0x03;
-                    AppAckMsg[5] = SPIrxmessage[4];
-                    MakeChecksumSPI(AppAckMsg, 6);
-                    
-                    App_Ack(AppAckMsg, 8);                    
-                }
-                else if(SPIrxmessage[0] == INTWINE_MSG)
-                {
-                    //EPRI_Config(SPIrxmessage,len);
-                }
-            }
+        SPI_Driver_Task();
+        finished = linkLayerInternals.txMessageResponseReceived;
+        
+        if(linkLayerInternals.state == LINK_LAYER_IDLE && physicalLayerInternals.state == PHY_LAYER_IDLE){
+            Nop();
+            Nop();
+            Nop();
         }
-    }
+        
+    } while(!finished);
+
+    SyncResponse.LLResponse[0] = linkLayerInternals.rxMessage[0];
+    SyncResponse.LLResponse[1] = linkLayerInternals.rxMessage[1];
     
-    SPI_numBytes = 0;
-    SPIRxBytesReceived = 0;
-    return;
+    return SyncResponse;
 }
 
-//initialize_buffer
-void SPIrxbuffer_initialize()
+/*
+ * construct and send a MCI packet via SPI3, non-blocking
+ * call is non-blocking with timeouts specified in MCI 2.0 spec
+ * 
+ */
+void MCISendAsyncSPI(unsigned char * msg)
 {
     int i;
-    
-    for(i = 0; i < RX_BUF_SIZE; i++)
-    {
-        SPIRxBuf[i] = 0;
+    if(linkLayerInternals.state == LINK_LAYER_IDLE){
+        int payloadLen = ((msg[2] << 8) | msg[3]) & 0x1FFF; // Only the bottom 13 bits of the payload length are valid
+        for(i=0; i < payloadLen + MESSAGE_TYPE_LENGTH + PAYLOAD_LENGTH_LENGTH; i++){
+            linkLayerInternals.txMessage[i] = msg[i];
+        }
+        
+        MakeChecksumSPI(linkLayerInternals.txMessage, payloadLen + MESSAGE_TYPE_LENGTH + PAYLOAD_LENGTH_LENGTH);
+        linkLayerInternals.txMessageLength = payloadLen + MESSAGE_TYPE_LENGTH + PAYLOAD_LENGTH_LENGTH + CHECKSUM_LENGTH;
+        UCM_TO_SGD_MESSAGE_REQUEST = 1;
+    } else {
+        // Wat do?
     }
 }
 
-/**
- * Message Sync Indicator
- * Indicates that a message receive is complete by 20ms
- * callback initiated from UART2InterruptServiceRoutine.
- * SPIRxBuf copied into SPIrxmessage as double-buffered.
- * Must be done processing SPIrxmessage before next callback.
- */
-void SPI_MCI_Sync_Callback()
+void SPI_Driver_Send_ACK_NAK(unsigned char * msg)
 {
     int i;
-    
-    SPI_numBytes = SPI_position_counter;
-    for(i = 0; i < SPI_position_counter; i++)
-    {
-        SPIrxmessage[i] = SPIRxBuf[i];
-        SPIRxBuf[i] = 0;
-    }
-    SPIrxmessage[i] = 0;
-    
-    SPI_numBytes = SPI_position_counter;
-    SPI_position_counter = 0;
-    SPIRxBytesReceived = 1;
-    
-    switch(TxSPIMsgState)
-    {
-        case TX_WAIT_LL_ACK:
-            TimeMonitorCancelI(1);             //Cancel SPI_Message_Timeout_Callback
-            SPIrxMessageHandler(&AsyncTxSPIBuf);
-            if(AsyncTxSPIBuf.LLResponseValid && AsyncTxSPIBuf.LLResponse[0] == 0x06 && AsyncTxSPIBuf.LLResponse[1] == 0x00)
-            //link layer ACK OK. Wait for application ack
-            {
-                TxSPIMsgState = TX_WAIT_APP_ACK;
-                TimeMonitorRegisterI(1, APP_ACK_WAIT_TIME_MS, SPI_Message_Timeout_Callback);
-            }
-            else //LL NAK or worse. Set quick timeout for end of message clean up
-            {
-                TimeMonitorRegisterI(1,9,SPI_Message_Timeout_Callback);
-            }
-            break;
-        case TX_WAIT_APP_ACK:
-            TimeMonitorCancelI(1);         // cancel timeout callback
-            TxSPIMsgState = TX_WAIT_LL_ACK_DLY;
-            TimeMonitorRegisterI(3, LINK_ACK_DELAY_MS, SPI_MCI_Wait_Callback);
-            break;
-        default:
-            break;
-    }
-    
-    if(TxSPIMsgState == TX_IDLE)
-    {
-        switch(RxSPIMsgState)
-        {
-            case RX_IDLE:
-                AsyncRxSPIBuf.numBytesReceived = 0;
-                AsyncRxSPIBuf.LLResponseValid = 0;
-                AsyncRxSPIBuf.AppResponseValid = 0;
-                
-                RxSPIMsgState = RX_CMD_RECEIVED;
-                SPIrxMessageHandler(&AsyncRxSPIBuf);    // send ACK/NAK
-                
-                RxSPIMsgState = RX_WAIT_LL_ACK_DLY;
-                TimeMonitorRegisterI(1, APP_ACK_WAIT_TIME_MS, SPI_Message_Timeout_Callback);
-                TimeMonitorRegisterI(3, LINK_ACK_DELAY_MS, SPI_MCI_Wait_Callback);
-                break;
-            case RX_RECEIVE_LL_ACK:
-                TimeMonitorCancelI(1);          //Cancel message timeout callback
-                RxSPIMsgState = RX_IDLE;
-                break;
-            default:
-                break;                       
-        }
-    }
-    return;
-}
-
-//MCI delayed callback. Used for delaying LL ACK/NAK and App ACK/NAK
-void SPI_MCI_Wait_Callback()
-{
-    switch(TxSPIMsgState)
-    {
-        case TX_WAIT_LL_ACK_DLY:
-            TxSPIMsgState = TX_SEND_LL_ACK;
-            SPIrxMessageHandler(&AsyncTxSPIBuf);   //ACK/NAK sent from here
-            TxSPIMsgState = TX_IDLE;
-            break;
-        case TX_WAIT_RETRY_DLY:
-            MCISendAsyncSPI(SPItxmessage);
-            break;
-        default:
-            break;
-    }
-    
-    switch(RxSPIMsgState)
-    {
-        case RX_WAIT_LL_ACK_DLY:
-            RxSPIMsgState = RX_SEND_LL_ACK;
-            SPIrxMessageHandler(&AsyncRxSPIBuf);
-            
-            RxSPIMsgState = RX_WAIT_APP_ACK_DLY;
-            TimeMonitorRegisterI(4, APP_ACK_WAIT_TIME_MS, SPI_MCI_Wait_Callback);
-            break;
-        case RX_WAIT_APP_ACK_DLY:
-            RxSPIMsgState = RX_SEND_APP_ACK;
-            SPIrxMessageHandler(&AsyncRxSPIBuf);
-            
-            RxSPIMsgState = RX_RECEIVE_LL_ACK;
-            break;
-        default:
-            break;
-    }
-}
-
-//unsolicited message timeout callback
-void SPI_Message_Timeout_Callback()
-{
-    if(TxSPIMsgState != TX_IDLE)
-    {
-        if(AsyncTxSPIBuf.numTries == TX_NUM_TRIES)
-        {
-            //retries expired, back to idle
-            TxSPIMsgState = TX_IDLE;
-        }
-        else
-        {
-            //resend
-            TxSPIMsgState = TX_WAIT_RETRY_DLY;
-            TimeMonitorRegisterI(3, MESSAGE_RETRY_DELAY_MS, SPI_MCI_Wait_Callback);            
-        }
-    }
-    
-    if(RxSPIMsgState != RX_IDLE)
-    {
-        RxSPIMsgState = RX_IDLE;
-    }
-    
-    if(SPIBusState != BUS_IDLE)
-    {
-        SPIBusState == BUS_IDLE;
+    if(linkLayerInternals.state == LINK_LAYER_IDLE){
+        linkLayerInternals.txMessage[0] = msg[0];
+        linkLayerInternals.txMessage[1] = msg[1]; // Checksum error
+        linkLayerInternals.txMessageLength = 2;
+        UCM_TO_SGD_ACK_NAK_REQUEST = 1;
+    } else {
+        // Wat do?
     }
 }
 
 
+/*
+ * Send a time sync to SGD, non-blocking
+ * 
+ */
+//BOOL SendTimeSyncSPI(int weekday, int hour)
+//{
+//    if(linkLayerInternals.state == LINK_LAYER_IDLE){
+//        TimeSyncMsg[5] = (weekday << 4) + hour;
+//        MCISendAsyncSPI(TimeSyncMsg);
+//        return TRUE;
+//    } else {
+//        return FALSE; // BH: ToDo: look for all other callers and verify this policy change.
+//    }
+//
+//}
 
-SPI3WriteBinaryData(unsigned char *data_block, int length)
-{
-    while(length)
-    {
-        while(SpiChnIsBusy(3));               //wait until SPI is ready
-        SpiChnPutC(3, *data_block++);
-        while(SpiChnIsBusy(3));               //block until send is finished
-        length--;
-    }
-}

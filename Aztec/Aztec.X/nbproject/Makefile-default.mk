@@ -38,6 +38,12 @@ DEBUGGABLE_SUFFIX=elf
 FINAL_IMAGE=dist/${CND_CONF}/${IMAGE_TYPE}/Aztec.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
 endif
 
+ifeq ($(COMPARE_BUILD), true)
+COMPARISON_BUILD=-mafrlcsj
+else
+COMPARISON_BUILD=
+endif
+
 # Object Directory
 OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 
@@ -93,7 +99,7 @@ ${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o: ../MicroChip/TCPIP_Stack/BigIn
 	@${RM} ${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o 
 	@${RM} ${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o.ok ${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o.err 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o.d" "${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o.asm.d" -t $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC} $(MP_EXTRA_AS_PRE)  -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -c -mprocessor=$(MP_PROCESSOR_OPTION) -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -MMD -MF "${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o.d"  -o ${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o ../MicroChip/TCPIP_Stack/BigInt_helper_PIC32.S    -Wa,--defsym=__MPLAB_BUILD=1$(MP_EXTRA_AS_POST),-MD="${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o.asm.d",--defsym=__ICD2RAM=1,--defsym=__MPLAB_DEBUG=1,--gdwarf-2,--defsym=__DEBUG=1,--defsym=__MPLAB_DEBUGGER_ICD3=1,-I".." -I"." -gdwarf-2
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o.d" "${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o.asm.d" -t $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC} $(MP_EXTRA_AS_PRE)  -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -c -mprocessor=$(MP_PROCESSOR_OPTION) -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -MMD -MF "${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o.d"  -o ${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o ../MicroChip/TCPIP_Stack/BigInt_helper_PIC32.S  -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  -Wa,--defsym=__MPLAB_BUILD=1$(MP_EXTRA_AS_POST),-MD="${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o.asm.d",--defsym=__ICD2RAM=1,--defsym=__MPLAB_DEBUG=1,--gdwarf-2,--defsym=__DEBUG=1,--defsym=__MPLAB_DEBUGGER_ICD3=1,-I".." -I"." -gdwarf-2
 	
 else
 ${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o: ../MicroChip/TCPIP_Stack/BigInt_helper_PIC32.S  nbproject/Makefile-${CND_CONF}.mk
@@ -101,7 +107,7 @@ ${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o: ../MicroChip/TCPIP_Stack/BigIn
 	@${RM} ${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o 
 	@${RM} ${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o.ok ${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o.err 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o.d" "${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o.asm.d" -t $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC} $(MP_EXTRA_AS_PRE)  -c -mprocessor=$(MP_PROCESSOR_OPTION) -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -MMD -MF "${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o.d"  -o ${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o ../MicroChip/TCPIP_Stack/BigInt_helper_PIC32.S    -Wa,--defsym=__MPLAB_BUILD=1$(MP_EXTRA_AS_POST),-MD="${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o.asm.d",-I".." -I"." -gdwarf-2
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o.d" "${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o.asm.d" -t $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC} $(MP_EXTRA_AS_PRE)  -c -mprocessor=$(MP_PROCESSOR_OPTION) -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -MMD -MF "${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o.d"  -o ${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o ../MicroChip/TCPIP_Stack/BigInt_helper_PIC32.S  -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  -Wa,--defsym=__MPLAB_BUILD=1$(MP_EXTRA_AS_POST),-MD="${OBJECTDIR}/_ext/93166211/BigInt_helper_PIC32.o.asm.d",-I".." -I"." -gdwarf-2
 	
 endif
 
@@ -112,1046 +118,1046 @@ ${OBJECTDIR}/_ext/93166211/Announce.o: ../MicroChip/TCPIP_Stack/Announce.c  nbpr
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Announce.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Announce.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Announce.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Announce.o.d" -o ${OBJECTDIR}/_ext/93166211/Announce.o ../MicroChip/TCPIP_Stack/Announce.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Announce.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Announce.o.d" -o ${OBJECTDIR}/_ext/93166211/Announce.o ../MicroChip/TCPIP_Stack/Announce.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/ARCFOUR.o: ../MicroChip/TCPIP_Stack/ARCFOUR.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ARCFOUR.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ARCFOUR.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ARCFOUR.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ARCFOUR.o.d" -o ${OBJECTDIR}/_ext/93166211/ARCFOUR.o ../MicroChip/TCPIP_Stack/ARCFOUR.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ARCFOUR.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ARCFOUR.o.d" -o ${OBJECTDIR}/_ext/93166211/ARCFOUR.o ../MicroChip/TCPIP_Stack/ARCFOUR.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/ARP.o: ../MicroChip/TCPIP_Stack/ARP.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ARP.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ARP.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ARP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ARP.o.d" -o ${OBJECTDIR}/_ext/93166211/ARP.o ../MicroChip/TCPIP_Stack/ARP.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ARP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ARP.o.d" -o ${OBJECTDIR}/_ext/93166211/ARP.o ../MicroChip/TCPIP_Stack/ARP.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/AutoIP.o: ../MicroChip/TCPIP_Stack/AutoIP.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/AutoIP.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/AutoIP.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/AutoIP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/AutoIP.o.d" -o ${OBJECTDIR}/_ext/93166211/AutoIP.o ../MicroChip/TCPIP_Stack/AutoIP.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/AutoIP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/AutoIP.o.d" -o ${OBJECTDIR}/_ext/93166211/AutoIP.o ../MicroChip/TCPIP_Stack/AutoIP.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/BerkeleyAPI.o: ../MicroChip/TCPIP_Stack/BerkeleyAPI.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/BerkeleyAPI.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/BerkeleyAPI.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/BerkeleyAPI.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/BerkeleyAPI.o.d" -o ${OBJECTDIR}/_ext/93166211/BerkeleyAPI.o ../MicroChip/TCPIP_Stack/BerkeleyAPI.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/BerkeleyAPI.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/BerkeleyAPI.o.d" -o ${OBJECTDIR}/_ext/93166211/BerkeleyAPI.o ../MicroChip/TCPIP_Stack/BerkeleyAPI.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/BigInt.o: ../MicroChip/TCPIP_Stack/BigInt.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/BigInt.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/BigInt.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/BigInt.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/BigInt.o.d" -o ${OBJECTDIR}/_ext/93166211/BigInt.o ../MicroChip/TCPIP_Stack/BigInt.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/BigInt.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/BigInt.o.d" -o ${OBJECTDIR}/_ext/93166211/BigInt.o ../MicroChip/TCPIP_Stack/BigInt.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/Delay.o: ../MicroChip/TCPIP_Stack/Delay.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Delay.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Delay.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Delay.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Delay.o.d" -o ${OBJECTDIR}/_ext/93166211/Delay.o ../MicroChip/TCPIP_Stack/Delay.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Delay.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Delay.o.d" -o ${OBJECTDIR}/_ext/93166211/Delay.o ../MicroChip/TCPIP_Stack/Delay.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/DNS.o: ../MicroChip/TCPIP_Stack/DNS.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/DNS.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/DNS.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/DNS.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/DNS.o.d" -o ${OBJECTDIR}/_ext/93166211/DNS.o ../MicroChip/TCPIP_Stack/DNS.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/DNS.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/DNS.o.d" -o ${OBJECTDIR}/_ext/93166211/DNS.o ../MicroChip/TCPIP_Stack/DNS.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/DNSs.o: ../MicroChip/TCPIP_Stack/DNSs.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/DNSs.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/DNSs.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/DNSs.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/DNSs.o.d" -o ${OBJECTDIR}/_ext/93166211/DNSs.o ../MicroChip/TCPIP_Stack/DNSs.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/DNSs.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/DNSs.o.d" -o ${OBJECTDIR}/_ext/93166211/DNSs.o ../MicroChip/TCPIP_Stack/DNSs.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/DynDNS.o: ../MicroChip/TCPIP_Stack/DynDNS.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/DynDNS.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/DynDNS.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/DynDNS.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/DynDNS.o.d" -o ${OBJECTDIR}/_ext/93166211/DynDNS.o ../MicroChip/TCPIP_Stack/DynDNS.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/DynDNS.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/DynDNS.o.d" -o ${OBJECTDIR}/_ext/93166211/DynDNS.o ../MicroChip/TCPIP_Stack/DynDNS.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/FileSystem.o: ../MicroChip/TCPIP_Stack/FileSystem.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/FileSystem.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/FileSystem.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/FileSystem.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/FileSystem.o.d" -o ${OBJECTDIR}/_ext/93166211/FileSystem.o ../MicroChip/TCPIP_Stack/FileSystem.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/FileSystem.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/FileSystem.o.d" -o ${OBJECTDIR}/_ext/93166211/FileSystem.o ../MicroChip/TCPIP_Stack/FileSystem.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/FTP.o: ../MicroChip/TCPIP_Stack/FTP.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/FTP.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/FTP.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/FTP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/FTP.o.d" -o ${OBJECTDIR}/_ext/93166211/FTP.o ../MicroChip/TCPIP_Stack/FTP.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/FTP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/FTP.o.d" -o ${OBJECTDIR}/_ext/93166211/FTP.o ../MicroChip/TCPIP_Stack/FTP.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/Hashes.o: ../MicroChip/TCPIP_Stack/Hashes.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Hashes.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Hashes.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Hashes.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Hashes.o.d" -o ${OBJECTDIR}/_ext/93166211/Hashes.o ../MicroChip/TCPIP_Stack/Hashes.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Hashes.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Hashes.o.d" -o ${OBJECTDIR}/_ext/93166211/Hashes.o ../MicroChip/TCPIP_Stack/Hashes.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/Helpers.o: ../MicroChip/TCPIP_Stack/Helpers.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Helpers.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Helpers.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Helpers.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Helpers.o.d" -o ${OBJECTDIR}/_ext/93166211/Helpers.o ../MicroChip/TCPIP_Stack/Helpers.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Helpers.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Helpers.o.d" -o ${OBJECTDIR}/_ext/93166211/Helpers.o ../MicroChip/TCPIP_Stack/Helpers.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/HTTP2.o: ../MicroChip/TCPIP_Stack/HTTP2.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/HTTP2.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/HTTP2.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/HTTP2.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/HTTP2.o.d" -o ${OBJECTDIR}/_ext/93166211/HTTP2.o ../MicroChip/TCPIP_Stack/HTTP2.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/HTTP2.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/HTTP2.o.d" -o ${OBJECTDIR}/_ext/93166211/HTTP2.o ../MicroChip/TCPIP_Stack/HTTP2.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/ICMP.o: ../MicroChip/TCPIP_Stack/ICMP.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ICMP.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ICMP.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ICMP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ICMP.o.d" -o ${OBJECTDIR}/_ext/93166211/ICMP.o ../MicroChip/TCPIP_Stack/ICMP.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ICMP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ICMP.o.d" -o ${OBJECTDIR}/_ext/93166211/ICMP.o ../MicroChip/TCPIP_Stack/ICMP.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/IP.o: ../MicroChip/TCPIP_Stack/IP.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/IP.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/IP.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/IP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/IP.o.d" -o ${OBJECTDIR}/_ext/93166211/IP.o ../MicroChip/TCPIP_Stack/IP.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/IP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/IP.o.d" -o ${OBJECTDIR}/_ext/93166211/IP.o ../MicroChip/TCPIP_Stack/IP.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/LCDBlocking.o: ../MicroChip/TCPIP_Stack/LCDBlocking.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/LCDBlocking.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/LCDBlocking.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/LCDBlocking.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/LCDBlocking.o.d" -o ${OBJECTDIR}/_ext/93166211/LCDBlocking.o ../MicroChip/TCPIP_Stack/LCDBlocking.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/LCDBlocking.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/LCDBlocking.o.d" -o ${OBJECTDIR}/_ext/93166211/LCDBlocking.o ../MicroChip/TCPIP_Stack/LCDBlocking.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/MPFS2.o: ../MicroChip/TCPIP_Stack/MPFS2.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/MPFS2.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/MPFS2.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/MPFS2.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/MPFS2.o.d" -o ${OBJECTDIR}/_ext/93166211/MPFS2.o ../MicroChip/TCPIP_Stack/MPFS2.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/MPFS2.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/MPFS2.o.d" -o ${OBJECTDIR}/_ext/93166211/MPFS2.o ../MicroChip/TCPIP_Stack/MPFS2.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/NBNS.o: ../MicroChip/TCPIP_Stack/NBNS.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/NBNS.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/NBNS.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/NBNS.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/NBNS.o.d" -o ${OBJECTDIR}/_ext/93166211/NBNS.o ../MicroChip/TCPIP_Stack/NBNS.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/NBNS.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/NBNS.o.d" -o ${OBJECTDIR}/_ext/93166211/NBNS.o ../MicroChip/TCPIP_Stack/NBNS.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/Random.o: ../MicroChip/TCPIP_Stack/Random.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Random.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Random.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Random.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Random.o.d" -o ${OBJECTDIR}/_ext/93166211/Random.o ../MicroChip/TCPIP_Stack/Random.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Random.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Random.o.d" -o ${OBJECTDIR}/_ext/93166211/Random.o ../MicroChip/TCPIP_Stack/Random.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/Reboot.o: ../MicroChip/TCPIP_Stack/Reboot.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Reboot.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Reboot.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Reboot.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Reboot.o.d" -o ${OBJECTDIR}/_ext/93166211/Reboot.o ../MicroChip/TCPIP_Stack/Reboot.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Reboot.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Reboot.o.d" -o ${OBJECTDIR}/_ext/93166211/Reboot.o ../MicroChip/TCPIP_Stack/Reboot.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/RSA.o: ../MicroChip/TCPIP_Stack/RSA.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/RSA.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/RSA.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/RSA.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/RSA.o.d" -o ${OBJECTDIR}/_ext/93166211/RSA.o ../MicroChip/TCPIP_Stack/RSA.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/RSA.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/RSA.o.d" -o ${OBJECTDIR}/_ext/93166211/RSA.o ../MicroChip/TCPIP_Stack/RSA.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/SMTP.o: ../MicroChip/TCPIP_Stack/SMTP.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SMTP.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SMTP.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SMTP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SMTP.o.d" -o ${OBJECTDIR}/_ext/93166211/SMTP.o ../MicroChip/TCPIP_Stack/SMTP.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SMTP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SMTP.o.d" -o ${OBJECTDIR}/_ext/93166211/SMTP.o ../MicroChip/TCPIP_Stack/SMTP.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/SNMP.o: ../MicroChip/TCPIP_Stack/SNMP.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SNMP.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SNMP.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SNMP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SNMP.o.d" -o ${OBJECTDIR}/_ext/93166211/SNMP.o ../MicroChip/TCPIP_Stack/SNMP.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SNMP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SNMP.o.d" -o ${OBJECTDIR}/_ext/93166211/SNMP.o ../MicroChip/TCPIP_Stack/SNMP.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/SNMPv3.o: ../MicroChip/TCPIP_Stack/SNMPv3.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SNMPv3.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SNMPv3.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SNMPv3.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SNMPv3.o.d" -o ${OBJECTDIR}/_ext/93166211/SNMPv3.o ../MicroChip/TCPIP_Stack/SNMPv3.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SNMPv3.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SNMPv3.o.d" -o ${OBJECTDIR}/_ext/93166211/SNMPv3.o ../MicroChip/TCPIP_Stack/SNMPv3.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/SNMPv3USM.o: ../MicroChip/TCPIP_Stack/SNMPv3USM.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SNMPv3USM.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SNMPv3USM.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SNMPv3USM.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SNMPv3USM.o.d" -o ${OBJECTDIR}/_ext/93166211/SNMPv3USM.o ../MicroChip/TCPIP_Stack/SNMPv3USM.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SNMPv3USM.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SNMPv3USM.o.d" -o ${OBJECTDIR}/_ext/93166211/SNMPv3USM.o ../MicroChip/TCPIP_Stack/SNMPv3USM.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/SNTP.o: ../MicroChip/TCPIP_Stack/SNTP.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SNTP.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SNTP.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SNTP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SNTP.o.d" -o ${OBJECTDIR}/_ext/93166211/SNTP.o ../MicroChip/TCPIP_Stack/SNTP.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SNTP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SNTP.o.d" -o ${OBJECTDIR}/_ext/93166211/SNTP.o ../MicroChip/TCPIP_Stack/SNTP.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/SPIEEPROM.o: ../MicroChip/TCPIP_Stack/SPIEEPROM.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SPIEEPROM.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SPIEEPROM.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SPIEEPROM.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SPIEEPROM.o.d" -o ${OBJECTDIR}/_ext/93166211/SPIEEPROM.o ../MicroChip/TCPIP_Stack/SPIEEPROM.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SPIEEPROM.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SPIEEPROM.o.d" -o ${OBJECTDIR}/_ext/93166211/SPIEEPROM.o ../MicroChip/TCPIP_Stack/SPIEEPROM.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/SPIFlash.o: ../MicroChip/TCPIP_Stack/SPIFlash.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SPIFlash.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SPIFlash.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SPIFlash.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SPIFlash.o.d" -o ${OBJECTDIR}/_ext/93166211/SPIFlash.o ../MicroChip/TCPIP_Stack/SPIFlash.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SPIFlash.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SPIFlash.o.d" -o ${OBJECTDIR}/_ext/93166211/SPIFlash.o ../MicroChip/TCPIP_Stack/SPIFlash.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/SPIRAM.o: ../MicroChip/TCPIP_Stack/SPIRAM.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SPIRAM.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SPIRAM.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SPIRAM.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SPIRAM.o.d" -o ${OBJECTDIR}/_ext/93166211/SPIRAM.o ../MicroChip/TCPIP_Stack/SPIRAM.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SPIRAM.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SPIRAM.o.d" -o ${OBJECTDIR}/_ext/93166211/SPIRAM.o ../MicroChip/TCPIP_Stack/SPIRAM.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/SSL.o: ../MicroChip/TCPIP_Stack/SSL.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SSL.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SSL.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SSL.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SSL.o.d" -o ${OBJECTDIR}/_ext/93166211/SSL.o ../MicroChip/TCPIP_Stack/SSL.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SSL.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SSL.o.d" -o ${OBJECTDIR}/_ext/93166211/SSL.o ../MicroChip/TCPIP_Stack/SSL.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/StackTsk.o: ../MicroChip/TCPIP_Stack/StackTsk.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/StackTsk.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/StackTsk.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/StackTsk.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/StackTsk.o.d" -o ${OBJECTDIR}/_ext/93166211/StackTsk.o ../MicroChip/TCPIP_Stack/StackTsk.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/StackTsk.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/StackTsk.o.d" -o ${OBJECTDIR}/_ext/93166211/StackTsk.o ../MicroChip/TCPIP_Stack/StackTsk.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/TCP.o: ../MicroChip/TCPIP_Stack/TCP.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/TCP.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/TCP.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/TCP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/TCP.o.d" -o ${OBJECTDIR}/_ext/93166211/TCP.o ../MicroChip/TCPIP_Stack/TCP.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/TCP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/TCP.o.d" -o ${OBJECTDIR}/_ext/93166211/TCP.o ../MicroChip/TCPIP_Stack/TCP.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/TCPPerformanceTest.o: ../MicroChip/TCPIP_Stack/TCPPerformanceTest.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/TCPPerformanceTest.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/TCPPerformanceTest.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/TCPPerformanceTest.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/TCPPerformanceTest.o.d" -o ${OBJECTDIR}/_ext/93166211/TCPPerformanceTest.o ../MicroChip/TCPIP_Stack/TCPPerformanceTest.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/TCPPerformanceTest.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/TCPPerformanceTest.o.d" -o ${OBJECTDIR}/_ext/93166211/TCPPerformanceTest.o ../MicroChip/TCPIP_Stack/TCPPerformanceTest.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/Telnet.o: ../MicroChip/TCPIP_Stack/Telnet.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Telnet.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Telnet.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Telnet.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Telnet.o.d" -o ${OBJECTDIR}/_ext/93166211/Telnet.o ../MicroChip/TCPIP_Stack/Telnet.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Telnet.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Telnet.o.d" -o ${OBJECTDIR}/_ext/93166211/Telnet.o ../MicroChip/TCPIP_Stack/Telnet.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/TFTPc.o: ../MicroChip/TCPIP_Stack/TFTPc.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/TFTPc.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/TFTPc.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/TFTPc.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/TFTPc.o.d" -o ${OBJECTDIR}/_ext/93166211/TFTPc.o ../MicroChip/TCPIP_Stack/TFTPc.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/TFTPc.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/TFTPc.o.d" -o ${OBJECTDIR}/_ext/93166211/TFTPc.o ../MicroChip/TCPIP_Stack/TFTPc.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/Tick.o: ../MicroChip/TCPIP_Stack/Tick.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Tick.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Tick.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Tick.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Tick.o.d" -o ${OBJECTDIR}/_ext/93166211/Tick.o ../MicroChip/TCPIP_Stack/Tick.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Tick.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Tick.o.d" -o ${OBJECTDIR}/_ext/93166211/Tick.o ../MicroChip/TCPIP_Stack/Tick.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/UART2TCPBridge.o: ../MicroChip/TCPIP_Stack/UART2TCPBridge.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/UART2TCPBridge.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/UART2TCPBridge.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/UART2TCPBridge.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/UART2TCPBridge.o.d" -o ${OBJECTDIR}/_ext/93166211/UART2TCPBridge.o ../MicroChip/TCPIP_Stack/UART2TCPBridge.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/UART2TCPBridge.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/UART2TCPBridge.o.d" -o ${OBJECTDIR}/_ext/93166211/UART2TCPBridge.o ../MicroChip/TCPIP_Stack/UART2TCPBridge.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/UDP.o: ../MicroChip/TCPIP_Stack/UDP.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/UDP.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/UDP.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/UDP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/UDP.o.d" -o ${OBJECTDIR}/_ext/93166211/UDP.o ../MicroChip/TCPIP_Stack/UDP.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/UDP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/UDP.o.d" -o ${OBJECTDIR}/_ext/93166211/UDP.o ../MicroChip/TCPIP_Stack/UDP.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/UDPPerformanceTest.o: ../MicroChip/TCPIP_Stack/UDPPerformanceTest.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/UDPPerformanceTest.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/UDPPerformanceTest.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/UDPPerformanceTest.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/UDPPerformanceTest.o.d" -o ${OBJECTDIR}/_ext/93166211/UDPPerformanceTest.o ../MicroChip/TCPIP_Stack/UDPPerformanceTest.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/UDPPerformanceTest.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/UDPPerformanceTest.o.d" -o ${OBJECTDIR}/_ext/93166211/UDPPerformanceTest.o ../MicroChip/TCPIP_Stack/UDPPerformanceTest.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/ZeroconfHelper.o: ../MicroChip/TCPIP_Stack/ZeroconfHelper.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ZeroconfHelper.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ZeroconfHelper.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ZeroconfHelper.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ZeroconfHelper.o.d" -o ${OBJECTDIR}/_ext/93166211/ZeroconfHelper.o ../MicroChip/TCPIP_Stack/ZeroconfHelper.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ZeroconfHelper.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ZeroconfHelper.o.d" -o ${OBJECTDIR}/_ext/93166211/ZeroconfHelper.o ../MicroChip/TCPIP_Stack/ZeroconfHelper.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/ZeroconfLinkLocal.o: ../MicroChip/TCPIP_Stack/ZeroconfLinkLocal.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ZeroconfLinkLocal.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ZeroconfLinkLocal.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ZeroconfLinkLocal.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ZeroconfLinkLocal.o.d" -o ${OBJECTDIR}/_ext/93166211/ZeroconfLinkLocal.o ../MicroChip/TCPIP_Stack/ZeroconfLinkLocal.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ZeroconfLinkLocal.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ZeroconfLinkLocal.o.d" -o ${OBJECTDIR}/_ext/93166211/ZeroconfLinkLocal.o ../MicroChip/TCPIP_Stack/ZeroconfLinkLocal.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/ZeroconfMulticastDNS.o: ../MicroChip/TCPIP_Stack/ZeroconfMulticastDNS.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ZeroconfMulticastDNS.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ZeroconfMulticastDNS.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ZeroconfMulticastDNS.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ZeroconfMulticastDNS.o.d" -o ${OBJECTDIR}/_ext/93166211/ZeroconfMulticastDNS.o ../MicroChip/TCPIP_Stack/ZeroconfMulticastDNS.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ZeroconfMulticastDNS.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ZeroconfMulticastDNS.o.d" -o ${OBJECTDIR}/_ext/93166211/ZeroconfMulticastDNS.o ../MicroChip/TCPIP_Stack/ZeroconfMulticastDNS.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/DHCP.o: ../MicroChip/TCPIP_Stack/DHCP.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/DHCP.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/DHCP.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/DHCP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/DHCP.o.d" -o ${OBJECTDIR}/_ext/93166211/DHCP.o ../MicroChip/TCPIP_Stack/DHCP.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/DHCP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/DHCP.o.d" -o ${OBJECTDIR}/_ext/93166211/DHCP.o ../MicroChip/TCPIP_Stack/DHCP.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/DHCPs.o: ../MicroChip/TCPIP_Stack/DHCPs.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/DHCPs.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/DHCPs.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/DHCPs.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/DHCPs.o.d" -o ${OBJECTDIR}/_ext/93166211/DHCPs.o ../MicroChip/TCPIP_Stack/DHCPs.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/DHCPs.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/DHCPs.o.d" -o ${OBJECTDIR}/_ext/93166211/DHCPs.o ../MicroChip/TCPIP_Stack/DHCPs.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WF_Eint.o: ../MicroChip/TCPIP_Stack/WiFi/WF_Eint.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WF_Eint.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WF_Eint.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WF_Eint.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -MMD -MF "${OBJECTDIR}/_ext/388820833/WF_Eint.o.d" -o ${OBJECTDIR}/_ext/388820833/WF_Eint.o ../MicroChip/TCPIP_Stack/WiFi/WF_Eint.c     
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WF_Eint.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -MMD -MF "${OBJECTDIR}/_ext/388820833/WF_Eint.o.d" -o ${OBJECTDIR}/_ext/388820833/WF_Eint.o ../MicroChip/TCPIP_Stack/WiFi/WF_Eint.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD) 
 	
 ${OBJECTDIR}/_ext/388820833/WF_pbkdf2.o: ../MicroChip/TCPIP_Stack/WiFi/WF_pbkdf2.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WF_pbkdf2.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WF_pbkdf2.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WF_pbkdf2.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WF_pbkdf2.o.d" -o ${OBJECTDIR}/_ext/388820833/WF_pbkdf2.o ../MicroChip/TCPIP_Stack/WiFi/WF_pbkdf2.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WF_pbkdf2.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WF_pbkdf2.o.d" -o ${OBJECTDIR}/_ext/388820833/WF_pbkdf2.o ../MicroChip/TCPIP_Stack/WiFi/WF_pbkdf2.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFConnectionAlgorithm.o: ../MicroChip/TCPIP_Stack/WiFi/WFConnectionAlgorithm.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConnectionAlgorithm.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConnectionAlgorithm.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConnectionAlgorithm.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConnectionAlgorithm.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConnectionAlgorithm.o ../MicroChip/TCPIP_Stack/WiFi/WFConnectionAlgorithm.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConnectionAlgorithm.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConnectionAlgorithm.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConnectionAlgorithm.o ../MicroChip/TCPIP_Stack/WiFi/WFConnectionAlgorithm.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFConnectionManager.o: ../MicroChip/TCPIP_Stack/WiFi/WFConnectionManager.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConnectionManager.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConnectionManager.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConnectionManager.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConnectionManager.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConnectionManager.o ../MicroChip/TCPIP_Stack/WiFi/WFConnectionManager.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConnectionManager.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConnectionManager.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConnectionManager.o ../MicroChip/TCPIP_Stack/WiFi/WFConnectionManager.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFConnectionProfile.o: ../MicroChip/TCPIP_Stack/WiFi/WFConnectionProfile.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConnectionProfile.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConnectionProfile.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConnectionProfile.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConnectionProfile.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConnectionProfile.o ../MicroChip/TCPIP_Stack/WiFi/WFConnectionProfile.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConnectionProfile.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConnectionProfile.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConnectionProfile.o ../MicroChip/TCPIP_Stack/WiFi/WFConnectionProfile.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFConsole.o: ../MicroChip/TCPIP_Stack/WiFi/WFConsole.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsole.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsole.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsole.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsole.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsole.o ../MicroChip/TCPIP_Stack/WiFi/WFConsole.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsole.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsole.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsole.o ../MicroChip/TCPIP_Stack/WiFi/WFConsole.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFConsoleIfconfig.o: ../MicroChip/TCPIP_Stack/WiFi/WFConsoleIfconfig.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsoleIfconfig.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsoleIfconfig.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsoleIfconfig.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsoleIfconfig.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsoleIfconfig.o ../MicroChip/TCPIP_Stack/WiFi/WFConsoleIfconfig.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsoleIfconfig.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsoleIfconfig.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsoleIfconfig.o ../MicroChip/TCPIP_Stack/WiFi/WFConsoleIfconfig.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFConsoleIwconfig.o: ../MicroChip/TCPIP_Stack/WiFi/WFConsoleIwconfig.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsoleIwconfig.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsoleIwconfig.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsoleIwconfig.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsoleIwconfig.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsoleIwconfig.o ../MicroChip/TCPIP_Stack/WiFi/WFConsoleIwconfig.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsoleIwconfig.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsoleIwconfig.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsoleIwconfig.o ../MicroChip/TCPIP_Stack/WiFi/WFConsoleIwconfig.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFConsoleIwpriv.o: ../MicroChip/TCPIP_Stack/WiFi/WFConsoleIwpriv.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsoleIwpriv.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsoleIwpriv.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsoleIwpriv.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsoleIwpriv.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsoleIwpriv.o ../MicroChip/TCPIP_Stack/WiFi/WFConsoleIwpriv.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsoleIwpriv.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsoleIwpriv.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsoleIwpriv.o ../MicroChip/TCPIP_Stack/WiFi/WFConsoleIwpriv.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFConsoleMsgHandler.o: ../MicroChip/TCPIP_Stack/WiFi/WFConsoleMsgHandler.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsoleMsgHandler.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsoleMsgHandler.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsoleMsgHandler.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsoleMsgHandler.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsoleMsgHandler.o ../MicroChip/TCPIP_Stack/WiFi/WFConsoleMsgHandler.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsoleMsgHandler.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsoleMsgHandler.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsoleMsgHandler.o ../MicroChip/TCPIP_Stack/WiFi/WFConsoleMsgHandler.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFConsoleMsgs.o: ../MicroChip/TCPIP_Stack/WiFi/WFConsoleMsgs.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsoleMsgs.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsoleMsgs.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsoleMsgs.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsoleMsgs.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsoleMsgs.o ../MicroChip/TCPIP_Stack/WiFi/WFConsoleMsgs.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsoleMsgs.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsoleMsgs.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsoleMsgs.o ../MicroChip/TCPIP_Stack/WiFi/WFConsoleMsgs.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFDataTxRx.o: ../MicroChip/TCPIP_Stack/WiFi/WFDataTxRx.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFDataTxRx.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFDataTxRx.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFDataTxRx.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFDataTxRx.o.d" -o ${OBJECTDIR}/_ext/388820833/WFDataTxRx.o ../MicroChip/TCPIP_Stack/WiFi/WFDataTxRx.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFDataTxRx.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFDataTxRx.o.d" -o ${OBJECTDIR}/_ext/388820833/WFDataTxRx.o ../MicroChip/TCPIP_Stack/WiFi/WFDataTxRx.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFDebugStrings.o: ../MicroChip/TCPIP_Stack/WiFi/WFDebugStrings.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFDebugStrings.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFDebugStrings.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFDebugStrings.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFDebugStrings.o.d" -o ${OBJECTDIR}/_ext/388820833/WFDebugStrings.o ../MicroChip/TCPIP_Stack/WiFi/WFDebugStrings.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFDebugStrings.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFDebugStrings.o.d" -o ${OBJECTDIR}/_ext/388820833/WFDebugStrings.o ../MicroChip/TCPIP_Stack/WiFi/WFDebugStrings.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFEasyConfig.o: ../MicroChip/TCPIP_Stack/WiFi/WFEasyConfig.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFEasyConfig.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFEasyConfig.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFEasyConfig.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFEasyConfig.o.d" -o ${OBJECTDIR}/_ext/388820833/WFEasyConfig.o ../MicroChip/TCPIP_Stack/WiFi/WFEasyConfig.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFEasyConfig.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFEasyConfig.o.d" -o ${OBJECTDIR}/_ext/388820833/WFEasyConfig.o ../MicroChip/TCPIP_Stack/WiFi/WFEasyConfig.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFEventHandler.o: ../MicroChip/TCPIP_Stack/WiFi/WFEventHandler.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFEventHandler.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFEventHandler.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFEventHandler.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFEventHandler.o.d" -o ${OBJECTDIR}/_ext/388820833/WFEventHandler.o ../MicroChip/TCPIP_Stack/WiFi/WFEventHandler.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFEventHandler.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFEventHandler.o.d" -o ${OBJECTDIR}/_ext/388820833/WFEventHandler.o ../MicroChip/TCPIP_Stack/WiFi/WFEventHandler.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFInit.o: ../MicroChip/TCPIP_Stack/WiFi/WFInit.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFInit.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFInit.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFInit.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFInit.o.d" -o ${OBJECTDIR}/_ext/388820833/WFInit.o ../MicroChip/TCPIP_Stack/WiFi/WFInit.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFInit.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFInit.o.d" -o ${OBJECTDIR}/_ext/388820833/WFInit.o ../MicroChip/TCPIP_Stack/WiFi/WFInit.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFPowerSave.o: ../MicroChip/TCPIP_Stack/WiFi/WFPowerSave.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFPowerSave.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFPowerSave.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFPowerSave.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFPowerSave.o.d" -o ${OBJECTDIR}/_ext/388820833/WFPowerSave.o ../MicroChip/TCPIP_Stack/WiFi/WFPowerSave.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFPowerSave.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFPowerSave.o.d" -o ${OBJECTDIR}/_ext/388820833/WFPowerSave.o ../MicroChip/TCPIP_Stack/WiFi/WFPowerSave.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFScan.o: ../MicroChip/TCPIP_Stack/WiFi/WFScan.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFScan.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFScan.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFScan.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFScan.o.d" -o ${OBJECTDIR}/_ext/388820833/WFScan.o ../MicroChip/TCPIP_Stack/WiFi/WFScan.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFScan.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFScan.o.d" -o ${OBJECTDIR}/_ext/388820833/WFScan.o ../MicroChip/TCPIP_Stack/WiFi/WFScan.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFTxPower.o: ../MicroChip/TCPIP_Stack/WiFi/WFTxPower.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFTxPower.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFTxPower.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFTxPower.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFTxPower.o.d" -o ${OBJECTDIR}/_ext/388820833/WFTxPower.o ../MicroChip/TCPIP_Stack/WiFi/WFTxPower.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFTxPower.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFTxPower.o.d" -o ${OBJECTDIR}/_ext/388820833/WFTxPower.o ../MicroChip/TCPIP_Stack/WiFi/WFTxPower.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WF_Spi.o: ../MicroChip/TCPIP_Stack/WiFi/WF_Spi.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WF_Spi.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WF_Spi.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WF_Spi.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WF_Spi.o.d" -o ${OBJECTDIR}/_ext/388820833/WF_Spi.o ../MicroChip/TCPIP_Stack/WiFi/WF_Spi.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WF_Spi.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WF_Spi.o.d" -o ${OBJECTDIR}/_ext/388820833/WF_Spi.o ../MicroChip/TCPIP_Stack/WiFi/WF_Spi.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFDriverCom_24G.o: ../MicroChip/TCPIP_Stack/WiFi/WFDriverCom_24G.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFDriverCom_24G.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFDriverCom_24G.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFDriverCom_24G.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFDriverCom_24G.o.d" -o ${OBJECTDIR}/_ext/388820833/WFDriverCom_24G.o ../MicroChip/TCPIP_Stack/WiFi/WFDriverCom_24G.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFDriverCom_24G.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFDriverCom_24G.o.d" -o ${OBJECTDIR}/_ext/388820833/WFDriverCom_24G.o ../MicroChip/TCPIP_Stack/WiFi/WFDriverCom_24G.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFDriverRaw_24G.o: ../MicroChip/TCPIP_Stack/WiFi/WFDriverRaw_24G.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFDriverRaw_24G.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFDriverRaw_24G.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFDriverRaw_24G.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -MMD -MF "${OBJECTDIR}/_ext/388820833/WFDriverRaw_24G.o.d" -o ${OBJECTDIR}/_ext/388820833/WFDriverRaw_24G.o ../MicroChip/TCPIP_Stack/WiFi/WFDriverRaw_24G.c     
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFDriverRaw_24G.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -MMD -MF "${OBJECTDIR}/_ext/388820833/WFDriverRaw_24G.o.d" -o ${OBJECTDIR}/_ext/388820833/WFDriverRaw_24G.o ../MicroChip/TCPIP_Stack/WiFi/WFDriverRaw_24G.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD) 
 	
 ${OBJECTDIR}/_ext/388820833/WFMac_24G.o: ../MicroChip/TCPIP_Stack/WiFi/WFMac_24G.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFMac_24G.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFMac_24G.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFMac_24G.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFMac_24G.o.d" -o ${OBJECTDIR}/_ext/388820833/WFMac_24G.o ../MicroChip/TCPIP_Stack/WiFi/WFMac_24G.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFMac_24G.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFMac_24G.o.d" -o ${OBJECTDIR}/_ext/388820833/WFMac_24G.o ../MicroChip/TCPIP_Stack/WiFi/WFMac_24G.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFMgmtMsg_24G.o: ../MicroChip/TCPIP_Stack/WiFi/WFMgmtMsg_24G.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFMgmtMsg_24G.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFMgmtMsg_24G.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFMgmtMsg_24G.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFMgmtMsg_24G.o.d" -o ${OBJECTDIR}/_ext/388820833/WFMgmtMsg_24G.o ../MicroChip/TCPIP_Stack/WiFi/WFMgmtMsg_24G.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFMgmtMsg_24G.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFMgmtMsg_24G.o.d" -o ${OBJECTDIR}/_ext/388820833/WFMgmtMsg_24G.o ../MicroChip/TCPIP_Stack/WiFi/WFMgmtMsg_24G.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFParamMsg_24G.o: ../MicroChip/TCPIP_Stack/WiFi/WFParamMsg_24G.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFParamMsg_24G.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFParamMsg_24G.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFParamMsg_24G.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFParamMsg_24G.o.d" -o ${OBJECTDIR}/_ext/388820833/WFParamMsg_24G.o ../MicroChip/TCPIP_Stack/WiFi/WFParamMsg_24G.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFParamMsg_24G.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFParamMsg_24G.o.d" -o ${OBJECTDIR}/_ext/388820833/WFParamMsg_24G.o ../MicroChip/TCPIP_Stack/WiFi/WFParamMsg_24G.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/Main.o: ../Main.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/Main.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/Main.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/Main.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/Main.o.d" -o ${OBJECTDIR}/_ext/1472/Main.o ../Main.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/Main.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/Main.o.d" -o ${OBJECTDIR}/_ext/1472/Main.o ../Main.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/CustomHTTPApp.o: ../CustomHTTPApp.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/CustomHTTPApp.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/CustomHTTPApp.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/CustomHTTPApp.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/CustomHTTPApp.o.d" -o ${OBJECTDIR}/_ext/1472/CustomHTTPApp.o ../CustomHTTPApp.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/CustomHTTPApp.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/CustomHTTPApp.o.d" -o ${OBJECTDIR}/_ext/1472/CustomHTTPApp.o ../CustomHTTPApp.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/WF_Config.o: ../WF_Config.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/WF_Config.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/WF_Config.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/WF_Config.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/WF_Config.o.d" -o ${OBJECTDIR}/_ext/1472/WF_Config.o ../WF_Config.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/WF_Config.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/WF_Config.o.d" -o ${OBJECTDIR}/_ext/1472/WF_Config.o ../WF_Config.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/WifiGDemoMPFSImg.o: ../WifiGDemoMPFSImg.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/WifiGDemoMPFSImg.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/WifiGDemoMPFSImg.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/WifiGDemoMPFSImg.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/WifiGDemoMPFSImg.o.d" -o ${OBJECTDIR}/_ext/1472/WifiGDemoMPFSImg.o ../WifiGDemoMPFSImg.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/WifiGDemoMPFSImg.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/WifiGDemoMPFSImg.o.d" -o ${OBJECTDIR}/_ext/1472/WifiGDemoMPFSImg.o ../WifiGDemoMPFSImg.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/i2c_master.o: ../i2c_master.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/i2c_master.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/i2c_master.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/i2c_master.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/i2c_master.o.d" -o ${OBJECTDIR}/_ext/1472/i2c_master.o ../i2c_master.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/i2c_master.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/i2c_master.o.d" -o ${OBJECTDIR}/_ext/1472/i2c_master.o ../i2c_master.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/OpenADRClient.o: ../OpenADRClient.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/OpenADRClient.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/OpenADRClient.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/OpenADRClient.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/OpenADRClient.o.d" -o ${OBJECTDIR}/_ext/1472/OpenADRClient.o ../OpenADRClient.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/OpenADRClient.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/OpenADRClient.o.d" -o ${OBJECTDIR}/_ext/1472/OpenADRClient.o ../OpenADRClient.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/INTiMain.o: ../INTiMain.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/INTiMain.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/INTiMain.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/INTiMain.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/INTiMain.o.d" -o ${OBJECTDIR}/_ext/1472/INTiMain.o ../INTiMain.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/INTiMain.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/INTiMain.o.d" -o ${OBJECTDIR}/_ext/1472/INTiMain.o ../INTiMain.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/UARTiMain.o: ../UARTiMain.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/UARTiMain.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/UARTiMain.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/UARTiMain.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/UARTiMain.o.d" -o ${OBJECTDIR}/_ext/1472/UARTiMain.o ../UARTiMain.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/UARTiMain.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/UARTiMain.o.d" -o ${OBJECTDIR}/_ext/1472/UARTiMain.o ../UARTiMain.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/TimeMonitor.o: ../TimeMonitor.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/TimeMonitor.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/TimeMonitor.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/TimeMonitor.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -MMD -MF "${OBJECTDIR}/_ext/1472/TimeMonitor.o.d" -o ${OBJECTDIR}/_ext/1472/TimeMonitor.o ../TimeMonitor.c     
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/TimeMonitor.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -MMD -MF "${OBJECTDIR}/_ext/1472/TimeMonitor.o.d" -o ${OBJECTDIR}/_ext/1472/TimeMonitor.o ../TimeMonitor.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD) 
 	
 ${OBJECTDIR}/_ext/1472/EPRI_UARTLayer.o: ../EPRI_UARTLayer.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/EPRI_UARTLayer.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/EPRI_UARTLayer.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/EPRI_UARTLayer.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/EPRI_UARTLayer.o.d" -o ${OBJECTDIR}/_ext/1472/EPRI_UARTLayer.o ../EPRI_UARTLayer.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/EPRI_UARTLayer.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/EPRI_UARTLayer.o.d" -o ${OBJECTDIR}/_ext/1472/EPRI_UARTLayer.o ../EPRI_UARTLayer.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/app_UCM.o: ../app_UCM.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/app_UCM.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/app_UCM.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/app_UCM.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/app_UCM.o.d" -o ${OBJECTDIR}/_ext/1472/app_UCM.o ../app_UCM.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/app_UCM.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/app_UCM.o.d" -o ${OBJECTDIR}/_ext/1472/app_UCM.o ../app_UCM.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/Assert.o: ../Assert.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/Assert.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/Assert.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/Assert.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/Assert.o.d" -o ${OBJECTDIR}/_ext/1472/Assert.o ../Assert.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/Assert.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/Assert.o.d" -o ${OBJECTDIR}/_ext/1472/Assert.o ../Assert.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/EPRI_SPILayer.o: ../EPRI_SPILayer.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/EPRI_SPILayer.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/EPRI_SPILayer.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/EPRI_SPILayer.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/EPRI_SPILayer.o.d" -o ${OBJECTDIR}/_ext/1472/EPRI_SPILayer.o ../EPRI_SPILayer.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/EPRI_SPILayer.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/EPRI_SPILayer.o.d" -o ${OBJECTDIR}/_ext/1472/EPRI_SPILayer.o ../EPRI_SPILayer.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/MCI_Common.o: ../MCI_Common.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/MCI_Common.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/MCI_Common.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/MCI_Common.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/MCI_Common.o.d" -o ${OBJECTDIR}/_ext/1472/MCI_Common.o ../MCI_Common.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/MCI_Common.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/MCI_Common.o.d" -o ${OBJECTDIR}/_ext/1472/MCI_Common.o ../MCI_Common.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/LinkLayerMessaging.o: ../LinkLayerMessaging.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/LinkLayerMessaging.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/LinkLayerMessaging.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/LinkLayerMessaging.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/LinkLayerMessaging.o.d" -o ${OBJECTDIR}/_ext/1472/LinkLayerMessaging.o ../LinkLayerMessaging.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/LinkLayerMessaging.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/LinkLayerMessaging.o.d" -o ${OBJECTDIR}/_ext/1472/LinkLayerMessaging.o ../LinkLayerMessaging.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/BasicDR.o: ../BasicDR.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/BasicDR.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/BasicDR.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/BasicDR.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/BasicDR.o.d" -o ${OBJECTDIR}/_ext/1472/BasicDR.o ../BasicDR.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/BasicDR.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/BasicDR.o.d" -o ${OBJECTDIR}/_ext/1472/BasicDR.o ../BasicDR.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 else
 ${OBJECTDIR}/_ext/93166211/Announce.o: ../MicroChip/TCPIP_Stack/Announce.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Announce.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Announce.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Announce.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Announce.o.d" -o ${OBJECTDIR}/_ext/93166211/Announce.o ../MicroChip/TCPIP_Stack/Announce.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Announce.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Announce.o.d" -o ${OBJECTDIR}/_ext/93166211/Announce.o ../MicroChip/TCPIP_Stack/Announce.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/ARCFOUR.o: ../MicroChip/TCPIP_Stack/ARCFOUR.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ARCFOUR.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ARCFOUR.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ARCFOUR.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ARCFOUR.o.d" -o ${OBJECTDIR}/_ext/93166211/ARCFOUR.o ../MicroChip/TCPIP_Stack/ARCFOUR.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ARCFOUR.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ARCFOUR.o.d" -o ${OBJECTDIR}/_ext/93166211/ARCFOUR.o ../MicroChip/TCPIP_Stack/ARCFOUR.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/ARP.o: ../MicroChip/TCPIP_Stack/ARP.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ARP.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ARP.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ARP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ARP.o.d" -o ${OBJECTDIR}/_ext/93166211/ARP.o ../MicroChip/TCPIP_Stack/ARP.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ARP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ARP.o.d" -o ${OBJECTDIR}/_ext/93166211/ARP.o ../MicroChip/TCPIP_Stack/ARP.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/AutoIP.o: ../MicroChip/TCPIP_Stack/AutoIP.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/AutoIP.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/AutoIP.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/AutoIP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/AutoIP.o.d" -o ${OBJECTDIR}/_ext/93166211/AutoIP.o ../MicroChip/TCPIP_Stack/AutoIP.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/AutoIP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/AutoIP.o.d" -o ${OBJECTDIR}/_ext/93166211/AutoIP.o ../MicroChip/TCPIP_Stack/AutoIP.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/BerkeleyAPI.o: ../MicroChip/TCPIP_Stack/BerkeleyAPI.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/BerkeleyAPI.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/BerkeleyAPI.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/BerkeleyAPI.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/BerkeleyAPI.o.d" -o ${OBJECTDIR}/_ext/93166211/BerkeleyAPI.o ../MicroChip/TCPIP_Stack/BerkeleyAPI.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/BerkeleyAPI.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/BerkeleyAPI.o.d" -o ${OBJECTDIR}/_ext/93166211/BerkeleyAPI.o ../MicroChip/TCPIP_Stack/BerkeleyAPI.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/BigInt.o: ../MicroChip/TCPIP_Stack/BigInt.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/BigInt.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/BigInt.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/BigInt.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/BigInt.o.d" -o ${OBJECTDIR}/_ext/93166211/BigInt.o ../MicroChip/TCPIP_Stack/BigInt.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/BigInt.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/BigInt.o.d" -o ${OBJECTDIR}/_ext/93166211/BigInt.o ../MicroChip/TCPIP_Stack/BigInt.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/Delay.o: ../MicroChip/TCPIP_Stack/Delay.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Delay.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Delay.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Delay.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Delay.o.d" -o ${OBJECTDIR}/_ext/93166211/Delay.o ../MicroChip/TCPIP_Stack/Delay.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Delay.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Delay.o.d" -o ${OBJECTDIR}/_ext/93166211/Delay.o ../MicroChip/TCPIP_Stack/Delay.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/DNS.o: ../MicroChip/TCPIP_Stack/DNS.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/DNS.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/DNS.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/DNS.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/DNS.o.d" -o ${OBJECTDIR}/_ext/93166211/DNS.o ../MicroChip/TCPIP_Stack/DNS.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/DNS.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/DNS.o.d" -o ${OBJECTDIR}/_ext/93166211/DNS.o ../MicroChip/TCPIP_Stack/DNS.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/DNSs.o: ../MicroChip/TCPIP_Stack/DNSs.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/DNSs.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/DNSs.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/DNSs.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/DNSs.o.d" -o ${OBJECTDIR}/_ext/93166211/DNSs.o ../MicroChip/TCPIP_Stack/DNSs.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/DNSs.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/DNSs.o.d" -o ${OBJECTDIR}/_ext/93166211/DNSs.o ../MicroChip/TCPIP_Stack/DNSs.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/DynDNS.o: ../MicroChip/TCPIP_Stack/DynDNS.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/DynDNS.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/DynDNS.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/DynDNS.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/DynDNS.o.d" -o ${OBJECTDIR}/_ext/93166211/DynDNS.o ../MicroChip/TCPIP_Stack/DynDNS.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/DynDNS.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/DynDNS.o.d" -o ${OBJECTDIR}/_ext/93166211/DynDNS.o ../MicroChip/TCPIP_Stack/DynDNS.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/FileSystem.o: ../MicroChip/TCPIP_Stack/FileSystem.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/FileSystem.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/FileSystem.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/FileSystem.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/FileSystem.o.d" -o ${OBJECTDIR}/_ext/93166211/FileSystem.o ../MicroChip/TCPIP_Stack/FileSystem.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/FileSystem.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/FileSystem.o.d" -o ${OBJECTDIR}/_ext/93166211/FileSystem.o ../MicroChip/TCPIP_Stack/FileSystem.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/FTP.o: ../MicroChip/TCPIP_Stack/FTP.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/FTP.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/FTP.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/FTP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/FTP.o.d" -o ${OBJECTDIR}/_ext/93166211/FTP.o ../MicroChip/TCPIP_Stack/FTP.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/FTP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/FTP.o.d" -o ${OBJECTDIR}/_ext/93166211/FTP.o ../MicroChip/TCPIP_Stack/FTP.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/Hashes.o: ../MicroChip/TCPIP_Stack/Hashes.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Hashes.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Hashes.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Hashes.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Hashes.o.d" -o ${OBJECTDIR}/_ext/93166211/Hashes.o ../MicroChip/TCPIP_Stack/Hashes.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Hashes.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Hashes.o.d" -o ${OBJECTDIR}/_ext/93166211/Hashes.o ../MicroChip/TCPIP_Stack/Hashes.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/Helpers.o: ../MicroChip/TCPIP_Stack/Helpers.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Helpers.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Helpers.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Helpers.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Helpers.o.d" -o ${OBJECTDIR}/_ext/93166211/Helpers.o ../MicroChip/TCPIP_Stack/Helpers.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Helpers.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Helpers.o.d" -o ${OBJECTDIR}/_ext/93166211/Helpers.o ../MicroChip/TCPIP_Stack/Helpers.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/HTTP2.o: ../MicroChip/TCPIP_Stack/HTTP2.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/HTTP2.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/HTTP2.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/HTTP2.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/HTTP2.o.d" -o ${OBJECTDIR}/_ext/93166211/HTTP2.o ../MicroChip/TCPIP_Stack/HTTP2.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/HTTP2.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/HTTP2.o.d" -o ${OBJECTDIR}/_ext/93166211/HTTP2.o ../MicroChip/TCPIP_Stack/HTTP2.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/ICMP.o: ../MicroChip/TCPIP_Stack/ICMP.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ICMP.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ICMP.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ICMP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ICMP.o.d" -o ${OBJECTDIR}/_ext/93166211/ICMP.o ../MicroChip/TCPIP_Stack/ICMP.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ICMP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ICMP.o.d" -o ${OBJECTDIR}/_ext/93166211/ICMP.o ../MicroChip/TCPIP_Stack/ICMP.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/IP.o: ../MicroChip/TCPIP_Stack/IP.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/IP.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/IP.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/IP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/IP.o.d" -o ${OBJECTDIR}/_ext/93166211/IP.o ../MicroChip/TCPIP_Stack/IP.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/IP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/IP.o.d" -o ${OBJECTDIR}/_ext/93166211/IP.o ../MicroChip/TCPIP_Stack/IP.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/LCDBlocking.o: ../MicroChip/TCPIP_Stack/LCDBlocking.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/LCDBlocking.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/LCDBlocking.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/LCDBlocking.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/LCDBlocking.o.d" -o ${OBJECTDIR}/_ext/93166211/LCDBlocking.o ../MicroChip/TCPIP_Stack/LCDBlocking.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/LCDBlocking.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/LCDBlocking.o.d" -o ${OBJECTDIR}/_ext/93166211/LCDBlocking.o ../MicroChip/TCPIP_Stack/LCDBlocking.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/MPFS2.o: ../MicroChip/TCPIP_Stack/MPFS2.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/MPFS2.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/MPFS2.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/MPFS2.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/MPFS2.o.d" -o ${OBJECTDIR}/_ext/93166211/MPFS2.o ../MicroChip/TCPIP_Stack/MPFS2.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/MPFS2.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/MPFS2.o.d" -o ${OBJECTDIR}/_ext/93166211/MPFS2.o ../MicroChip/TCPIP_Stack/MPFS2.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/NBNS.o: ../MicroChip/TCPIP_Stack/NBNS.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/NBNS.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/NBNS.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/NBNS.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/NBNS.o.d" -o ${OBJECTDIR}/_ext/93166211/NBNS.o ../MicroChip/TCPIP_Stack/NBNS.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/NBNS.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/NBNS.o.d" -o ${OBJECTDIR}/_ext/93166211/NBNS.o ../MicroChip/TCPIP_Stack/NBNS.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/Random.o: ../MicroChip/TCPIP_Stack/Random.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Random.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Random.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Random.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Random.o.d" -o ${OBJECTDIR}/_ext/93166211/Random.o ../MicroChip/TCPIP_Stack/Random.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Random.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Random.o.d" -o ${OBJECTDIR}/_ext/93166211/Random.o ../MicroChip/TCPIP_Stack/Random.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/Reboot.o: ../MicroChip/TCPIP_Stack/Reboot.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Reboot.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Reboot.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Reboot.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Reboot.o.d" -o ${OBJECTDIR}/_ext/93166211/Reboot.o ../MicroChip/TCPIP_Stack/Reboot.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Reboot.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Reboot.o.d" -o ${OBJECTDIR}/_ext/93166211/Reboot.o ../MicroChip/TCPIP_Stack/Reboot.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/RSA.o: ../MicroChip/TCPIP_Stack/RSA.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/RSA.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/RSA.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/RSA.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/RSA.o.d" -o ${OBJECTDIR}/_ext/93166211/RSA.o ../MicroChip/TCPIP_Stack/RSA.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/RSA.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/RSA.o.d" -o ${OBJECTDIR}/_ext/93166211/RSA.o ../MicroChip/TCPIP_Stack/RSA.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/SMTP.o: ../MicroChip/TCPIP_Stack/SMTP.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SMTP.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SMTP.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SMTP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SMTP.o.d" -o ${OBJECTDIR}/_ext/93166211/SMTP.o ../MicroChip/TCPIP_Stack/SMTP.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SMTP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SMTP.o.d" -o ${OBJECTDIR}/_ext/93166211/SMTP.o ../MicroChip/TCPIP_Stack/SMTP.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/SNMP.o: ../MicroChip/TCPIP_Stack/SNMP.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SNMP.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SNMP.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SNMP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SNMP.o.d" -o ${OBJECTDIR}/_ext/93166211/SNMP.o ../MicroChip/TCPIP_Stack/SNMP.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SNMP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SNMP.o.d" -o ${OBJECTDIR}/_ext/93166211/SNMP.o ../MicroChip/TCPIP_Stack/SNMP.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/SNMPv3.o: ../MicroChip/TCPIP_Stack/SNMPv3.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SNMPv3.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SNMPv3.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SNMPv3.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SNMPv3.o.d" -o ${OBJECTDIR}/_ext/93166211/SNMPv3.o ../MicroChip/TCPIP_Stack/SNMPv3.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SNMPv3.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SNMPv3.o.d" -o ${OBJECTDIR}/_ext/93166211/SNMPv3.o ../MicroChip/TCPIP_Stack/SNMPv3.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/SNMPv3USM.o: ../MicroChip/TCPIP_Stack/SNMPv3USM.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SNMPv3USM.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SNMPv3USM.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SNMPv3USM.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SNMPv3USM.o.d" -o ${OBJECTDIR}/_ext/93166211/SNMPv3USM.o ../MicroChip/TCPIP_Stack/SNMPv3USM.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SNMPv3USM.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SNMPv3USM.o.d" -o ${OBJECTDIR}/_ext/93166211/SNMPv3USM.o ../MicroChip/TCPIP_Stack/SNMPv3USM.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/SNTP.o: ../MicroChip/TCPIP_Stack/SNTP.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SNTP.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SNTP.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SNTP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SNTP.o.d" -o ${OBJECTDIR}/_ext/93166211/SNTP.o ../MicroChip/TCPIP_Stack/SNTP.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SNTP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SNTP.o.d" -o ${OBJECTDIR}/_ext/93166211/SNTP.o ../MicroChip/TCPIP_Stack/SNTP.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/SPIEEPROM.o: ../MicroChip/TCPIP_Stack/SPIEEPROM.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SPIEEPROM.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SPIEEPROM.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SPIEEPROM.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SPIEEPROM.o.d" -o ${OBJECTDIR}/_ext/93166211/SPIEEPROM.o ../MicroChip/TCPIP_Stack/SPIEEPROM.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SPIEEPROM.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SPIEEPROM.o.d" -o ${OBJECTDIR}/_ext/93166211/SPIEEPROM.o ../MicroChip/TCPIP_Stack/SPIEEPROM.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/SPIFlash.o: ../MicroChip/TCPIP_Stack/SPIFlash.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SPIFlash.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SPIFlash.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SPIFlash.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SPIFlash.o.d" -o ${OBJECTDIR}/_ext/93166211/SPIFlash.o ../MicroChip/TCPIP_Stack/SPIFlash.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SPIFlash.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SPIFlash.o.d" -o ${OBJECTDIR}/_ext/93166211/SPIFlash.o ../MicroChip/TCPIP_Stack/SPIFlash.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/SPIRAM.o: ../MicroChip/TCPIP_Stack/SPIRAM.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SPIRAM.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SPIRAM.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SPIRAM.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SPIRAM.o.d" -o ${OBJECTDIR}/_ext/93166211/SPIRAM.o ../MicroChip/TCPIP_Stack/SPIRAM.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SPIRAM.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SPIRAM.o.d" -o ${OBJECTDIR}/_ext/93166211/SPIRAM.o ../MicroChip/TCPIP_Stack/SPIRAM.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/SSL.o: ../MicroChip/TCPIP_Stack/SSL.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SSL.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/SSL.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SSL.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SSL.o.d" -o ${OBJECTDIR}/_ext/93166211/SSL.o ../MicroChip/TCPIP_Stack/SSL.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/SSL.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/SSL.o.d" -o ${OBJECTDIR}/_ext/93166211/SSL.o ../MicroChip/TCPIP_Stack/SSL.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/StackTsk.o: ../MicroChip/TCPIP_Stack/StackTsk.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/StackTsk.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/StackTsk.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/StackTsk.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/StackTsk.o.d" -o ${OBJECTDIR}/_ext/93166211/StackTsk.o ../MicroChip/TCPIP_Stack/StackTsk.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/StackTsk.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/StackTsk.o.d" -o ${OBJECTDIR}/_ext/93166211/StackTsk.o ../MicroChip/TCPIP_Stack/StackTsk.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/TCP.o: ../MicroChip/TCPIP_Stack/TCP.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/TCP.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/TCP.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/TCP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/TCP.o.d" -o ${OBJECTDIR}/_ext/93166211/TCP.o ../MicroChip/TCPIP_Stack/TCP.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/TCP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/TCP.o.d" -o ${OBJECTDIR}/_ext/93166211/TCP.o ../MicroChip/TCPIP_Stack/TCP.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/TCPPerformanceTest.o: ../MicroChip/TCPIP_Stack/TCPPerformanceTest.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/TCPPerformanceTest.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/TCPPerformanceTest.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/TCPPerformanceTest.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/TCPPerformanceTest.o.d" -o ${OBJECTDIR}/_ext/93166211/TCPPerformanceTest.o ../MicroChip/TCPIP_Stack/TCPPerformanceTest.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/TCPPerformanceTest.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/TCPPerformanceTest.o.d" -o ${OBJECTDIR}/_ext/93166211/TCPPerformanceTest.o ../MicroChip/TCPIP_Stack/TCPPerformanceTest.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/Telnet.o: ../MicroChip/TCPIP_Stack/Telnet.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Telnet.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Telnet.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Telnet.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Telnet.o.d" -o ${OBJECTDIR}/_ext/93166211/Telnet.o ../MicroChip/TCPIP_Stack/Telnet.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Telnet.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Telnet.o.d" -o ${OBJECTDIR}/_ext/93166211/Telnet.o ../MicroChip/TCPIP_Stack/Telnet.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/TFTPc.o: ../MicroChip/TCPIP_Stack/TFTPc.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/TFTPc.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/TFTPc.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/TFTPc.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/TFTPc.o.d" -o ${OBJECTDIR}/_ext/93166211/TFTPc.o ../MicroChip/TCPIP_Stack/TFTPc.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/TFTPc.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/TFTPc.o.d" -o ${OBJECTDIR}/_ext/93166211/TFTPc.o ../MicroChip/TCPIP_Stack/TFTPc.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/Tick.o: ../MicroChip/TCPIP_Stack/Tick.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Tick.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/Tick.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Tick.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Tick.o.d" -o ${OBJECTDIR}/_ext/93166211/Tick.o ../MicroChip/TCPIP_Stack/Tick.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/Tick.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/Tick.o.d" -o ${OBJECTDIR}/_ext/93166211/Tick.o ../MicroChip/TCPIP_Stack/Tick.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/UART2TCPBridge.o: ../MicroChip/TCPIP_Stack/UART2TCPBridge.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/UART2TCPBridge.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/UART2TCPBridge.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/UART2TCPBridge.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/UART2TCPBridge.o.d" -o ${OBJECTDIR}/_ext/93166211/UART2TCPBridge.o ../MicroChip/TCPIP_Stack/UART2TCPBridge.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/UART2TCPBridge.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/UART2TCPBridge.o.d" -o ${OBJECTDIR}/_ext/93166211/UART2TCPBridge.o ../MicroChip/TCPIP_Stack/UART2TCPBridge.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/UDP.o: ../MicroChip/TCPIP_Stack/UDP.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/UDP.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/UDP.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/UDP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/UDP.o.d" -o ${OBJECTDIR}/_ext/93166211/UDP.o ../MicroChip/TCPIP_Stack/UDP.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/UDP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/UDP.o.d" -o ${OBJECTDIR}/_ext/93166211/UDP.o ../MicroChip/TCPIP_Stack/UDP.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/UDPPerformanceTest.o: ../MicroChip/TCPIP_Stack/UDPPerformanceTest.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/UDPPerformanceTest.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/UDPPerformanceTest.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/UDPPerformanceTest.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/UDPPerformanceTest.o.d" -o ${OBJECTDIR}/_ext/93166211/UDPPerformanceTest.o ../MicroChip/TCPIP_Stack/UDPPerformanceTest.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/UDPPerformanceTest.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/UDPPerformanceTest.o.d" -o ${OBJECTDIR}/_ext/93166211/UDPPerformanceTest.o ../MicroChip/TCPIP_Stack/UDPPerformanceTest.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/ZeroconfHelper.o: ../MicroChip/TCPIP_Stack/ZeroconfHelper.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ZeroconfHelper.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ZeroconfHelper.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ZeroconfHelper.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ZeroconfHelper.o.d" -o ${OBJECTDIR}/_ext/93166211/ZeroconfHelper.o ../MicroChip/TCPIP_Stack/ZeroconfHelper.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ZeroconfHelper.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ZeroconfHelper.o.d" -o ${OBJECTDIR}/_ext/93166211/ZeroconfHelper.o ../MicroChip/TCPIP_Stack/ZeroconfHelper.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/ZeroconfLinkLocal.o: ../MicroChip/TCPIP_Stack/ZeroconfLinkLocal.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ZeroconfLinkLocal.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ZeroconfLinkLocal.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ZeroconfLinkLocal.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ZeroconfLinkLocal.o.d" -o ${OBJECTDIR}/_ext/93166211/ZeroconfLinkLocal.o ../MicroChip/TCPIP_Stack/ZeroconfLinkLocal.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ZeroconfLinkLocal.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ZeroconfLinkLocal.o.d" -o ${OBJECTDIR}/_ext/93166211/ZeroconfLinkLocal.o ../MicroChip/TCPIP_Stack/ZeroconfLinkLocal.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/ZeroconfMulticastDNS.o: ../MicroChip/TCPIP_Stack/ZeroconfMulticastDNS.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ZeroconfMulticastDNS.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/ZeroconfMulticastDNS.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ZeroconfMulticastDNS.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ZeroconfMulticastDNS.o.d" -o ${OBJECTDIR}/_ext/93166211/ZeroconfMulticastDNS.o ../MicroChip/TCPIP_Stack/ZeroconfMulticastDNS.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/ZeroconfMulticastDNS.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/ZeroconfMulticastDNS.o.d" -o ${OBJECTDIR}/_ext/93166211/ZeroconfMulticastDNS.o ../MicroChip/TCPIP_Stack/ZeroconfMulticastDNS.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/DHCP.o: ../MicroChip/TCPIP_Stack/DHCP.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/DHCP.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/DHCP.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/DHCP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/DHCP.o.d" -o ${OBJECTDIR}/_ext/93166211/DHCP.o ../MicroChip/TCPIP_Stack/DHCP.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/DHCP.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/DHCP.o.d" -o ${OBJECTDIR}/_ext/93166211/DHCP.o ../MicroChip/TCPIP_Stack/DHCP.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/93166211/DHCPs.o: ../MicroChip/TCPIP_Stack/DHCPs.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/93166211" 
 	@${RM} ${OBJECTDIR}/_ext/93166211/DHCPs.o.d 
 	@${RM} ${OBJECTDIR}/_ext/93166211/DHCPs.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/DHCPs.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/DHCPs.o.d" -o ${OBJECTDIR}/_ext/93166211/DHCPs.o ../MicroChip/TCPIP_Stack/DHCPs.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/93166211/DHCPs.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/93166211/DHCPs.o.d" -o ${OBJECTDIR}/_ext/93166211/DHCPs.o ../MicroChip/TCPIP_Stack/DHCPs.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WF_Eint.o: ../MicroChip/TCPIP_Stack/WiFi/WF_Eint.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WF_Eint.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WF_Eint.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WF_Eint.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -MMD -MF "${OBJECTDIR}/_ext/388820833/WF_Eint.o.d" -o ${OBJECTDIR}/_ext/388820833/WF_Eint.o ../MicroChip/TCPIP_Stack/WiFi/WF_Eint.c     
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WF_Eint.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -MMD -MF "${OBJECTDIR}/_ext/388820833/WF_Eint.o.d" -o ${OBJECTDIR}/_ext/388820833/WF_Eint.o ../MicroChip/TCPIP_Stack/WiFi/WF_Eint.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD) 
 	
 ${OBJECTDIR}/_ext/388820833/WF_pbkdf2.o: ../MicroChip/TCPIP_Stack/WiFi/WF_pbkdf2.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WF_pbkdf2.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WF_pbkdf2.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WF_pbkdf2.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WF_pbkdf2.o.d" -o ${OBJECTDIR}/_ext/388820833/WF_pbkdf2.o ../MicroChip/TCPIP_Stack/WiFi/WF_pbkdf2.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WF_pbkdf2.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WF_pbkdf2.o.d" -o ${OBJECTDIR}/_ext/388820833/WF_pbkdf2.o ../MicroChip/TCPIP_Stack/WiFi/WF_pbkdf2.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFConnectionAlgorithm.o: ../MicroChip/TCPIP_Stack/WiFi/WFConnectionAlgorithm.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConnectionAlgorithm.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConnectionAlgorithm.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConnectionAlgorithm.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConnectionAlgorithm.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConnectionAlgorithm.o ../MicroChip/TCPIP_Stack/WiFi/WFConnectionAlgorithm.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConnectionAlgorithm.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConnectionAlgorithm.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConnectionAlgorithm.o ../MicroChip/TCPIP_Stack/WiFi/WFConnectionAlgorithm.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFConnectionManager.o: ../MicroChip/TCPIP_Stack/WiFi/WFConnectionManager.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConnectionManager.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConnectionManager.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConnectionManager.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConnectionManager.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConnectionManager.o ../MicroChip/TCPIP_Stack/WiFi/WFConnectionManager.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConnectionManager.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConnectionManager.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConnectionManager.o ../MicroChip/TCPIP_Stack/WiFi/WFConnectionManager.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFConnectionProfile.o: ../MicroChip/TCPIP_Stack/WiFi/WFConnectionProfile.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConnectionProfile.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConnectionProfile.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConnectionProfile.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConnectionProfile.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConnectionProfile.o ../MicroChip/TCPIP_Stack/WiFi/WFConnectionProfile.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConnectionProfile.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConnectionProfile.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConnectionProfile.o ../MicroChip/TCPIP_Stack/WiFi/WFConnectionProfile.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFConsole.o: ../MicroChip/TCPIP_Stack/WiFi/WFConsole.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsole.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsole.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsole.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsole.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsole.o ../MicroChip/TCPIP_Stack/WiFi/WFConsole.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsole.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsole.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsole.o ../MicroChip/TCPIP_Stack/WiFi/WFConsole.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFConsoleIfconfig.o: ../MicroChip/TCPIP_Stack/WiFi/WFConsoleIfconfig.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsoleIfconfig.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsoleIfconfig.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsoleIfconfig.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsoleIfconfig.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsoleIfconfig.o ../MicroChip/TCPIP_Stack/WiFi/WFConsoleIfconfig.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsoleIfconfig.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsoleIfconfig.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsoleIfconfig.o ../MicroChip/TCPIP_Stack/WiFi/WFConsoleIfconfig.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFConsoleIwconfig.o: ../MicroChip/TCPIP_Stack/WiFi/WFConsoleIwconfig.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsoleIwconfig.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsoleIwconfig.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsoleIwconfig.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsoleIwconfig.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsoleIwconfig.o ../MicroChip/TCPIP_Stack/WiFi/WFConsoleIwconfig.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsoleIwconfig.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsoleIwconfig.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsoleIwconfig.o ../MicroChip/TCPIP_Stack/WiFi/WFConsoleIwconfig.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFConsoleIwpriv.o: ../MicroChip/TCPIP_Stack/WiFi/WFConsoleIwpriv.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsoleIwpriv.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsoleIwpriv.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsoleIwpriv.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsoleIwpriv.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsoleIwpriv.o ../MicroChip/TCPIP_Stack/WiFi/WFConsoleIwpriv.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsoleIwpriv.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsoleIwpriv.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsoleIwpriv.o ../MicroChip/TCPIP_Stack/WiFi/WFConsoleIwpriv.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFConsoleMsgHandler.o: ../MicroChip/TCPIP_Stack/WiFi/WFConsoleMsgHandler.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsoleMsgHandler.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsoleMsgHandler.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsoleMsgHandler.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsoleMsgHandler.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsoleMsgHandler.o ../MicroChip/TCPIP_Stack/WiFi/WFConsoleMsgHandler.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsoleMsgHandler.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsoleMsgHandler.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsoleMsgHandler.o ../MicroChip/TCPIP_Stack/WiFi/WFConsoleMsgHandler.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFConsoleMsgs.o: ../MicroChip/TCPIP_Stack/WiFi/WFConsoleMsgs.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsoleMsgs.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFConsoleMsgs.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsoleMsgs.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsoleMsgs.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsoleMsgs.o ../MicroChip/TCPIP_Stack/WiFi/WFConsoleMsgs.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFConsoleMsgs.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFConsoleMsgs.o.d" -o ${OBJECTDIR}/_ext/388820833/WFConsoleMsgs.o ../MicroChip/TCPIP_Stack/WiFi/WFConsoleMsgs.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFDataTxRx.o: ../MicroChip/TCPIP_Stack/WiFi/WFDataTxRx.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFDataTxRx.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFDataTxRx.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFDataTxRx.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFDataTxRx.o.d" -o ${OBJECTDIR}/_ext/388820833/WFDataTxRx.o ../MicroChip/TCPIP_Stack/WiFi/WFDataTxRx.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFDataTxRx.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFDataTxRx.o.d" -o ${OBJECTDIR}/_ext/388820833/WFDataTxRx.o ../MicroChip/TCPIP_Stack/WiFi/WFDataTxRx.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFDebugStrings.o: ../MicroChip/TCPIP_Stack/WiFi/WFDebugStrings.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFDebugStrings.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFDebugStrings.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFDebugStrings.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFDebugStrings.o.d" -o ${OBJECTDIR}/_ext/388820833/WFDebugStrings.o ../MicroChip/TCPIP_Stack/WiFi/WFDebugStrings.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFDebugStrings.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFDebugStrings.o.d" -o ${OBJECTDIR}/_ext/388820833/WFDebugStrings.o ../MicroChip/TCPIP_Stack/WiFi/WFDebugStrings.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFEasyConfig.o: ../MicroChip/TCPIP_Stack/WiFi/WFEasyConfig.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFEasyConfig.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFEasyConfig.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFEasyConfig.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFEasyConfig.o.d" -o ${OBJECTDIR}/_ext/388820833/WFEasyConfig.o ../MicroChip/TCPIP_Stack/WiFi/WFEasyConfig.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFEasyConfig.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFEasyConfig.o.d" -o ${OBJECTDIR}/_ext/388820833/WFEasyConfig.o ../MicroChip/TCPIP_Stack/WiFi/WFEasyConfig.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFEventHandler.o: ../MicroChip/TCPIP_Stack/WiFi/WFEventHandler.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFEventHandler.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFEventHandler.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFEventHandler.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFEventHandler.o.d" -o ${OBJECTDIR}/_ext/388820833/WFEventHandler.o ../MicroChip/TCPIP_Stack/WiFi/WFEventHandler.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFEventHandler.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFEventHandler.o.d" -o ${OBJECTDIR}/_ext/388820833/WFEventHandler.o ../MicroChip/TCPIP_Stack/WiFi/WFEventHandler.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFInit.o: ../MicroChip/TCPIP_Stack/WiFi/WFInit.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFInit.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFInit.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFInit.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFInit.o.d" -o ${OBJECTDIR}/_ext/388820833/WFInit.o ../MicroChip/TCPIP_Stack/WiFi/WFInit.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFInit.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFInit.o.d" -o ${OBJECTDIR}/_ext/388820833/WFInit.o ../MicroChip/TCPIP_Stack/WiFi/WFInit.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFPowerSave.o: ../MicroChip/TCPIP_Stack/WiFi/WFPowerSave.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFPowerSave.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFPowerSave.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFPowerSave.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFPowerSave.o.d" -o ${OBJECTDIR}/_ext/388820833/WFPowerSave.o ../MicroChip/TCPIP_Stack/WiFi/WFPowerSave.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFPowerSave.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFPowerSave.o.d" -o ${OBJECTDIR}/_ext/388820833/WFPowerSave.o ../MicroChip/TCPIP_Stack/WiFi/WFPowerSave.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFScan.o: ../MicroChip/TCPIP_Stack/WiFi/WFScan.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFScan.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFScan.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFScan.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFScan.o.d" -o ${OBJECTDIR}/_ext/388820833/WFScan.o ../MicroChip/TCPIP_Stack/WiFi/WFScan.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFScan.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFScan.o.d" -o ${OBJECTDIR}/_ext/388820833/WFScan.o ../MicroChip/TCPIP_Stack/WiFi/WFScan.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFTxPower.o: ../MicroChip/TCPIP_Stack/WiFi/WFTxPower.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFTxPower.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFTxPower.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFTxPower.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFTxPower.o.d" -o ${OBJECTDIR}/_ext/388820833/WFTxPower.o ../MicroChip/TCPIP_Stack/WiFi/WFTxPower.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFTxPower.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFTxPower.o.d" -o ${OBJECTDIR}/_ext/388820833/WFTxPower.o ../MicroChip/TCPIP_Stack/WiFi/WFTxPower.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WF_Spi.o: ../MicroChip/TCPIP_Stack/WiFi/WF_Spi.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WF_Spi.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WF_Spi.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WF_Spi.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WF_Spi.o.d" -o ${OBJECTDIR}/_ext/388820833/WF_Spi.o ../MicroChip/TCPIP_Stack/WiFi/WF_Spi.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WF_Spi.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WF_Spi.o.d" -o ${OBJECTDIR}/_ext/388820833/WF_Spi.o ../MicroChip/TCPIP_Stack/WiFi/WF_Spi.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFDriverCom_24G.o: ../MicroChip/TCPIP_Stack/WiFi/WFDriverCom_24G.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFDriverCom_24G.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFDriverCom_24G.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFDriverCom_24G.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFDriverCom_24G.o.d" -o ${OBJECTDIR}/_ext/388820833/WFDriverCom_24G.o ../MicroChip/TCPIP_Stack/WiFi/WFDriverCom_24G.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFDriverCom_24G.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFDriverCom_24G.o.d" -o ${OBJECTDIR}/_ext/388820833/WFDriverCom_24G.o ../MicroChip/TCPIP_Stack/WiFi/WFDriverCom_24G.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFDriverRaw_24G.o: ../MicroChip/TCPIP_Stack/WiFi/WFDriverRaw_24G.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFDriverRaw_24G.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFDriverRaw_24G.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFDriverRaw_24G.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -MMD -MF "${OBJECTDIR}/_ext/388820833/WFDriverRaw_24G.o.d" -o ${OBJECTDIR}/_ext/388820833/WFDriverRaw_24G.o ../MicroChip/TCPIP_Stack/WiFi/WFDriverRaw_24G.c     
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFDriverRaw_24G.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -MMD -MF "${OBJECTDIR}/_ext/388820833/WFDriverRaw_24G.o.d" -o ${OBJECTDIR}/_ext/388820833/WFDriverRaw_24G.o ../MicroChip/TCPIP_Stack/WiFi/WFDriverRaw_24G.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD) 
 	
 ${OBJECTDIR}/_ext/388820833/WFMac_24G.o: ../MicroChip/TCPIP_Stack/WiFi/WFMac_24G.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFMac_24G.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFMac_24G.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFMac_24G.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFMac_24G.o.d" -o ${OBJECTDIR}/_ext/388820833/WFMac_24G.o ../MicroChip/TCPIP_Stack/WiFi/WFMac_24G.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFMac_24G.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFMac_24G.o.d" -o ${OBJECTDIR}/_ext/388820833/WFMac_24G.o ../MicroChip/TCPIP_Stack/WiFi/WFMac_24G.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFMgmtMsg_24G.o: ../MicroChip/TCPIP_Stack/WiFi/WFMgmtMsg_24G.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFMgmtMsg_24G.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFMgmtMsg_24G.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFMgmtMsg_24G.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFMgmtMsg_24G.o.d" -o ${OBJECTDIR}/_ext/388820833/WFMgmtMsg_24G.o ../MicroChip/TCPIP_Stack/WiFi/WFMgmtMsg_24G.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFMgmtMsg_24G.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFMgmtMsg_24G.o.d" -o ${OBJECTDIR}/_ext/388820833/WFMgmtMsg_24G.o ../MicroChip/TCPIP_Stack/WiFi/WFMgmtMsg_24G.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/388820833/WFParamMsg_24G.o: ../MicroChip/TCPIP_Stack/WiFi/WFParamMsg_24G.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/388820833" 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFParamMsg_24G.o.d 
 	@${RM} ${OBJECTDIR}/_ext/388820833/WFParamMsg_24G.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFParamMsg_24G.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFParamMsg_24G.o.d" -o ${OBJECTDIR}/_ext/388820833/WFParamMsg_24G.o ../MicroChip/TCPIP_Stack/WiFi/WFParamMsg_24G.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/388820833/WFParamMsg_24G.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/388820833/WFParamMsg_24G.o.d" -o ${OBJECTDIR}/_ext/388820833/WFParamMsg_24G.o ../MicroChip/TCPIP_Stack/WiFi/WFParamMsg_24G.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/Main.o: ../Main.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/Main.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/Main.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/Main.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/Main.o.d" -o ${OBJECTDIR}/_ext/1472/Main.o ../Main.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/Main.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/Main.o.d" -o ${OBJECTDIR}/_ext/1472/Main.o ../Main.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/CustomHTTPApp.o: ../CustomHTTPApp.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/CustomHTTPApp.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/CustomHTTPApp.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/CustomHTTPApp.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/CustomHTTPApp.o.d" -o ${OBJECTDIR}/_ext/1472/CustomHTTPApp.o ../CustomHTTPApp.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/CustomHTTPApp.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/CustomHTTPApp.o.d" -o ${OBJECTDIR}/_ext/1472/CustomHTTPApp.o ../CustomHTTPApp.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/WF_Config.o: ../WF_Config.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/WF_Config.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/WF_Config.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/WF_Config.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/WF_Config.o.d" -o ${OBJECTDIR}/_ext/1472/WF_Config.o ../WF_Config.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/WF_Config.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/WF_Config.o.d" -o ${OBJECTDIR}/_ext/1472/WF_Config.o ../WF_Config.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/WifiGDemoMPFSImg.o: ../WifiGDemoMPFSImg.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/WifiGDemoMPFSImg.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/WifiGDemoMPFSImg.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/WifiGDemoMPFSImg.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/WifiGDemoMPFSImg.o.d" -o ${OBJECTDIR}/_ext/1472/WifiGDemoMPFSImg.o ../WifiGDemoMPFSImg.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/WifiGDemoMPFSImg.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/WifiGDemoMPFSImg.o.d" -o ${OBJECTDIR}/_ext/1472/WifiGDemoMPFSImg.o ../WifiGDemoMPFSImg.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/i2c_master.o: ../i2c_master.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/i2c_master.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/i2c_master.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/i2c_master.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/i2c_master.o.d" -o ${OBJECTDIR}/_ext/1472/i2c_master.o ../i2c_master.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/i2c_master.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/i2c_master.o.d" -o ${OBJECTDIR}/_ext/1472/i2c_master.o ../i2c_master.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/OpenADRClient.o: ../OpenADRClient.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/OpenADRClient.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/OpenADRClient.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/OpenADRClient.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/OpenADRClient.o.d" -o ${OBJECTDIR}/_ext/1472/OpenADRClient.o ../OpenADRClient.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/OpenADRClient.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/OpenADRClient.o.d" -o ${OBJECTDIR}/_ext/1472/OpenADRClient.o ../OpenADRClient.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/INTiMain.o: ../INTiMain.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/INTiMain.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/INTiMain.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/INTiMain.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/INTiMain.o.d" -o ${OBJECTDIR}/_ext/1472/INTiMain.o ../INTiMain.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/INTiMain.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/INTiMain.o.d" -o ${OBJECTDIR}/_ext/1472/INTiMain.o ../INTiMain.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/UARTiMain.o: ../UARTiMain.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/UARTiMain.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/UARTiMain.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/UARTiMain.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/UARTiMain.o.d" -o ${OBJECTDIR}/_ext/1472/UARTiMain.o ../UARTiMain.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/UARTiMain.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/UARTiMain.o.d" -o ${OBJECTDIR}/_ext/1472/UARTiMain.o ../UARTiMain.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/TimeMonitor.o: ../TimeMonitor.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/TimeMonitor.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/TimeMonitor.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/TimeMonitor.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -MMD -MF "${OBJECTDIR}/_ext/1472/TimeMonitor.o.d" -o ${OBJECTDIR}/_ext/1472/TimeMonitor.o ../TimeMonitor.c     
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/TimeMonitor.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -MMD -MF "${OBJECTDIR}/_ext/1472/TimeMonitor.o.d" -o ${OBJECTDIR}/_ext/1472/TimeMonitor.o ../TimeMonitor.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD) 
 	
 ${OBJECTDIR}/_ext/1472/EPRI_UARTLayer.o: ../EPRI_UARTLayer.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/EPRI_UARTLayer.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/EPRI_UARTLayer.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/EPRI_UARTLayer.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/EPRI_UARTLayer.o.d" -o ${OBJECTDIR}/_ext/1472/EPRI_UARTLayer.o ../EPRI_UARTLayer.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/EPRI_UARTLayer.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/EPRI_UARTLayer.o.d" -o ${OBJECTDIR}/_ext/1472/EPRI_UARTLayer.o ../EPRI_UARTLayer.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/app_UCM.o: ../app_UCM.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/app_UCM.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/app_UCM.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/app_UCM.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/app_UCM.o.d" -o ${OBJECTDIR}/_ext/1472/app_UCM.o ../app_UCM.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/app_UCM.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/app_UCM.o.d" -o ${OBJECTDIR}/_ext/1472/app_UCM.o ../app_UCM.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/Assert.o: ../Assert.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/Assert.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/Assert.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/Assert.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/Assert.o.d" -o ${OBJECTDIR}/_ext/1472/Assert.o ../Assert.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/Assert.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/Assert.o.d" -o ${OBJECTDIR}/_ext/1472/Assert.o ../Assert.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/EPRI_SPILayer.o: ../EPRI_SPILayer.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/EPRI_SPILayer.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/EPRI_SPILayer.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/EPRI_SPILayer.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/EPRI_SPILayer.o.d" -o ${OBJECTDIR}/_ext/1472/EPRI_SPILayer.o ../EPRI_SPILayer.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/EPRI_SPILayer.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/EPRI_SPILayer.o.d" -o ${OBJECTDIR}/_ext/1472/EPRI_SPILayer.o ../EPRI_SPILayer.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/MCI_Common.o: ../MCI_Common.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/MCI_Common.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/MCI_Common.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/MCI_Common.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/MCI_Common.o.d" -o ${OBJECTDIR}/_ext/1472/MCI_Common.o ../MCI_Common.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/MCI_Common.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/MCI_Common.o.d" -o ${OBJECTDIR}/_ext/1472/MCI_Common.o ../MCI_Common.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/LinkLayerMessaging.o: ../LinkLayerMessaging.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/LinkLayerMessaging.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/LinkLayerMessaging.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/LinkLayerMessaging.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/LinkLayerMessaging.o.d" -o ${OBJECTDIR}/_ext/1472/LinkLayerMessaging.o ../LinkLayerMessaging.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/LinkLayerMessaging.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/LinkLayerMessaging.o.d" -o ${OBJECTDIR}/_ext/1472/LinkLayerMessaging.o ../LinkLayerMessaging.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 ${OBJECTDIR}/_ext/1472/BasicDR.o: ../BasicDR.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
 	@${RM} ${OBJECTDIR}/_ext/1472/BasicDR.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/BasicDR.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/BasicDR.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/BasicDR.o.d" -o ${OBJECTDIR}/_ext/1472/BasicDR.o ../BasicDR.c      -w
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/BasicDR.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -O1 -I".." -I"../Microchip/Include" -I"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral" -I"../Configs" -I"." -Wall -MMD -MF "${OBJECTDIR}/_ext/1472/BasicDR.o.d" -o ${OBJECTDIR}/_ext/1472/BasicDR.o ../BasicDR.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -w
 	
 endif
 
@@ -1166,12 +1172,12 @@ endif
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
 dist/${CND_CONF}/${IMAGE_TYPE}/Aztec.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk    
 	@${MKDIR} dist/${CND_CONF}/${IMAGE_TYPE} 
-	${MP_CC} $(MP_EXTRA_LD_PRE)  -mdebugger -D__MPLAB_DEBUGGER_ICD3=1 -mprocessor=$(MP_PROCESSOR_OPTION)  -o dist/${CND_CONF}/${IMAGE_TYPE}/Aztec.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX} ${OBJECTFILES_QUOTED_IF_SPACED}              -mreserve=boot@0x1FC02000:0x1FC02FEF -mreserve=boot@0x1FC02000:0x1FC024FF  -Wl,--defsym=__MPLAB_BUILD=1$(MP_EXTRA_LD_POST)$(MP_LINKER_FILE_OPTION),--defsym=__MPLAB_DEBUG=1,--defsym=__DEBUG=1,--defsym=__MPLAB_DEBUGGER_ICD3=1,-L"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/lib",-L".",-Map="${DISTDIR}/Aztec.X.${IMAGE_TYPE}.map",--memorysummary,dist/${CND_CONF}/${IMAGE_TYPE}/memoryfile.xml
+	${MP_CC} $(MP_EXTRA_LD_PRE)  -mdebugger -D__MPLAB_DEBUGGER_ICD3=1 -mprocessor=$(MP_PROCESSOR_OPTION)  -o dist/${CND_CONF}/${IMAGE_TYPE}/Aztec.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX} ${OBJECTFILES_QUOTED_IF_SPACED}          -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)    -mreserve=boot@0x1FC02000:0x1FC02FEF -mreserve=boot@0x1FC02000:0x1FC024FF  -Wl,--defsym=__MPLAB_BUILD=1$(MP_EXTRA_LD_POST)$(MP_LINKER_FILE_OPTION),--defsym=__MPLAB_DEBUG=1,--defsym=__DEBUG=1,--defsym=__MPLAB_DEBUGGER_ICD3=1,--no-code-in-dinit,--no-dinit-in-serial-mem,-L"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/lib",-L".",-Map="${DISTDIR}/Aztec.X.${IMAGE_TYPE}.map",--memorysummary,dist/${CND_CONF}/${IMAGE_TYPE}/memoryfile.xml
 	
 else
 dist/${CND_CONF}/${IMAGE_TYPE}/Aztec.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk   
 	@${MKDIR} dist/${CND_CONF}/${IMAGE_TYPE} 
-	${MP_CC} $(MP_EXTRA_LD_PRE)  -mprocessor=$(MP_PROCESSOR_OPTION)  -o dist/${CND_CONF}/${IMAGE_TYPE}/Aztec.X.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX} ${OBJECTFILES_QUOTED_IF_SPACED}            -Wl,--defsym=__MPLAB_BUILD=1$(MP_EXTRA_LD_POST)$(MP_LINKER_FILE_OPTION),-L"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/lib",-L".",-Map="${DISTDIR}/Aztec.X.${IMAGE_TYPE}.map",--memorysummary,dist/${CND_CONF}/${IMAGE_TYPE}/memoryfile.xml
+	${MP_CC} $(MP_EXTRA_LD_PRE)  -mprocessor=$(MP_PROCESSOR_OPTION)  -o dist/${CND_CONF}/${IMAGE_TYPE}/Aztec.X.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX} ${OBJECTFILES_QUOTED_IF_SPACED}          -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -Wl,--defsym=__MPLAB_BUILD=1$(MP_EXTRA_LD_POST)$(MP_LINKER_FILE_OPTION),--no-code-in-dinit,--no-dinit-in-serial-mem,-L"../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/lib",-L".",-Map="${DISTDIR}/Aztec.X.${IMAGE_TYPE}.map",--memorysummary,dist/${CND_CONF}/${IMAGE_TYPE}/memoryfile.xml
 	${MP_CC_DIR}\\xc32-bin2hex dist/${CND_CONF}/${IMAGE_TYPE}/Aztec.X.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX} 
 endif
 

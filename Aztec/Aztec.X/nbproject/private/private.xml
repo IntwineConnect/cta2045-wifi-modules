@@ -3,15 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Family/Documents/Jordan/cta2045-wifi-modules-master/Aztec/BasicDR.c</file>
-            <file>file:/C:/Users/Family/Documents/Jordan/cta2045-wifi-modules-master/Aztec/OpenADRClient.h</file>
-            <file>file:/C:/Users/Family/Documents/Jordan/cta2045-wifi-modules-master/Aztec/LinkLayerMessaging.c</file>
-            <file>file:/C:/Users/Family/Documents/Jordan/cta2045-wifi-modules-master/Aztec/TimeMonitor.c</file>
-            <file>file:/C:/Users/Family/Documents/Jordan/cta2045-wifi-modules-master/Aztec/OpenADRClient.c</file>
-            <file>file:/C:/Users/Family/Documents/Jordan/cta2045-wifi-modules-master/Aztec/MicroChip/TCPIP_Stack/Delay.c</file>
-            <file>file:/C:/Users/Family/Documents/Jordan/cta2045-wifi-modules-master/Aztec/HardwareProfile.h</file>
-            <file>file:/C:/Users/Family/Documents/Jordan/cta2045-wifi-modules-master/Aztec/MicroChip/Include/GenericTypeDefs.h</file>
-            <file>file:/C:/Users/Family/Documents/Jordan/cta2045-wifi-modules-master/Aztec/Main.c</file>
+            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/Main.c</file>
+            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/EPRI_SPILayer.c</file>
+            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/LinkLayerMessaging.c</file>
+            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/BasicDR.c</file>
+            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/MCI_Common.c</file>
+            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/MicroChip/TCPIP_Stack/Announce.c</file>
+            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/MicroChip/TCPIP_Stack/WiFi/WFEasyConfig.c</file>
+            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/MicroChip/TCPIP_Stack/HTTP2.c</file>
+            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/MicroChip/TCPIP_Stack/WiFi/WFDebugStrings.c</file>
+            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/MicroChip/TCPIP_Stack/UDP.c</file>
+            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/i2c_master.c</file>
+            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/MicroChip/TCPIP_Stack/ZeroconfMulticastDNS.c</file>
+            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/MicroChip/TCPIP_Stack/WiFi/WFDriverCom_24G.c</file>
+            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/app_UCM.c</file>
+            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/HardwareProfile.h</file>
+            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/MicroChip/TCPIP_Stack/Tick.c</file>
         </group>
     </open-files>
 </project-private>

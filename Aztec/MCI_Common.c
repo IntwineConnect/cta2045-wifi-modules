@@ -62,7 +62,7 @@ unsigned char  SetEnergyPrice[] = { 0x08, 0x02, 0x00, 0x07, 0x03, 0x00, 0x00, 0x
 
 short int httpCode = 0;
 unsigned char codeByte = DEFAULT_RETURN_CODE;
-BOOL ResponseReadyFlag = 0;
+volatile BOOL ResponseReadyFlag = 0;            // This is written from an ISR, it must be volatile
 
 unsigned char dl_ack[2] = {0x06, 0x00};
 unsigned char dl_nak[2] = {0x15, 0x03};
@@ -92,7 +92,7 @@ MCIResponse MCISendNeutral(unsigned char * msg)
 void DL_Ack()
 {
 #ifdef DC_CEA2045
-    EPRI_SPI_write(dl_ack, 2);
+    SPI_Driver_Send_ACK_NAK(dl_ack);
 #else
     EPRI_UART_write(dl_ack, 2);
 #endif
@@ -107,7 +107,7 @@ void DL_Nak(unsigned char code)
 {
     dl_nak[1] = code;
 #ifdef DC_CEA2045
-    EPRI_SPI_write(dl_nak,2);
+    SPI_Driver_Send_ACK_NAK(dl_nak);
 #else
     EPRI_UART_write(dl_nak, 2);
 #endif
@@ -119,7 +119,7 @@ void DL_Nak(unsigned char code)
 void App_Ack(unsigned char * message, int len)
 {
 #ifdef DC_CEA2045
-    EPRI_SPI_write(message, len);
+    SPI_Driver_Send_ACK_NAK(message);
 #else
     EPRI_UART_write(message, len);
 #endif
