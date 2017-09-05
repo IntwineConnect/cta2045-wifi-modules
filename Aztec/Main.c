@@ -96,12 +96,33 @@ void _mon_putc(char c)
 }
 
 
-// Exception Handlers
-// If your code gets here, you either tried to read or write
-// a NULL pointer, or your application overflowed the stack
-// by having too many local variables or parameters declared.
-void _general_exception_handler(unsigned cause, unsigned status)
-{
+ static enum {
+      EXCEP_IRQ = 0,            // interrupt
+      EXCEP_AdEL = 4,            // address error exception (load or ifetch)
+      EXCEP_AdES,                // address error exception (store)
+      EXCEP_IBE,                // bus error (ifetch)
+      EXCEP_DBE,                // bus error (load/store)
+      EXCEP_Sys,                // syscall
+      EXCEP_Bp,                // breakpoint
+      EXCEP_RI,                // reserved instruction
+      EXCEP_CpU,                // coprocessor unusable
+      EXCEP_Overflow,            // arithmetic overflow
+      EXCEP_Trap,                // trap (possible divide by zero)
+      EXCEP_IS1 = 16,            // implementation specfic 1
+      EXCEP_CEU,                // CorExtend Unuseable
+      EXCEP_C2E                // coprocessor 2
+  } _excep_code;
+  
+  volatile static unsigned int _epc_code;
+  volatile static unsigned int _excep_addr;
+  
+  void _general_exception_handler(void)
+  {
+      asm volatile("mfc0 %0,$13" : "=r" (_excep_code));
+      asm volatile("mfc0 %0,$14" : "=r" (_excep_addr));
+  
+      _excep_code = (_excep_code & 0x0000007C) >> 2;
+      
     Nop();
     Nop();
     while(1);       // Watchdog will reset
@@ -156,6 +177,9 @@ int main(void)
 //    ReadI2C( I2C_BUS, SI7005_ADDRESS, 1, Si7005Data, 2);
 //    Temp = Si7005Data[0] << 8 + Si7005Data[1];
 
+    // 1ms tick for timed callback functions
+    TimeMonitorInit();
+
     // Initialize TCP/IP stack timer
     TickInit();
 
@@ -191,7 +215,7 @@ int main(void)
     WFInitScan();
     #endif
 
-//    // WF_PRESCAN: Pre-scan before starting up as SoftAP mode
+    // WF_PRESCAN: Pre-scan before starting up as SoftAP mode
     WF_CASetScanType(MY_DEFAULT_SCAN_TYPE);
     WF_CASetChannelList(channelList, sizeof(channelList));
 
@@ -240,7 +264,6 @@ int main(void)
     // job.
     // If a task needs very long time to do its job, it must be broken
     // down into smaller pieces so that other tasks can have CPU time.
-    int ctr = 0;
     AppTaskInit();
     LED1_OFF()
     LED2_OFF()
@@ -248,60 +271,75 @@ int main(void)
     {
         ClearWDT();
         
-        SPI_Driver_Task();
+#ifdef DC_CEA2045
+        SPI_Driver_Task();  
+#endif
         
-        if (ctr == 1000){
-            SendEndShedCommand();
-        }
-        ctr++;
+        if(FirstTime == TRUE)
+        {
+          /*
+            //DL_Nak(0x89);
+            DelayMs(100);
+            retval = SendShedCommand(247);
+            DelayMs(100);
+            LED1_OFF()
+            LED2_OFF()
+            retval = SendEndShedCommand();
+            DelayMs(100);
+            LED1_OFF()
+            LED2_OFF()
+            retval = SendRequestForPowerLevel(76.1,1);
+            DelayMs(100);
+            LED1_OFF()
+            LED2_OFF()
+            retval = SendPresentRelativePrice(8.2);
+            DelayMs(100);
+            LED1_OFF()
+            LED2_OFF()
+            //retval = SendTimeRemainingInPresentPricePeriod(356);
+            DelayMs(100);
+            LED1_OFF()
+            LED2_OFF()
+            retval = SendCriticalPeakEvent(465);
+            DelayMs(100);
+            LED1_OFF()
+            LED2_OFF()
+            retval = SendGridEmergency(222);
+            DelayMs(100);
+            LED1_OFF()
+            LED2_OFF()
+            retval = SendLoadUp(2889);            
+            DelayMs(100);
+            LED1_OFF()
+            LED2_OFF()
+            retval = SendQueryOpState();*/
+            LED0_INV()
+                                           
+            
+            
+            /*
+            DelayMs(100);
+            SendSendNextCommandToSlot(2);
+            DelayMs(100);
+            SendQueryGetAvailableSlotNumbers();
+            DelayMs(100);
+            SendQueryGetSGDSlotNumber();
+            DelayMs(100);
+            SendQueryMaximumPayloadLength();
+            DelayMs(100);
+            SendResponseMaximumPayloadLength();
+            DelayMs(100);
+            SendRequestDifferentPowerMode(2);
+            DelayMs(100);
+            SendRequestDifferentBitRate(0);
+            
+            
+            */
+            FirstTime = FALSE;
+            
         
-//        if(FirstTime == TRUE)
-//        {
-//            //DL_Nak(0x89);
-//            DelayMs(100);
-//            retval = SendShedCommand(247);
-//            DelayMs(100);
-//            retval = SendEndShedCommand();
-//            DelayMs(100);
-//            retval = SendRequestForPowerLevel(76.1,1);
-//            DelayMs(100);
-//            retval = SendPresentRelativePrice(8.2);
-//            DelayMs(100);
-//            retval = SendTimeRemainingInPresentPricePeriod(356);
-//            DelayMs(100);
-//            retval = SendCriticalPeakEvent(465);
-//            DelayMs(100);
-//            retval = SendGridEmergency(222);
-//            DelayMs(100);
-//            retval = SendLoadUp(2889);            
-//            DelayMs(100);
-//            retval = SendQueryOpState();
-//            
-//         
-//            
-//            
-//            /*
-//            DelayMs(100);
-//            SendSendNextCommandToSlot(2);
-//            DelayMs(100);
-//            SendQueryGetAvailableSlotNumbers();
-//            DelayMs(100);
-//            SendQueryGetSGDSlotNumber();
-//            DelayMs(100);
-//            SendQueryMaximumPayloadLength();
-//            DelayMs(100);
-//            SendResponseMaximumPayloadLength();
-//            DelayMs(100);
-//            SendRequestDifferentPowerMode(2);
-//            DelayMs(100);
-//            SendRequestDifferentBitRate(0);
-//            */
-//            
-//            
-//            FirstTime = FALSE;
-//        
-//        }
-
+        }        
+         
          if (AppConfig.networkType == WF_SOFT_AP || AppConfig.networkType == WF_INFRASTRUCTURE) {
             if (g_scan_done) {
                 if (g_prescan_waiting) {
@@ -466,6 +504,11 @@ static void InitializeBoard(void)
     LED0_TRIS = 0;
     LED1_TRIS = 0;
     LED2_TRIS = 0;
+
+#ifdef DC_CEA2045
+    //SPI ATTN
+    SPI_ATTN_INACTIVE
+#endif
     
     // Push Button
     SW0_TRIS = 1;
@@ -487,7 +530,7 @@ static void InitializeBoard(void)
     UARTiConfigure(UART1, 19200);
     UARTiConfigure(UART2, 19200);
 #endif
-    
+
     // Note: Interrupt priority, 1 is lowest priority to 7 which is highest priority
 
     // Enable the interrupt sources
@@ -506,7 +549,10 @@ static void InitializeBoard(void)
     IFS2CLR = 0xffffffff;
     
 #ifdef DC_CEA2045
-     //configure change notification interrupts for DC_CEA2045    
+    // Drive Module Detect line low to tell the SGD that the UCM is present
+    LATCCLR = BIT_1; TRISCbits.TRISC1 = 0;
+    
+    // Configure change notification interrupts for SPI CSn line
     SPI_CS_TRIS = 1;
     CN_TURN_ON                 //turn on CN module
     SPI_CS_INT_ENABLE     //configure SPI chip select pin for CN interrupts 
@@ -540,7 +586,6 @@ static void InitializeBoard(void)
     INTConfigureSystem(INT_SYSTEM_CONFIG_MULT_VECTOR);
     INTEnableSystemMultiVectoredInt();
     INTEnableInterrupts();
-    
 
 /****************************************************************************
  Bits RF4 and RF4 are multifunction:
