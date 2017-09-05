@@ -323,15 +323,20 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         char typeBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
         char valueBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
         int itemCounter = 0; 
-        int i;
+        int i = 0;
         unsigned char found = 0;
+        int good = 1;
         
         //get the parameters out of the buffer and strip their formatting
-        while(readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]) == 1)
-        {            
-            itemCounter++;
-        }
-        itemCounter++;
+        do{
+            good = readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]);
+            if(good){
+                // this line was good
+                itemCounter++;
+            }
+            // if this line was good, we may have another good item... but we don't know... try!
+        } while(good);
+        
         //go through the collected items, then find and determine the event type
         while(i <= itemCounter && found == 0)
         {
@@ -493,15 +498,21 @@ HTTP_IO_RESULT HTTPExecutePost(void)
     else if(!memcmppgm2ram(filename,"comm.cgi", 8))
     {
         int i;
-        int itemCounter;
+        int itemCounter = 0;
         RelayMsg retval;
         char typeBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
         char valueBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
-        while(readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]) == 1)
-        {
-            itemCounter++;
-        }
-        itemCounter++;
+        int good = 1;
+
+         //get the parameters out of the buffer and strip their formatting
+         do{
+             good = readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]);
+             if(good){
+                 // this line was good
+                 itemCounter++;
+             }
+             // if this line was good, we may have another good item... but we don't know... try!
+         } while(good);
         
         for(i = 0; i <= itemCounter; i++)
         {
@@ -526,19 +537,25 @@ HTTP_IO_RESULT HTTPExecutePost(void)
     else if(!memcmppgm2ram(filename,"commodity.cgi", 13))
     {
         int i;
-        int itemCounter;
+        int itemCounter = 0;
         RelayMsg retval;
         long long vlintparam1;
         long long vlintparam2;
         unsigned char commodity;
         char typeBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
         char valueBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+    
+        int good = 1;
         
-        while(readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]) == 1)
-        {
-            itemCounter++;
-        }
-        itemCounter++;
+        //get the parameters out of the buffer and strip their formatting
+        do{
+            good = readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]);
+            if(good){
+                // this line was good
+                itemCounter++;
+            }
+            // if this line was good, we may have another good item... but we don't know... try!
+        } while(good);
         
         for(i = 0; i <= itemCounter; i++)
         {
@@ -571,13 +588,16 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         int intparam1;
         double doubleparam1;
                 
-        
+        int good = 1;
         //get the parameters out of the buffer and strip their formatting
-        while(readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]) == 1)
-        {            
-            itemCounter++;
-        }
-        itemCounter++;
+        do{
+            good = readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]);
+            if(good){
+                // this line was good
+                itemCounter++;
+            }
+            // if this line was good, we may have another good item... but we don't know... try!
+        } while(good);
         
         for(i = 0; i <= itemCounter; i++)
         {
@@ -616,12 +636,16 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         int intparam2;
         RelayMsg retval;
         
+        int good = 1;
         //get the parameters out of the buffer and strip their formatting
-        while(readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]) == 1)
-        {            
-            itemCounter++;
-        }
-        itemCounter++;
+        do{
+            good = readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]);
+            if(good){
+                // this line was good
+                itemCounter++;
+            }
+            // if this line was good, we may have another good item... but we don't know... try!
+        } while(good);
         
         for(i = 0; i <= itemCounter; i++) 
         {
@@ -1526,83 +1550,108 @@ void HTTPcodeHandler(short int httpCode)
     }
 }
 
+
+// Returns 0 if something is whacky, or there was no type-value pair found
+// Returns 1 if a complete type-value pair was parsed
+// ToDo: doesn't error out if client sends long packet; typeBuffer or valueBuffer will overflow past their fixed-length. Add checking.
+// ToDo: integers should really be supported without quotes, but this method assumes "type": "value" for strings and integers alike. the real thing to do is to incorporate a small json lib into this project
 int readLine(char *typeBuffer, char *valueBuffer)
 {
-    int lenA, lenB, lenC;
-    int last = 0;
+    int lenB, lenC, end;
+    int good = 0;
     char trashBuffer[40];
     
     //get end of item
     lenB = TCPFindEx(sktHTTP, ',', 0, 0, FALSE);
     lenC = TCPFindEx(sktHTTP, '}', 0, 0, FALSE);
-    //lenA = TCPFindEx(sktHTTP, '\n', 0, 0, FALSE);
     
-    //if this is the last line
-    if(lenB > lenC || lenB == 0xFFFF)
-    {
-        lenB = lenC;
-        last = 1;
-    }
-    
-    //get colon location
-    lenC = TCPFindEx(sktHTTP, ':', 0, 0, FALSE);
-    //get ID open quote
-    lenA = TCPFindEx(sktHTTP, '"', 0, 0, FALSE);
-    if (lenA > lenB) //item delimiter comes too soon
-    {
-
-    }
-    if (lenA > lenC) //ID/value separator comes too soon
-    {
-
+    // lenB is allowed to be 0xFFFF because we could be parsing the last line, with no following comma
+    if(lenB == 0xFFFF){
+        // didn't find a comma... look for closing brace
+        if(lenC == 0xFFFF){
+            // uh-oh, no comma and no closing braces
+            return 0;
+        } else {
+            // found the closing brace
+            end = lenC;
+            good = 0;
+        }
+    } else {
+        // found the comma
+        end = lenB;
+        good = 1;
     }
     
-    //get the ID open quote out of the buffer
-    TCPGetArray(sktHTTP, trashBuffer, lenA + 1);
-    lenB -= lenA;
-    lenC -= lenA;
-    //get the location of the ID close quote
-    lenA = TCPFindEx(sktHTTP, '"', 0, 0, FALSE);
-
-    TCPGetArray(sktHTTP, typeBuffer, lenA);
-    lenB -= lenA;
-    lenC -= lenA;
-    //get the location of the value open quote (skip the next character, which is an old quote)
-    lenA = TCPFindEx(sktHTTP, '"', 1, 0, FALSE);
+    int colonPos = TCPFindEx(sktHTTP, ':', 0, end, FALSE);  
     
-    if (lenA < lenC) //value open quote comes too soon
-    {
-
-    }
-    if (lenA > lenB) // item delimiter comes too soon
-    {
-
-    }
-    //get the value open quote out of the buffer
-    TCPGetArray(sktHTTP, trashBuffer, lenA + 1);
-    lenB -= lenA;
-
-    //get the location of the value close quote
-    lenA = TCPFindEx(sktHTTP, '"', 0, 0, FALSE);
-    
-    if (lenA > lenB) // item delimiter comes too soon
-    {
-
-    }
-
-    TCPGetArray(sktHTTP, valueBuffer, lenA);
-    lenB -= lenA;
-    //clean up the rest of this line            
-    TCPGetArray(sktHTTP, trashBuffer, lenB);
-    //check to see if we're done reading
-    if (last) 
-    {
+    if(colonPos == 0xFFFF){
+        // abort, abort, abort! we expect a colon
         return 0;        
-    } 
-    else
-    {
-        return 1;
     }
+    
+    // Expect two quotes between beginning of buffer and the colon
+    //                 0123456789ABCDEF012345
+    // Example string: {"event_name": "shed",
+    // end = 21
+    // colonPos = 0xD  = 13
+    // quote1Pos = 0x1 = 1
+    // quote2Pos = 0xC = 12
+    int quote1Pos = TCPFindEx(sktHTTP, '"', 0, colonPos, FALSE);  
+    if(quote1Pos == 0xFFFF){
+        // abort, abort, abort, didn't find open quote for type (before colon)
+        return 0;
+    }
+    
+    int quote2Pos = TCPFindEx(sktHTTP, '"', quote1Pos + 1, colonPos - quote1Pos - 1, FALSE);
+    if(quote2Pos == 0xFFFF){
+        // abort, abort, abort, didn't find closing quote for type (before colon)
+        return 0;
+    }
+    
+    // end = 21
+    // colonPos = 13
+    // quote3Pos = 15
+    int quote3Pos = TCPFindEx(sktHTTP, '"', colonPos + 1 , end - colonPos - 1, FALSE);    
+    if(quote3Pos == 0xFFFF){
+        // abort, abort, abort, didn't find opening quote for value
+        return 0;
+    }
+    
+    // end = 21
+    // colonPos = 13
+    // quote3Pos = 15
+    // quote4Pos = 20
+    int quote4Pos = TCPFindEx(sktHTTP, '"', quote3Pos + 1, end - quote3Pos - 1, FALSE);
+    if(quote4Pos == 0xFFFF){
+        // abort, abort, abort, didn't find closing quote for value
+        return 0;
+    }
+        
+    // Trash until and including the open quote
+    // quote1Pos = 1
+    TCPGetArray(sktHTTP, trashBuffer, quote1Pos + 1);
+    quote2Pos -= quote1Pos + 1;
+    quote3Pos -= quote1Pos + 1;
+    quote4Pos -= quote1Pos + 1;
+    end -= quote1Pos + 1;
+    
+    TCPGetArray(sktHTTP, typeBuffer, quote2Pos);
+    quote3Pos -= quote2Pos;
+    quote4Pos -= quote2Pos;
+    end -= quote2Pos;
+    
+    TCPGetArray(sktHTTP, trashBuffer, quote3Pos + 1);
+    quote4Pos -= quote3Pos + 1;
+    end -= quote3Pos + 1;
+    
+    TCPGetArray(sktHTTP, valueBuffer, quote4Pos);
+    end -= quote4Pos;
+    
+    if(end > 0){
+        TCPGetArray(sktHTTP, trashBuffer, end);
+    }
+    
+    return good;
 }
 
 void ProvideMeaning(unsigned char stateCode, char *buffer, int bufferlength)

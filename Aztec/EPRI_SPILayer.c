@@ -18,12 +18,13 @@
 #include "TimeMonitor.h"
 
 #define RX_BUF_SIZE 300
-#define TX_MSG_SIZE 10
+#define TX_MSG_SIZE 30
 
 //#include "EPRI_SPILayer.h"
 
 #include "plib.h"
 #include "MCI_Common.h"
+#include "BasicDR.h"
 //#include "Compiler.h"
 
 #define MESSAGE_TYPE_LENGTH 2 
@@ -64,7 +65,7 @@ volatile PhysicalLayerInternals physicalLayerInternals;
 // Handshakes for Physical_Link_Layer_Task
 volatile int SPI_CS_RISING_EDGE = 0;         // Always written 1 form the change notification ISR; always read and reset to 0 from SPI_Physical_Layer_Task
 
-#define SPI_PHYSICAL_LAYER_TIME_MONITOR_IDX 7
+#define SPI_PHYSICAL_LAYER_TIME_MONITOR_IDX 12
 void SPI_Physical_Layer_Timeout_Callback(){
     physicalLayerInternals.timerTimeout = 1;
 }
@@ -105,6 +106,7 @@ typedef struct _LinkLayerInternals {
    volatile int txMessageRetryCounter;
    volatile LinkLayerStateEnum txMessageRetryTargetState;
    volatile int timerTimeout;
+   volatile int linkLayerReplyTimeout;  
 } LinkLayerInternals;                  // This struct contains state variables that persist from call to call of Link_Layer_Task
 volatile LinkLayerInternals linkLayerInternals; // The only code that ever writes and updates this variable is Link_Layer_Task and the SPI RX ISR
 
@@ -117,11 +119,19 @@ volatile int SGD_TO_UCM_MESSAGE_REQUEST = 0; // Always written 1 from change not
 volatile int UCM_TO_SGD_MESSAGE_REQUEST = 0; // Always written 1 from MCISendAsyncSPI; always read and reset to 0 from SPI_Link_Layer_Task
 volatile int UCM_TO_SGD_ACK_NAK_REQUEST = 0; // Always written 1 from Link_Layer_Send_ACK_NAK; always reset to 0 from SPI_Link_Layer_Task
 
-#define SPI_LINK_LAYER_TIME_MONITOR_IDX 6
+#define SPI_LINK_LAYER_TIME_MONITOR_IDX 11
 void SPI_Link_Layer_Timeout_Callback(){
     linkLayerInternals.timerTimeout = 1;
 }
 #define SPI_START_LINK_LAYER_TIMER(timeout) { TimeMonitorDisableInterrupt(); linkLayerInternals.timerTimeout = 0; TimeMonitorRegisterI(SPI_LINK_LAYER_TIME_MONITOR_IDX,timeout,SPI_Link_Layer_Timeout_Callback); }
+#define SPI_CANCEL_LINK_LAYER_TIMER { TimeMonitorCancelI(SPI_LINK_LAYER_TIME_MONITOR_IDX); }
+
+#define SPI_LINK_LAYER_REPLY_TIME_MONITOR_IDX 13
+void SPI_Link_Layer_Reply_Timeout_Callback(){
+    linkLayerInternals.linkLayerReplyTimeout = 1;
+}
+#define SPI_START_LINK_LAYER_REPLY_TIMER(timeout) { TimeMonitorDisableInterrupt(); linkLayerInternals.linkLayerReplyTimeout = 0; TimeMonitorRegisterI(SPI_LINK_LAYER_REPLY_TIME_MONITOR_IDX,timeout,SPI_Link_Layer_Reply_Timeout_Callback); }
+#define SPI_CANCEL_LINK_LAYER_REPLY_TIMER { TimeMonitorCancelI(SPI_LINK_LAYER_REPLY_TIME_MONITOR_IDX); }
 
 #define TIME_MIN_WAIT_TIME_TO_SEND_ACK_NAK_IN_MS 40                 // T_ma, min
 #define TIME_MAX_WAIT_TIME_FOR_ACK_NAK_IN_MS 500                    // T_ma, max
@@ -235,9 +245,14 @@ int SPI_Physical_Layer_Task(void){
 
             SpiChnEnable(3, 0);
             SpiChnConfigure(3, SPI_CONFIG_SLVEN|SPI_CONFIG_CKE_REV);
+            
+            INTEnable(INT_SOURCE_SPI_RX(SPI_CHANNEL3), INT_DISABLED);
+            INTEnable(INT_SOURCE_SPI_RX(SPI_CHANNEL3), INT_DISABLED);
 
             physicalLayerInternals.rxRequest = 0;
             physicalLayerInternals.txRequest = 0;
+            
+            SPI_CANCEL_PHYSICAL_LAYER_TIMER
 
             physicalLayerInternals.nextState = PHY_LAYER_IDLE;
             break;
@@ -424,6 +439,8 @@ int SPI_Link_Layer_Task(void){
             linkLayerInternals.txBytePosition = 0;
             linkLayerInternals.txMessageRetries = 3;
 
+            SPI_CANCEL_LINK_LAYER_TIMER
+            
             linkLayerInternals.nextState = LINK_LAYER_IDLE;
             break;
         case LINK_LAYER_IDLE:
@@ -554,15 +571,51 @@ int SPI_Link_Layer_Task(void){
             if(linkLayerInternals.rxBytePosition >= linkLayerInternals.parsedRxMessageLength + MESSAGE_TYPE_LENGTH + PAYLOAD_LENGTH_LENGTH + CHECKSUM_LENGTH){
                 linkLayerInternals.checksumValid = IsChecksumValid(linkLayerInternals.rxMessage, linkLayerInternals.parsedRxMessageLength + MESSAGE_TYPE_LENGTH + PAYLOAD_LENGTH_LENGTH + CHECKSUM_LENGTH);
                 if(linkLayerInternals.checksumValid){
-                    linkLayerInternals.txMessage[0] = 0x06; // ACK
-                    linkLayerInternals.txMessage[1] = 0x00;
+                    // If the checksum was valid, send a 2 byte reply of either ACK or NAK
+                    // Also pass the message onto the basic DR or intermediate DR layers.
                     linkLayerInternals.txMessageLength = 2;
                     linkLayerInternals.nextState = LINK_LAYER_RECEIVE_DELAY_ACK_NAK;
+                    if(linkLayerInternals.rxMessage[0] == 0x08 && linkLayerInternals.rxMessage[1] == 0x01){
+                        if(linkLayerInternals.rxMessage[2] == 0x00 && linkLayerInternals.rxMessage[3] == 0x00){
+                            // This was a zero-payload message, which indicates "message supported query"
+                            // Messages of type 0x08 0x01 (basic demand response, required) are supported; reply with Link Layer ACK
+                            // ToDo: if specific op codes are unsupported, call into the IntermediateDR layer to ask for support here
+                            linkLayerInternals.txMessage[0] = 0x06; // ACK
+                            linkLayerInternals.txMessage[1] = 0x00;
+                        } else {
+                            // Payload length is non-zero, this is a real message
+                            linkLayerInternals.txMessage[0] = 0x06; // ACK
+                            linkLayerInternals.txMessage[1] = 0x00;
+                            BasicDRMessageHandler(linkLayerInternals.rxMessage); 
+                        }
+                    } else if(linkLayerInternals.rxMessage[0] == 0x08 && linkLayerInternals.rxMessage[1] == 0x02){
+                        if(linkLayerInternals.rxMessage[2] == 0x00 && linkLayerInternals.rxMessage[3] == 0x00){
+                            // This was a zero-payload message, which is a "message supported query"
+                            // Messages of type 0x08 0x02 are supported; reply with Link Layer ACK
+                            // ToDo: if specific op codes are unsupported, call into the IntermediateDR layer to ask for support here
+                            linkLayerInternals.txMessage[0] = 0x06; // ACK
+                            linkLayerInternals.txMessage[1] = 0x00;
+                        } else {
+                            // Payload length is non-zero, this is a real message
+                            linkLayerInternals.txMessage[0] = 0x06; // ACK
+                            linkLayerInternals.txMessage[1] = 0x00;
+                            IntermediateDRMessageHandler(linkLayerInternals.rxMessage);
+                        }
+                    } else if(linkLayerInternals.rxMessage[0] == 0x08 && linkLayerInternals.rxMessage[1] == 0x03){
+                        // ToDo: In the future, this is where we should call back the link layer message handler... (Baud Rate, max payload length, etc...))
+                        // For now, unsupported.
+                        linkLayerInternals.txMessage[0] = 0x15; // NAK
+                        linkLayerInternals.txMessage[1] = 0x06; // Unsupported message type
+                    } else {
+                        linkLayerInternals.txMessage[0] = 0x15; // NAK
+                        linkLayerInternals.txMessage[1] = 0x06; // Unsupported message type                        
+                    }
                 } else {
-                    linkLayerInternals.txMessage[0] = 0x15; // NAK
-                    linkLayerInternals.txMessage[1] = 0x03; // Checksum error
+                    // The checksum was bad - reply with a link-layer NAK. 
                     linkLayerInternals.txMessageLength = 2;
                     linkLayerInternals.nextState = LINK_LAYER_RECEIVE_DELAY_ACK_NAK;
+                    linkLayerInternals.txMessage[0] = 0x15; // NAK
+                    linkLayerInternals.txMessage[1] = 0x03; // Checksum error                                                                                                                                                                                                                                                                                                                                                                     
                 }
             }
 
@@ -803,6 +856,20 @@ MCIResponse MCISendSPI(unsigned char * msg)
 {
     int finished = 0;
     int sent = 0;
+    int timeout = 0;
+    
+    int expectLinkLayerReply = msg[0] == 0x08 && (msg[1] == 0x01 || msg[1] == 0x02 || msg[1] == 0x03);
+    
+    // These timeout values could be more intelligently calculated based on the bit rate, max message length, etc.
+    // They really serve as a mechanism to not starve the rest of the system from cycles until we end up implementing
+    // a threading mechanism or RTOS of some sort. 
+    if(expectLinkLayerReply){
+        // MAX MESSAGE DURATION (TX) + MAX WAIT FOR ACK/NAK + ACK / NAK + MAX MESSAGE DURATION (RX) --> END
+        SPI_START_LINK_LAYER_REPLY_TIMER(TIME_MAX_WAIT_TIME_FOR_ACK_NAK_IN_MS + TIME_MAX_MESSAGE_DURATION_IN_MS * 2)
+    } else {
+        // MAX MESSAGE DURATION (TX) + MAX WAIT FOR ACK/NAK + ACK / NAK        
+        SPI_START_LINK_LAYER_REPLY_TIMER(TIME_MAX_WAIT_TIME_FOR_ACK_NAK_IN_MS + TIME_MAX_MESSAGE_DURATION_IN_MS)
+    }
     
     do {
         if(linkLayerInternals.state == LINK_LAYER_IDLE && physicalLayerInternals.state == PHY_LAYER_IDLE && !sent){
@@ -810,16 +877,25 @@ MCIResponse MCISendSPI(unsigned char * msg)
             sent = 1;
         }
         SPI_Driver_Task();
-        finished = linkLayerInternals.txMessageResponseReceived;
-        
-        if(linkLayerInternals.state == LINK_LAYER_IDLE && physicalLayerInternals.state == PHY_LAYER_IDLE){
-            Nop();
-            Nop();
-            Nop();
+        if(expectLinkLayerReply){
+            // TX was ACK'd or NAK'd, then the expected link layer reply was fully received...
+            finished = linkLayerInternals.txMessageResponseReceived && linkLayerInternals.checksumValid;
+        } else {
+            finished = linkLayerInternals.txMessageResponseReceived;
         }
-        
-    } while(!finished);
+        timeout = linkLayerInternals.linkLayerReplyTimeout;
+    } while(!finished && !timeout);
 
+    if(timeout){
+        // Just kick everything back to the beginning and reset everything into
+        // a known state.
+        physicalLayerInternals.state = PHY_LAYER_INIT;
+        linkLayerInternals.state = LINK_LAYER_INIT;
+        SPI_Driver_Task();
+    }
+    
+    SPI_CANCEL_LINK_LAYER_REPLY_TIMER
+    
     SyncResponse.LLResponse[0] = linkLayerInternals.rxMessage[0];
     SyncResponse.LLResponse[1] = linkLayerInternals.rxMessage[1];
     
@@ -844,7 +920,8 @@ void MCISendAsyncSPI(unsigned char * msg)
         linkLayerInternals.txMessageLength = payloadLen + MESSAGE_TYPE_LENGTH + PAYLOAD_LENGTH_LENGTH + CHECKSUM_LENGTH;
         UCM_TO_SGD_MESSAGE_REQUEST = 1;
     } else {
-        // Wat do?
+        // Can't really do anything here except drop the request, unless
+        // we implement a request queue.
     }
 }
 

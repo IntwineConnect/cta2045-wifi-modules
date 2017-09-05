@@ -15,7 +15,7 @@
 int tmMillisecondsPerTick = (TIME_MONITOR_TICK_PER_SECOND / 1000);
 unsigned long tmTimeMonitorClock = 0;
 
-#define MAX_TIMER_CALLBACKS 11
+#define MAX_TIMER_CALLBACKS 14
 int tmTickDownTimeIndex0 = 0;
 int tmTickDownTimeI[MAX_TIMER_CALLBACKS];
 void (*tmCallbackFunctionI[MAX_TIMER_CALLBACKS])(void);
@@ -38,7 +38,7 @@ void (*tmCallbackFunctionI[MAX_TIMER_CALLBACKS])(void);
 
   Returns:
   	None
-  	
+
   Remarks:
 	This function is called only one during lifetime of the application.
   ***************************************************************************/
@@ -78,11 +78,11 @@ void TimeMonitorInit(void)
     call when that time expires.
 
     Note: Given the fact that the timer (currently 1ms) may be just ready
-    to interrupt or has just interrupted, the first tick after registration 
+    to interrupt or has just interrupted, the first tick after registration
     may be anywhere from 0ms to 1ms.  Thus, one interrupt period is always
     added to the registration time.  Thus, the registration time can be considered
-    as the minimum time before callback.  
-    
+    as the minimum time before callback.
+
     Therefore, a registration for 40ms will truly callback between 40ms and 41ms.
 
   Precondition:
@@ -93,21 +93,21 @@ void TimeMonitorInit(void)
 
   Returns:
   	None
-  	
+
   Remarks:
     None
-    
+
   ***************************************************************************/
 
 void TimeMonitorRegisterI(int index, unsigned int callback_time_ms, void (*callback_function)(void))
 {
-    
+
   // Steps to registering for a callback
   // 1) Disable interrupt
   // 2) Set callback time - add 1 tick time for interrupt aliasing
   // 3) Set callback function
   // 4) Enable interrupt
-  
+
   // 1)
   TimeMonitorDisableInterrupt();
 
@@ -131,7 +131,7 @@ void TimeMonitorChangeTimeI(int index, unsigned int callback_time_ms)
   // 1) Disable interrupt
   // 2) Set callback time - add 1 tick time for interrupt aliasing
   // 3) Enable interrupt
-  
+
   // 1)
   TimeMonitorDisableInterrupt();
 
@@ -157,7 +157,7 @@ void TimeMonitorChangeTimeI(int index, unsigned int callback_time_ms)
   Description:
 	Clears the callback time and function
 
-    Note: There may be a small window, prior to disabling the interrupt, 
+    Note: There may be a small window, prior to disabling the interrupt,
     that the callback may still fire.
 
   Precondition:
@@ -168,7 +168,7 @@ void TimeMonitorChangeTimeI(int index, unsigned int callback_time_ms)
 
   Returns:
   	None
-  	
+
   Remarks:
   	None
 
@@ -181,7 +181,7 @@ void TimeMonitorCancelI(int index)
   // 2) Clear callback time
   // 3) Clear callback function pointer
   // 4) Enable interrupt
-  
+
   // 1)
   TimeMonitorDisableInterrupt();
 
@@ -223,7 +223,7 @@ void __ISR(_TIMER_2_VECTOR, ipl1) T2InterruptServiceRoutine(void)
         {
           // 2)
           tmTickDownTimeI[i] -= tmMillisecondsPerTick;
-    
+
           if(tmTickDownTimeI[i] <= 0)
           {
             // 3)
@@ -235,7 +235,7 @@ void __ISR(_TIMER_2_VECTOR, ipl1) T2InterruptServiceRoutine(void)
             {
                 bp = 1;
             }
-    
+
             // 4)
             if(i == 0)
             {
@@ -274,7 +274,7 @@ void __ISR(_TIMER_2_VECTOR, ipl1) T2InterruptServiceRoutine(void)
 
   Returns:
   	None
-  	
+
   Remarks:
 	These functions are used for interrupt/thread protection
   ***************************************************************************/

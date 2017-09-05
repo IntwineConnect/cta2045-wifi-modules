@@ -87,7 +87,7 @@ void IntermediateDRMessageHandler(unsigned char *msg)
     unsigned char responseCode = msg[6];
     int mlen = msg[2]*256 + msg[3];
     
-    ResponseReadyFlag == TRUE;
+    ResponseReadyFlag = TRUE;
     httpCode = HandleIDRResponseCode(responseCode);
     //is the message Get Commodity Read message?
     if(opcode1 == GET_COMMODITY_READ_CODE)
@@ -202,6 +202,7 @@ void IntermediateDRMessageHandler(unsigned char *msg)
             msg[57] = 0xff;
             msg[58] = 0xff;
             
+            httpCode = 500;
             MCISendNeutral(msg);       
             
         }
@@ -513,8 +514,7 @@ void BasicDRMessageHandler(unsigned char * msg)
  */
 void RelayTimeoutCallback(void)
 {    
-    httpCode = 400;                 
-            
+    httpCode = 500;
     ResponseReadyFlag = TRUE;
 }
 
@@ -554,11 +554,11 @@ void BlockUntilReady(void)
             
     //block until an application response has been received and processed
     while(!RelayDataValid)
-    { 
+    {
         RelayDataValid = CheckDataValid();
-    }    
+    }
     
-    TimeMonitorCancelI(4);          // cancel timeout callback in case we got here without it
+    TimeMonitorCancelI(8);          // cancel timeout callback in case we got here without it
     ResponseReadyFlag = FALSE;      // reset data valid flag
     RelayMsgState = RLY_IDLE;
 }
@@ -575,6 +575,8 @@ RelayMsg SendShedCommand( int eventDuration)
     messageBuffer[5] = opcode2;
     
     RelayMsgState = RLY_WAITING_SHED;
+    
+    httpCode = 500;
     MCISendNeutral(messageBuffer);    
     
     BlockUntilReady();
@@ -589,9 +591,11 @@ RelayMsg SendEndShedCommand(void)
     RelayMsg retval;
     RelayMsgState = RLY_WAITING_END_SHED;
     //the second opcode byte isn't used by the End Shed command
+    
+    httpCode = 500;
     MCISendNeutral(EndShedCommand);    
     
-//    BlockUntilReady();  // BH: It's unclear to me how this will ever return...
+    BlockUntilReady();
     
     retval.httpCode = httpCode;
     retval.codeByte = DEFAULT_RETURN_CODE;
@@ -637,6 +641,8 @@ RelayMsg SendRequestForPowerLevel(int percent)
     messageBuffer[5] = opcode2;
     
     RelayMsgState = RLY_WAITING_REQUEST_POWER_LEVEL;
+    
+    httpCode = 500;
     MCISendNeutral(messageBuffer);
     
     BlockUntilReady();
@@ -668,6 +674,8 @@ RelayMsg SendPresentRelativePrice(double rpi)
     messageBuffer[5] = opcode2;
     
     RelayMsgState = RLY_WAITING_PRESENT_RELATIVE_PRICE;
+    
+    httpCode = 500;
     MCISendNeutral(messageBuffer);
         
     BlockUntilReady();
@@ -699,6 +707,8 @@ RelayMsg SendNextPeriodRelativePrice(double rpi)
     messageBuffer[5] = opcode2;
     
     RelayMsgState = RLY_WAITING_NEXT_PERIOD_RELATIVE_PRICE;
+    
+    httpCode = 500;
     MCISendNeutral(messageBuffer);
         
     BlockUntilReady();
@@ -721,6 +731,7 @@ RelayMsg SendTimeRemainingInPresentPricePeriod(int eventDuration)
     RelayMsgState = RLY_WAITING_TIME_IN_PRICE_PERIOD;
     ExpectedAckType = TIME_IN_PRICE_PERIOD_CODE;
     
+    httpCode = 500;
     MCISendNeutral(messageBuffer);    
     
     BlockUntilReady();
@@ -743,6 +754,7 @@ RelayMsg SendCriticalPeakEvent(int eventDuration)
     RelayMsgState = RLY_WAITING_CRITICAL_PEAK_EVENT;
     ExpectedAckType = CRITICAL_PEAK_EVENT_CODE;
     
+    httpCode = 500;
     MCISendNeutral(messageBuffer);    
     
     BlockUntilReady();
@@ -765,6 +777,7 @@ RelayMsg SendGridEmergency(int eventDuration)
     RelayMsgState = RLY_WAITING_GRID_EMERGENCY;
     ExpectedAckType = GRID_EMERGENCY_CODE;
     
+    httpCode = 500;
     MCISendNeutral(messageBuffer);    
     
     BlockUntilReady();
@@ -786,6 +799,7 @@ RelayMsg SendLoadUp(int eventDuration)
     RelayMsgState = RLY_WAITING_LOAD_UP;
     ExpectedAckType = LOAD_UP_CODE;
     
+    httpCode = 500;
     MCISendNeutral(messageBuffer);    
     
     BlockUntilReady();
@@ -827,6 +841,7 @@ RelayMsg SendTimeSync(int day, int hour)
     RelayMsgState = RLY_WAITING_SIMPLE_TIME_SYNC;
     ExpectedAckType = SIMPLE_TIME_SYNC_CODE;
     
+    httpCode = 500;
     MCISendNeutral(messageBuffer);
     
     BlockUntilReady();
@@ -842,6 +857,8 @@ RelayMsg SendQueryOpState(void)
     RelayMsg retval;
     RelayMsgState = RLY_WAITING_OP_STATE;
     ExpectedAckType = QUERY_OP_STATE_CODE;
+    
+    httpCode = 500;
     MCISendNeutral(QueryOpState);
         
     BlockUntilReady();
@@ -857,6 +874,7 @@ DeviceInfoRelayMsg SendInfoRequest()
     RelayMsgState = RLY_WAITING_INFO_REQUEST;
     ExpectedAckType = INFO_REQUEST_CODE;
     
+    httpCode = 500;
     MCISendNeutral(InfoRequest);
     
     BlockUntilReady();
@@ -873,6 +891,8 @@ RelayMsg SendOutsideCommGood(void)
     RelayMsg retval;
     RelayMsgState = RLY_WAITING_OUTSIDE_COMM_GOOD; 
     ExpectedAckType = OUTSIDE_COMM_CODE;
+    
+    httpCode = 500;
     MCISendNeutral(OutsideCommGood);       
     
     BlockUntilReady();
@@ -888,6 +908,8 @@ RelayMsg SendOutsideCommLost(void)
     RelayMsg retval;
     RelayMsgState = RLY_WAITING_OUTSIDE_COMM_LOST;
     ExpectedAckType = OUTSIDE_COMM_CODE;
+    
+    httpCode = 500;
     MCISendNeutral(OutsideCommLost);    
     
     BlockUntilReady();
@@ -924,6 +946,7 @@ RelayMsg SendSetCommodityRead(unsigned char code, long long rate, long long amou
     messageBuffer[17] = amount >> 8 | BYTE1;
     messageBuffer[18] = amount | BYTE1;
     
+    httpCode = 500;
     MCISendNeutral(messageBuffer);
     
     BlockUntilReady();
@@ -952,10 +975,12 @@ CommodityRelayMsg SendGetCommodityRead(unsigned char measured,
         
         messageBuffer[6] = commodityCode;
         
+        httpCode = 500;
         MCISendNeutral(messageBuffer);
     }
     else //if the request is general (if there was a commodity code that wasn't good, we'll pretend it's not there)
     {
+        httpCode = 500;
         MCISendNeutral(GetCommodityReadGeneral);
     }
     
@@ -997,7 +1022,7 @@ RelayMsg SendStartAutonomousCycling(UINT32 ID,         //event ID 32 bit uint
     messageBuffer[18] = endRand;
     messageBuffer[19] = crit;  
     
-    
+    httpCode = 500;    
     MCISendNeutral(messageBuffer);
     
     BlockUntilReady();
@@ -1011,6 +1036,7 @@ TempOffsetRelayMsg SendGetTemperatureOffset(void)
 {
     TempOffsetRelayMsg retval;
     
+    httpCode = 500;
     MCISendNeutral(GetTemperatureOffset);
     
     BlockUntilReady();
@@ -1038,6 +1064,7 @@ RelayMsg SendSetTemperatureOffset(unsigned char currentOffset,  //offset to be a
     messageBuffer[6] = currentOffset;
     messageBuffer[7] = units;
     
+    httpCode = 500;
     MCISendNeutral(messageBuffer);
     
     BlockUntilReady();
@@ -1060,6 +1087,7 @@ RelayMsg SendTerminateAutonomousCycling(UINT32 ID,
     
     messageBuffer[10] = endRand;    
     
+    httpCode = 500;
     MCISendNeutral(messageBuffer);
     
     BlockUntilReady();
@@ -1073,6 +1101,7 @@ TempSetpointRelayMsg SendGetSetPoint(void)
 {
     TempSetpointRelayMsg retval;
     
+    httpCode = 500;
     MCISendNeutral(GetSetPoint);
     
     BlockUntilReady();
@@ -1102,6 +1131,7 @@ RelayMsg SendSetSetPoint(UINT16 deviceType,
     memcpy(&messageBuffer[9],&setpoint1,2);
     memcpy(&messageBuffer[11],&setpoint2,2);
     
+    httpCode = 500;
     MCISendNeutral(messageBuffer);
     
     BlockUntilReady();    
@@ -1115,6 +1145,7 @@ EnergyPriceRelayMsg SendGetEnergyPrice(void)
 {
     EnergyPriceRelayMsg retval;
     
+    httpCode = 500;
     MCISendNeutral(GetEnergyPrice);
     
     BlockUntilReady();
@@ -1150,6 +1181,7 @@ RelayMsg SendSetEnergyPrice(UINT16 currentPrice,
     memcpy(&messageBuffer[11], &expirationTime, 4);
     memcpy(&messageBuffer[15], &nextPrice, 4);
     
+    httpCode = 500;
     MCISendNeutral(messageBuffer);
     
     BlockUntilReady();
