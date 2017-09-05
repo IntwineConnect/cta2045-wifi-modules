@@ -1180,10 +1180,12 @@ int FormatEventStateConfirmXML( char *Buffer )
     strcat(Buffer, operationModeValue);
     strcat(Buffer, "\" ");
 
+    /*
     if (OverRide)
         strcat(Buffer, "optInStatus=\"false\" ");
     else
         strcat(Buffer, "optInStatus=\"true\" ");
+    */
 
     strcat(Buffer, "programName=\"");
     strcat(Buffer, programName);

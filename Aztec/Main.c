@@ -64,6 +64,8 @@
 #include "MCI_Common.h"
 #include "BasicDR.h"
 
+#include "debugging.h"
+
 #if defined( WF_CONSOLE )
 #include "TCPIP_Stack/WFConsole.h"
 #include "IperfApp.h"
@@ -240,6 +242,8 @@ int main(void)
     // down into smaller pieces so that other tasks can have CPU time.
     int ctr = 0;
     AppTaskInit();
+    LED1_OFF()
+    LED2_OFF()
     while(1)
     {
         ClearWDT();
@@ -313,7 +317,7 @@ int main(void)
                      g_prescan_waiting = 0;
                 }
             }
-         }
+         }         
 
         #if defined (EZ_CONFIG_STORE)
         // Hold SW0 for 4 seconds to reset to defaults.

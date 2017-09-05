@@ -3,22 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/Main.c</file>
-            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/EPRI_SPILayer.c</file>
-            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/LinkLayerMessaging.c</file>
-            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/BasicDR.c</file>
-            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/MCI_Common.c</file>
-            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/MicroChip/TCPIP_Stack/Announce.c</file>
-            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/MicroChip/TCPIP_Stack/WiFi/WFEasyConfig.c</file>
-            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/MicroChip/TCPIP_Stack/HTTP2.c</file>
-            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/MicroChip/TCPIP_Stack/WiFi/WFDebugStrings.c</file>
-            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/MicroChip/TCPIP_Stack/UDP.c</file>
-            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/i2c_master.c</file>
-            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/MicroChip/TCPIP_Stack/ZeroconfMulticastDNS.c</file>
-            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/MicroChip/TCPIP_Stack/WiFi/WFDriverCom_24G.c</file>
-            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/app_UCM.c</file>
-            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/HardwareProfile.h</file>
-            <file>file:/D:/intwine/retry%202/cta2045-wifi-modules/Aztec/MicroChip/TCPIP_Stack/Tick.c</file>
+            <file>file:/C:/Users/Family/Documents/Jordan/INTEGRATE/UCM/Aztec/HardwareProfile.h</file>
+            <file>file:/C:/Users/Family/Documents/Jordan/INTEGRATE/UCM/Aztec/EPRI_SPILayer.h</file>
+            <file>file:/C:/Users/Family/Documents/Jordan/INTEGRATE/UCM/Aztec/HTTPPrint.h</file>
+            <file>file:/C:/Users/Family/Documents/Jordan/INTEGRATE/UCM/Aztec/MicroChip/Include/GenericTypeDefs.h</file>
+            <file>file:/C:/Users/Family/Documents/Jordan/INTEGRATE/UCM/Aztec/WifiGDemoMPFSImg.c</file>
+            <file>file:/C:/Users/Family/Documents/Jordan/INTEGRATE/UCM/Aztec/BasicDR.c</file>
+            <file>file:/C:/Users/Family/Documents/Jordan/INTEGRATE/UCM/Aztec/EPRI_UARTLayer.c</file>
+            <file>file:/C:/Users/Family/Documents/Jordan/INTEGRATE/UCM/Aztec/MicroChip/Include/TCPIP_Stack/HTTP2.h</file>
+            <file>file:/C:/Users/Family/Documents/Jordan/INTEGRATE/UCM/Aztec/Main.c</file>
+            <file>file:/C:/Users/Family/Documents/Jordan/INTEGRATE/UCM/Aztec/CustomHTTPApp.c</file>
+            <file>file:/C:/Users/Family/Documents/Jordan/INTEGRATE/UCM/Aztec/MicroChip/TCPIP_Stack/WiFi/WF_Spi.c</file>
+            <file>file:/C:/Users/Family/Documents/Jordan/INTEGRATE/UCM/Aztec/EPRI_SPILayer.c</file>
+            <file>file:/C:/Users/Family/Documents/Jordan/INTEGRATE/UCM/Aztec/UARTiMain.c</file>
         </group>
     </open-files>
 </project-private>

@@ -203,7 +203,7 @@ void LinkLayerMessageHandler(unsigned char * msg)
     {
         DL_Ack();
         
-        //have to wait for 100ms here somehow
+        //have to wait for 100ms here
         
         
     }
