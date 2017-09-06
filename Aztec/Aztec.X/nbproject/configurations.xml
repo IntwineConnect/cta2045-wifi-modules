@@ -493,7 +493,7 @@
         <property key="expand-macros" value="false"/>
         <property key="extra-include-directories-for-assembler" value="..;."/>
         <property key="extra-include-directories-for-preprocessor"
-                  value="..;../Microchip/Include;../../../../../../../Program Files (x86)/Microchip/mplabc32/v2.02/pic32mx/include/peripheral;../Configs;."/>
+                  value="..;../Microchip/Include;..\..\..\..\..\..\Program Files (x86)\Microchip\xc32\v1.40\pic32mx\include\peripheral;../Configs;."/>
         <property key="false-conditionals" value="false"/>
         <property key="generate-16-bit-code" value="false"/>
         <property key="generate-micro-compressed-code" value="false"/>
