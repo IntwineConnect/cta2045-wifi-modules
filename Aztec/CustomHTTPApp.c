@@ -354,9 +354,9 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         switch(eventType)  
         {
             RelayMsg retval;
-            unsigned int intparam1 = 0;
-            unsigned int intparam2 = 0;
-            unsigned int intparam3 = 0;
+            int intparam1 = 0;
+            int intparam2 = 0;
+            int intparam3 = 0;
             int intparam4 = 0;
             short int shortparam1 = 0;
             unsigned char charparam1 = 0;
