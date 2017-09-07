@@ -5,7 +5,7 @@
  * Author: Jordan Murray
  * Date: 5/10/2016
  */
-
+#if defined(DC_CEA2045)
 
 #include "EPRI_SPILayer.h"
 #include <string.h>
@@ -955,3 +955,4 @@ void SPI_Driver_Send_ACK_NAK(unsigned char * msg)
 //
 //}
 
+#endif
