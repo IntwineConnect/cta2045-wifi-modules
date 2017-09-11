@@ -8,20 +8,21 @@
 #include <peripheral/uart.h>
 #include "Assert.h"
 #include "INTiAPI.h"
+#include "HardwareProfile.h"
 
-void (*UART2RxCallbackFunction)(void) = NULL;
+void (*UART1RxCallbackFunction)(void) = NULL;
 void (*SPI3RxCallbackFunction)(void) = NULL;
 void (*SPI3TxCallbackFunction)(void) = NULL;
 
 /*
-* Function:         void INTiRegisterUART2RxCallbackFunction(void (*HandlerFunction)(void))
-* Description:      Register an external handler for UART2InterruptServiceRoutine
+* Function:         void INTiRegister1RxCallbackFunction(void (*HandlerFunction)(void))
+* Description:      Register an external handler for 1InterruptServiceRoutine
 * Creation Date:    11/04/2011
 * Author:           Bill Barnett
 */
-void INTiRegisterUART2RxCallbackFunction(void (*HandlerFunction)(void))
+void INTiRegisterUART1RxCallbackFunction(void (*HandlerFunction)(void))
 {
-    UART2RxCallbackFunction = HandlerFunction;
+    UART1RxCallbackFunction = HandlerFunction;
 }
 /*
 * Function:         void INTiRegisterSPI3RxCallbackFunction(void (*HandlerFunction)(void))
@@ -46,23 +47,25 @@ void INTiRegisterSPI3TxCallbackFunction(void (*HandlerFunction)(void))
 }
 
 /*
-* Function:         void UART2InterruptServiceRoutine(void)
-* Description:      ISR for UART2InterruptServiceRoutine. NOTE: the ipl must match the priority set in the INTSetVectorPriority function
+* Function:         void 1InterruptServiceRoutine(void)
+* Description:      ISR for UART1InterruptServiceRoutine. NOTE: the ipl must match the priority set in the INTSetVectorPriority function
 * Creation Date:    10/19/2011
 * Author:           Robert Scaccia
 */
-void __ISR(_UART_2_VECTOR, ipl5) UART2InterruptServiceRoutine(void)
+#if defined(AC_CEA2045)
+void __ISR(_UART_1_VECTOR, ipl5) UART1InterruptServiceRoutine(void)
 {
-    if(INTGetFlag(INT_U2RX))
+    if(INTGetFlag(INT_U1RX))
     {
-        if(UART2RxCallbackFunction != NULL)
+        if(UART1RxCallbackFunction != NULL)
         {
-            (*UART2RxCallbackFunction)();
+            (*UART1RxCallbackFunction)();
         }
-        INTClearFlag(INT_U2RX);
+        INTClearFlag(INT_U1RX);
     }
 
 }
+#endif
 
 /*
 * Function:         void SPI3InterruptServiceRoutine(void)
@@ -70,6 +73,7 @@ void __ISR(_UART_2_VECTOR, ipl5) UART2InterruptServiceRoutine(void)
 * Creation Date:    11/09/2011
 * Author:           Bill Barnett
 */
+#if defined(DC_CEA2045)
 void __ISR(_SPI_3_VECTOR, ipl4) SPI3InterruptServiceRoutine(void)
 {
     if(INTGetFlag(INT_SPI3) && INTGetEnable(INT_SPI3)){
@@ -113,3 +117,4 @@ void __ISR(_SPI_3_VECTOR, ipl4) SPI3InterruptServiceRoutine(void)
     }
     INTClearFlag(INT_SPI3); //maybE? 
 }
+#endif

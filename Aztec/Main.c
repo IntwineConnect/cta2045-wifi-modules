@@ -564,9 +564,9 @@ static void InitializeBoard(void)
 #endif
 
 #if defined(AC_CEA2045)            
-    INTSetVectorPriority(INT_UART_2_VECTOR, INT_PRIORITY_LEVEL_5);
-    INTSetVectorSubPriority(INT_UART_2_VECTOR,INT_SUB_PRIORITY_LEVEL_0);
-    INTEnable(INT_SOURCE_UART_RX(UART2), INT_ENABLED);
+    INTSetVectorPriority(INT_UART_1_VECTOR, INT_PRIORITY_LEVEL_5);
+    INTSetVectorSubPriority(INT_UART_1_VECTOR,INT_SUB_PRIORITY_LEVEL_0);
+    INTEnable(INT_SOURCE_UART_RX(UART1), INT_ENABLED);
 #endif
 
 #if defined(DC_CEA2045) || defined(INTWINE_CONNECTED_OUTLET) || defined(INTWINE_CONNECTED_LOAD_CONTROL)
@@ -589,7 +589,7 @@ static void InitializeBoard(void)
 
 /****************************************************************************
  Bits RF4 and RF4 are multifunction:
- 1. UART2 on AC_CEA2045
+ 1. UART1 on AC_CEA2045
  2. RED and GREEN LEDs on ICO
  3. Tri-stated on TSTAT
 ****************************************************************************/
@@ -597,10 +597,11 @@ static void InitializeBoard(void)
 #ifdef AC_CEA2045
     // Set RS-485 DE enable to inactive low
     TRISDCLR = BIT_14;
-    LATDCLR = BIT_14;
+    LATDSET = BIT_14;
+    LATDSET = BIT_15;
     // TX inactive high
-    TRISFCLR = BIT_5;
-    LATFSET = BIT_5;
+    TRISFCLR = BIT_8;
+    LATFSET = BIT_8;
 #endif
     
 #ifdef DC_CEA2045

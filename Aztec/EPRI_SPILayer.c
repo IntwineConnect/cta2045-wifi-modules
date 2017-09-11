@@ -5,7 +5,6 @@
  * Author: Jordan Murray
  * Date: 5/10/2016
  */
-#if defined(DC_CEA2045)
 
 #include "EPRI_SPILayer.h"
 #include <string.h>
@@ -26,6 +25,8 @@
 #include "MCI_Common.h"
 #include "BasicDR.h"
 //#include "Compiler.h"
+
+#if defined(DC_CEA2045)
 
 #define MESSAGE_TYPE_LENGTH 2 
 #define PAYLOAD_LENGTH_LENGTH 2
