@@ -528,9 +528,9 @@ static void InitializeBoard(void)
 
 #ifdef AC_CEA2045
     UARTiConfigure(UART1, 19200);
-    UARTiConfigure(UART2, 19200);
 #endif
-
+    UARTiConfigure(UART2, 19200);
+    
     // Note: Interrupt priority, 1 is lowest priority to 7 which is highest priority
 
     // Enable the interrupt sources
