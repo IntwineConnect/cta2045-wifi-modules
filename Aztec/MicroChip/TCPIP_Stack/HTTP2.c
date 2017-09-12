@@ -707,8 +707,12 @@ static void HTTPProcess(void)
 			
 			// Move on to GET args, unless there are none
 			smHTTP = SM_HTTP_PROCESS_GET;
-			if(!curHTTP.hasArgs)
-				smHTTP = SM_HTTP_PROCESS_POST;
+//          10/11/2016, Brad Hughes: commented this out so that HTTPExecuteGet()
+//                                   gets called in SM_HTTP_PROCESS_GET, as the
+//                                   HTTP GET requests depend on HTTPExecuteGet()
+//                                   getting called even without arguments to the URL.
+//			if(!curHTTP.hasArgs)              
+//				smHTTP = SM_HTTP_PROCESS_POST;
 			isDone = FALSE;
 			curHTTP.hasArgs = FALSE;
 			break;

@@ -96,12 +96,33 @@ void _mon_putc(char c)
 }
 
 
-// Exception Handlers
-// If your code gets here, you either tried to read or write
-// a NULL pointer, or your application overflowed the stack
-// by having too many local variables or parameters declared.
-void _general_exception_handler(unsigned cause, unsigned status)
-{
+ static enum {
+      EXCEP_IRQ = 0,            // interrupt
+      EXCEP_AdEL = 4,            // address error exception (load or ifetch)
+      EXCEP_AdES,                // address error exception (store)
+      EXCEP_IBE,                // bus error (ifetch)
+      EXCEP_DBE,                // bus error (load/store)
+      EXCEP_Sys,                // syscall
+      EXCEP_Bp,                // breakpoint
+      EXCEP_RI,                // reserved instruction
+      EXCEP_CpU,                // coprocessor unusable
+      EXCEP_Overflow,            // arithmetic overflow
+      EXCEP_Trap,                // trap (possible divide by zero)
+      EXCEP_IS1 = 16,            // implementation specfic 1
+      EXCEP_CEU,                // CorExtend Unuseable
+      EXCEP_C2E                // coprocessor 2
+  } _excep_code;
+  
+  volatile static unsigned int _epc_code;
+  volatile static unsigned int _excep_addr;
+  
+  void _general_exception_handler(void)
+  {
+      asm volatile("mfc0 %0,$13" : "=r" (_excep_code));
+      asm volatile("mfc0 %0,$14" : "=r" (_excep_addr));
+  
+      _excep_code = (_excep_code & 0x0000007C) >> 2;
+      
     Nop();
     Nop();
     while(1);       // Watchdog will reset
@@ -250,6 +271,9 @@ int main(void)
     {
         ClearWDT();
         
+#ifdef DC_CEA2045
+        SPI_Driver_Task();  
+#endif
         
         if(FirstTime == TRUE)
         {
@@ -483,7 +507,6 @@ static void InitializeBoard(void)
 
 #ifdef DC_CEA2045
     //SPI ATTN
-    SPI_ATTN_TRIS = 0;
     SPI_ATTN_INACTIVE
 #endif
     
@@ -503,9 +526,11 @@ static void InitializeBoard(void)
     CNEN = 0x00000000;
     CNCON = 0x00000000;
 
+#ifdef AC_CEA2045
     UARTiConfigure(UART1, 19200);
+#endif
     UARTiConfigure(UART2, 19200);
-
+    
     // Note: Interrupt priority, 1 is lowest priority to 7 which is highest priority
 
     // Enable the interrupt sources
@@ -521,48 +546,50 @@ static void InitializeBoard(void)
 
     IFS0CLR = 0xffffffff;
     IFS1CLR = 0xffffffff;
-    IFS0CLR = 0xffffffff;
+    IFS2CLR = 0xffffffff;
     
 #ifdef DC_CEA2045
-    //configure change notification interrupts for DC_CEA2045
-    //the order of these steps is recommended in sectino 12.3.3.1 of the PIC32 family reference manual
+    // Drive Module Detect line low to tell the SGD that the UCM is present
+    LATCCLR = BIT_1; TRISCbits.TRISC1 = 0;
     
+    // Configure change notification interrupts for SPI CSn line
     SPI_CS_TRIS = 1;
     CN_TURN_ON                 //turn on CN module
     SPI_CS_INT_ENABLE     //configure SPI chip select pin for CN interrupts 
-    CN_INT_ENABLE         //enable CN interrupts
-            
-    //create interrupt for chip select change notification    
-    INTSetVectorPriority(INT_CHANGE_NOTICE_VECTOR,INT_PRIORITY_LEVEL_6);
-    INTSetVectorSubPriority(INT_CHANGE_NOTICE_VECTOR,INT_SUB_PRIORITY_LEVEL_0);
-            
+    
+    INTSetVectorPriority(INT_CHANGE_NOTICE_VECTOR, INT_PRIORITY_LEVEL_6);
+    INTSetVectorSubPriority(INT_CHANGE_NOTICE_VECTOR, INT_SUB_PRIORITY_LEVEL_0);
+    INTClearFlag(INT_CN);
+    INTEnable(INT_CN, INT_ENABLED);
 #endif
 
-            
-    INTSetVectorPriority(INT_UART_2_VECTOR, INT_PRIORITY_LEVEL_5);
-    INTSetVectorSubPriority(INT_UART_2_VECTOR,INT_SUB_PRIORITY_LEVEL_0);
-#if defined(AC_CEA2045)
-    INTEnable(INT_SOURCE_UART_RX(UART2), INT_ENABLED);
+#if defined(AC_CEA2045)            
+    INTSetVectorPriority(INT_UART_1_VECTOR, INT_PRIORITY_LEVEL_5);
+    INTSetVectorSubPriority(INT_UART_1_VECTOR,INT_SUB_PRIORITY_LEVEL_0);
+    INTEnable(INT_SOURCE_UART_RX(UART1), INT_ENABLED);
 #endif
 
-    INTSetVectorPriority(INT_SPI_3_VECTOR, INT_PRIORITY_LEVEL_4);  
-    INTSetVectorSubPriority(INT_SPI_3_VECTOR, INT_SUB_PRIORITY_LEVEL_0);    
-#if defined(INTWINE_CONNECTED_OUTLET) || defined(INTWINE_CONNECTED_LOAD_CONTROL)
-    SPI3EnableInterrupts();
+#if defined(DC_CEA2045) || defined(INTWINE_CONNECTED_OUTLET) || defined(INTWINE_CONNECTED_LOAD_CONTROL)
+    INTSetVectorPriority(INT_SPI_3_VECTOR, INT_PRIORITY_LEVEL_4);
+    INTSetVectorSubPriority(INT_SPI_3_VECTOR, INT_SUB_PRIORITY_LEVEL_0);
+    INTClearFlag(INT_SPI3RX);
+    INTClearFlag(INT_SPI3TX);
+    INTClearFlag(INT_SPI3E);
 #endif
+    
+    TimeMonitorInit();
 
     INTSetVectorPriority(INT_TIMER_2_VECTOR, INT_PRIORITY_LEVEL_1);  
     INTSetVectorSubPriority(INT_TIMER_2_VECTOR, INT_SUB_PRIORITY_LEVEL_0);	
     
-
     // Enable multi-vectored interrupts
+    INTConfigureSystem(INT_SYSTEM_CONFIG_MULT_VECTOR);
     INTEnableSystemMultiVectoredInt();
-    
-
+    INTEnableInterrupts();
 
 /****************************************************************************
  Bits RF4 and RF4 are multifunction:
- 1. UART2 on AC_CEA2045
+ 1. UART1 on AC_CEA2045
  2. RED and GREEN LEDs on ICO
  3. Tri-stated on TSTAT
 ****************************************************************************/
@@ -570,10 +597,16 @@ static void InitializeBoard(void)
 #ifdef AC_CEA2045
     // Set RS-485 DE enable to inactive low
     TRISDCLR = BIT_14;
-    LATDCLR = BIT_14;
+    LATDSET = BIT_14;
+    LATDSET = BIT_15;
     // TX inactive high
-    TRISFCLR = BIT_5;
-    LATFSET = BIT_5;
+    TRISFCLR = BIT_8;
+    LATFSET = BIT_8;
+#endif
+    
+#ifdef DC_CEA2045
+    // Initialize SPI I/Os and state machine
+    SPI_Driver_Task();
 #endif
 
 #ifdef INTWINE_CONNECTED_OUTLET
@@ -623,7 +656,9 @@ static void InitializeBoard(void)
     SI7005_IO = 0;  // Enable Si7005 and delay 15 ms
     DelayMs(15);
 
+#ifdef putrsUART
     putrsUART("\r\n\r\n\r\nAztec Init Complete\r\n");
+#endif
 }
 
 static ROM BYTE SerializedMACAddress[6] = {MY_DEFAULT_MAC_BYTE1, MY_DEFAULT_MAC_BYTE2, MY_DEFAULT_MAC_BYTE3, MY_DEFAULT_MAC_BYTE4, MY_DEFAULT_MAC_BYTE5, MY_DEFAULT_MAC_BYTE6};

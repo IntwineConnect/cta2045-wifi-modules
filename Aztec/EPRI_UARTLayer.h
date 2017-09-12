@@ -52,7 +52,7 @@ extern BOOL UARTLock;
 void       MCISendAsync(unsigned char * msg);
 void rxMessageHandler(MCIResponse * lastSentPacket);
 void rxbuffer_initialize();
-void UART2_ISR(void);
+void UART1_ISR(void);
 void UARTLockCallback(void);
 
 #endif

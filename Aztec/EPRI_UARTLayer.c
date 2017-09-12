@@ -76,7 +76,7 @@ void App_Ack(unsigned char * message, int len);
 void EPRI_UART_init()
 {
 
-    INTiRegisterUART2RxCallbackFunction(UART2_ISR);
+    INTiRegisterUART1RxCallbackFunction(UART1_ISR);
 
     rxbuffer_initialize();
     position_counter = 0;
@@ -95,14 +95,17 @@ void EPRI_UART_init()
 void EPRI_UART_write(unsigned char *message, int length )
 {
 
-	UARTEnable(UART2, UART_DISABLE_FLAGS(UART_PERIPHERAL | UART_RX | UART_TX)); 
-	UARTEnable(UART2, UART_ENABLE_FLAGS(UART_PERIPHERAL | UART_TX)); 
+	UARTEnable(UART1, UART_DISABLE_FLAGS(UART_PERIPHERAL | UART_RX | UART_TX)); 
+	UARTEnable(UART1, UART_ENABLE_FLAGS(UART_PERIPHERAL | UART_TX)); 
 
-    LATDSET = BIT_14;   // enable RS-485 TX output
-    UARTiWriteBinaryData(message, length, UART2);
+   
     LATDCLR = BIT_14;
+    LATDCLR = BIT_15;
+    UARTiWriteBinaryData(message, length, UART1);
+    LATDSET = BIT_14;   // enable RS-485 TX output
+    LATDSET = BIT_15;   // enable RS-485 TX output
 
-	UARTEnable(UART2, UART_ENABLE_FLAGS(UART_PERIPHERAL | UART_RX | UART_TX));
+	UARTEnable(UART1, UART_ENABLE_FLAGS(UART_PERIPHERAL | UART_RX | UART_TX));
     
     //set lock and timer to release lock after 20ms
     UARTLock = TRUE;
@@ -111,21 +114,21 @@ void EPRI_UART_write(unsigned char *message, int length )
 }
 
 /*
-* Function:			void UART2_ISR(void)
-* Description:		ISR for UART2
+* Function:			void UART1_ISR(void)
+* Description:		ISR for UART1
 * Creation Date:	10/19/2011	
 * Author:			Robert Scaccia
 */
-void UART2_ISR(void)
+void UART1_ISR(void)
 {
 	unsigned char i;
 
    // check receiver
-    if (INTGetFlag(INT_U2RX) && INTGetEnable(INT_U2RX))	 // something in the receive buffer?
+    if (INTGetFlag(INT_U1RX) && INTGetEnable(INT_U1RX))	 // something in the receive buffer?
     {
-        while (UARTReceivedDataIsAvailable(UART2))
+        while (UARTReceivedDataIsAvailable(UART1))
         {
-            i = UARTGetDataByte(UART2);
+            i = UARTGetDataByte(UART1);
             if (OK_TO_READ_232) // if we are past bootup
             {
                 // Call back detect 20ms idle time on RS-485 bus.
@@ -489,7 +492,7 @@ void rxbuffer_initialize()
 
 // Message Sync indicator
 // Indicates message receive is complete by 20ms with no received characters
-// Callback initiated from UART2InterruptServiceRoutine
+// Callback initiated from UART1InterruptServiceRoutine
 // RxBuf copied into rxmessage as doubled-buffered.
 // Must be done processing rxmessage before next callback.
 // 

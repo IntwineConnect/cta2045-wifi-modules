@@ -310,8 +310,10 @@ void WF_ProcessEvent(UINT8 event, UINT16 eventInfo, UINT8 *extraInfo)
                     			}
                     			sprintf(str, "%s, %s, %x:%x:%x:%x:%x:%x", result, reason, addr[0], addr[1], addr[2],
                         			addr[3], addr[4], addr[5]);
+#ifdef putsUART
                     			putsUART(str);
                     			putrsUART("\r\n");
+#endif
                 		}
                 		#endif /* STACK_USE_UART */
                 		break;

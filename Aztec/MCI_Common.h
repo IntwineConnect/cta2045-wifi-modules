@@ -102,9 +102,10 @@ extern unsigned char SetSetPoint[16];
 extern unsigned char InfoRequest[8];
 
 
-extern short int httpCode;
+// These are potentially set from an interrupt (timeout), so they must be volatile.
+volatile extern short int httpCode;
 extern unsigned char codeByte;
-extern BOOL ResponseReadyFlag;
+volatile extern BOOL ResponseReadyFlag;
 extern unsigned char responseCode;
 extern unsigned char nCommodities;
 extern unsigned char currentOffset;
