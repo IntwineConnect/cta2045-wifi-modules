@@ -89,21 +89,32 @@
 // MCI SPI pins
 //----------------------------
 #if defined(DC_CEA2045)
+    #define SPI_MISO_TRIS          (TRISFbits.TRISF8)    //SDI pin    (#52))
+    #define SPI_MOSI_TRIS          (TRISFbits.TRISF2)    //SDI pin    (#52))
+    #define SPI_ATTN_INACTIVE      { LATBSET = BIT_2; TRISBbits.TRISB2 = 1; }    // Pin has a pull-up that deasserts
+    #define SPI_ATTN_ASSERT        { LATBCLR = BIT_2; TRISBbits.TRISB2 = 0; }
 
-#define SPI_MISO_TRIS          (TRISFbits.TRISF8)    //SDI pin    (#52))
-#define SPI_MOSI_TRIS          (TRISFbits.TRISF2)    //SDI pin    (#52))
-#define SPI_ATTN_INACTIVE      { LATBSET = BIT_2; TRISBbits.TRISB2 = 1; }    // Pin has a pull-up that deasserts
-#define SPI_ATTN_ASSERT        { LATBCLR = BIT_2; TRISBbits.TRISB2 = 0; }
+    #define SPI_SCLK_TRIS              (TRISDbits.TRISD15) //SCLK pin     (#48)
+    #define SPI_CS_TRIS              (TRISDbits.TRISD14) //CS pin     (#47)   (CN20)
+    #define SPI_CS_IO                (PORTDbits.RD14)
+    #define SPI_CS_INT_ENABLE      CNENSET = BIT_20;     // to enable CN interrupts on pin47
+    #define CN_TURN_ON                 CNCONSET = BIT_15;    // to turn on the CN module
+    #define CN_INT_ENABLE           (IEC1bits.CNIE) = 1;  // enable CN interrupts
 
-#define SPI_SCLK_TRIS              (TRISDbits.TRISD15) //SCLK pin     (#48)
-#define SPI_CS_TRIS              (TRISDbits.TRISD14) //CS pin     (#47)   (CN20)
-#define SPI_CS_IO                (PORTDbits.RD14)
-#define SPI_CS_INT_ENABLE      CNENSET = BIT_20;     // to enable CN interrupts on pin47
-#define CN_TURN_ON                 CNCONSET = BIT_15;    // to turn on the CN module
-#define CN_INT_ENABLE           (IEC1bits.CNIE) = 1;  // enable CN interrupts
-
+    #define LED0_TRIS           (TRISEbits.TRISE4)  // Use LED D2
+    #define LED0_IO             (LATEbits.LATE4)
+    #define LED0_ON()           LATESET = BIT_4;
+    #define LED0_OFF()          LATECLR = BIT_4;
+    #define LED0_INV()          LATEINV = BIT_4;
 #endif
 
+#if defined(AC_CEA2045)
+    #define LED0_TRIS           (TRISEbits.TRISE2)  // Use LED D1
+    #define LED0_IO             (LATEbits.LATE2)
+    #define LED0_ON()           LATESET = BIT_2;
+    #define LED0_OFF()          LATECLR = BIT_2;
+    #define LED0_INV()          LATEINV = BIT_2;
+#endif
 //----------------------------
 // LED and Button I/O pins
 //----------------------------
@@ -118,8 +129,6 @@
 #define ICO_GRN_OFF()       LATFCLR = BIT_5;
 #define ICO_GRN_INV()       LATFINV = BIT_5;
 
-#define LED0_TRIS           (TRISEbits.TRISE2)  // Ref E2 Green
-#define LED0_IO             (LATEbits.LATE2)
 #define LED1_TRIS           (TRISEbits.TRISE0)  // Ref E0 Yellow
 #define LED1_IO             (LATEbits.LATE0)
 #define LED2_TRIS           (TRISEbits.TRISE1)  // Ref E1 Red
@@ -127,9 +136,6 @@
 
 #define LEDS_ON()           {LED0_ON(); LED1_ON(); LED2_ON();}
 #define LEDS_OFF()          {LED0_OFF(); LED1_OFF(); LED2_OFF();}
-#define LED0_ON()           LATESET = BIT_2;
-#define LED0_OFF()          LATECLR = BIT_2;
-#define LED0_INV()          LATEINV = BIT_2;
 
 #define LED1_ON()           LATESET = BIT_0;
 #define LED1_OFF()          LATECLR = BIT_0;
