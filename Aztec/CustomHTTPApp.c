@@ -1157,8 +1157,8 @@ void HTTPPrint_cumulative(void)
 void HTTPPrint_deviceInformation(void)
 {
     unsigned char buffer[300];
-    snprintf(buffer, 300,"{\"CEA-2045 Ver\": %d,\n\"Vendor ID\": 0x%x,\n\"Device Type\": 0x%x,\
-\n\"Device Revision\": 0x%x,\n\"Capability Bitmap\": %x,\n\"Model Number\": %016llu,\
+    snprintf(buffer, 300,"{\"CEA-2045 Ver\": %d,\n\"Vendor ID\": %d,\n\"Device Type\": %d,\
+\n\"Device Revision\": %d,\n\"Capability Bitmap\": %x,\n\"Model Number\": %016llu,\
 \n\"Serial Number\": %016llu,\n\"Firmware Year\": 20%02d,\n\"Firmware Month\": %d,\
 \n\"Firmware Day\": %d,\n\"Firmware Major\": %d,\n\"Firmware Minor\": %d}",
 DeviceInfo.CTAver,DeviceInfo.vendorID,DeviceInfo.deviceType,DeviceInfo.deviceRev,
