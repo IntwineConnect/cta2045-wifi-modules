@@ -365,8 +365,7 @@ int main(void)
             else
                 if(TickGet() - ButtonPushStart > 4*TICK_SECOND) {
                     printf("Restoring defaults and reset\r\n");
-                    LEDS_ON();
-                           
+                    LEDS_ON();                           
                     RestoreWifiConfig();
                 }
         }

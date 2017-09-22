@@ -417,6 +417,10 @@ void BasicDRMessageHandler(unsigned char * msg)
         {
             RelayMsgState = RLY_ACKED_SHED;            
         }
+        else if(opcode2 == LOAD_UP_CODE && RelayMsgState == RLY_WAITING_LOAD_UP)
+        {
+            RelayMsgState = RLY_ACKED_LOAD_UP;            
+        }
         else if(opcode2 == REQUEST_POWER_LEVEL_CODE && RelayMsgState == RLY_WAITING_REQUEST_POWER_LEVEL)
         {
             RelayMsgState = RLY_ACKED_REQUEST_POWER_LEVEL;
@@ -475,7 +479,7 @@ void BasicDRMessageHandler(unsigned char * msg)
         else
         {
             //there must be a mismatch between the expected response type and what has been received
-            httpCode = 302;
+            httpCode = 500;
         }
         
     }
@@ -661,16 +665,16 @@ RelayMsg SendPresentRelativePrice(double rpi)
     
     
     //input bounds checking
-    if(rpi > 10.0)
+    if(rpi > 9.79)
     {
-        rpi = 10.0;
+        rpi = 9.79;
     }
     else if(rpi < 0.0)
     {
         rpi = 0.0;
     }
 
-    opcode2 = (unsigned char) floor(-31 + .5*sqrtf(3844+(4*(63+8192*rpi))));    //calculate byte value per section 8.2.2 of CTA spec
+    opcode2 = (unsigned char) floor(-31.0 + 0.5*sqrtf(3844.0+(4.0*(63.0+8192.0*rpi))));    //calculate byte value per section 8.2.2 of CTA spec
     messageBuffer[5] = opcode2;
     
     RelayMsgState = RLY_WAITING_PRESENT_RELATIVE_PRICE;
@@ -694,16 +698,16 @@ RelayMsg SendNextPeriodRelativePrice(double rpi)
     
     
     //input bounds checking
-    if(rpi > 10.0)
+    if(rpi > 9.79)
     {
-        rpi = 10.0;
+        rpi = 9.79;
     }
     else if(rpi < 0.0)
     {
         rpi = 0.0;
     }
 
-    opcode2 = (unsigned char) floor(-31 + .5*sqrtf(3844+(4*(63+8192*rpi))));    //calculate byte value per section 8.2.2 of CTA spec
+    opcode2 = (unsigned char) floor(-31.0 + 0.5*sqrtf(3844.0+(4.0*(63.0+8192.0*rpi))));    //calculate byte value per section 8.2.2 of CTA spec
     messageBuffer[5] = opcode2;
     
     RelayMsgState = RLY_WAITING_NEXT_PERIOD_RELATIVE_PRICE;
