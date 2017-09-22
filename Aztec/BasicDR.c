@@ -417,6 +417,10 @@ void BasicDRMessageHandler(unsigned char * msg)
         {
             RelayMsgState = RLY_ACKED_SHED;            
         }
+        else if(opcode2 == LOAD_UP_CODE && RelayMsgState == RLY_WAITING_LOAD_UP)
+        {
+            RelayMsgState = RLY_ACKED_LOAD_UP;            
+        }
         else if(opcode2 == REQUEST_POWER_LEVEL_CODE && RelayMsgState == RLY_WAITING_REQUEST_POWER_LEVEL)
         {
             RelayMsgState = RLY_ACKED_REQUEST_POWER_LEVEL;
@@ -475,7 +479,7 @@ void BasicDRMessageHandler(unsigned char * msg)
         else
         {
             //there must be a mismatch between the expected response type and what has been received
-            httpCode = 302;
+            httpCode = 500;
         }
         
     }
