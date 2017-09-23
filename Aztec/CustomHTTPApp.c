@@ -534,47 +534,12 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         }
         HTTPcodeHandler(retval.httpCode);
     }    
+    // for messages associated with the /commodity page
     else if(!memcmppgm2ram(filename,"commodity.cgi", 13))
     {
-        int i;
-        int itemCounter = 0;
-        RelayMsg retval;
-        long long vlintparam1;
-        long long vlintparam2;
-        unsigned char commodity;
-        char typeBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
-        char valueBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
-    
-        int good = 1;
-        
-        //get the parameters out of the buffer and strip their formatting
-        do{
-            good = readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]);
-            if(good){
-                // this line was good
-                itemCounter++;
-            }
-            // if this line was good, we may have another good item... but we don't know... try!
-        } while(good);
-        
-        for(i = 0; i <= itemCounter; i++)
-        {
-            if(!memcmp(typeBuffer[i], "commodity_code", 14))
-            {
-                commodity = (unsigned char*) atoi(valueBuffer[i]);
-            }
-            else if(!memcmp(typeBuffer[i], "rate", 14))
-            {
-                vlintparam1 = atoll(valueBuffer[i]);
-            }
-            else if(!memcmp(typeBuffer[i], "cumulative", 10))
-            {
-                vlintparam2 = atoll(valueBuffer[i]);
-            }
-        }
-        retval = SendSetCommodityRead(commodity, vlintparam1, vlintparam2);
-        
-        HTTPcodeHandler(retval.codeByte);
+        CommodityRelayMsg retval;
+        retval = SendGetCommodityRead(0xFF, 0xFF);
+        HTTPcodeHandler(retval.httpCode);
     }
     //for messages associated with the /price page
     else if(!memcmppgm2ram(filename,"price.cgi", 9))
@@ -660,13 +625,6 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         }
         retval = SendTimeSync(intparam1, intparam2);
                 
-        HTTPcodeHandler(retval.httpCode);
-    }
-    // for messages associated with the commodity.cgi page
-    else if(!memcmppgm2ram(filename,"commodity.cgi", 13))
-    {
-        CommodityRelayMsg retval;
-        retval = SendGetCommodityRead(0xFF, 0xFF);
         HTTPcodeHandler(retval.httpCode);
     }
     else
