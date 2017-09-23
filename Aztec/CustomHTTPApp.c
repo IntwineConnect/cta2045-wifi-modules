@@ -662,9 +662,12 @@ HTTP_IO_RESULT HTTPExecutePost(void)
                 
         HTTPcodeHandler(retval.httpCode);
     }
+    // for messages associated with the commodity.cgi page
     else if(!memcmppgm2ram(filename,"commodity.cgi", 13))
     {
-        
+        CommodityRelayMsg retval;
+        retval = SendGetCommodityRead(0xFF, 0xFF);
+        HTTPcodeHandler(retval.httpCode);
     }
     else
     {
