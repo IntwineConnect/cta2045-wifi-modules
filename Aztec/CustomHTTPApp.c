@@ -210,7 +210,7 @@ HTTP_IO_RESULT HTTPExecuteGet(void)
     /******************************************/
     // If it's the  scan.cgi scan file
     /******************************************/
-	if(!memcmppgm2ram(filename, "scan.cgi", 8))
+	else if(!memcmppgm2ram(filename, "scan.cgi", 8))
 	{
 		ptr = HTTPGetROMArg(curHTTP.data, (ROM BYTE *)"scan");
 		ptr1 = HTTPGetROMArg(curHTTP.data, (ROM BYTE *)"getBss");
@@ -263,11 +263,11 @@ HTTP_IO_RESULT HTTPExecuteGet(void)
             // impossible to get here
         } 
 	}
-    if(!memcmppgm2ram(filename, "temperature.cgi", 15))
+    else if(!memcmppgm2ram(filename, "temperature.cgi", 15))
     {
         //handles request for setpoint and setpoint offset queries
     }
-    if(!memcmppgm2ram(filename, "state_sgd.cgi", 13))
+    else if(!memcmppgm2ram(filename, "state_sgd.cgi", 13))
     {
         RelayMsg retval;
         
@@ -275,11 +275,22 @@ HTTP_IO_RESULT HTTPExecuteGet(void)
         
         HTTPcodeHandler(retval.httpCode);
     }
-    if(!memcmppgm2ram(filename,"info_sgd.cgi", 12))
+    else if(!memcmppgm2ram(filename,"info_sgd.cgi", 12))
     {
         DeviceInfoRelayMsg retval;
         
         retval = SendInfoRequest();
+        HTTPcodeHandler(retval.httpCode);
+    }
+    
+    // for messages associated with the /commodity page
+    else if(!memcmppgm2ram(filename,"commodity.cgi", 13))
+    {
+        CommodityRelayMsg retval;
+        
+        // TODO: Maybe add a filter here for commodity type instead of sending
+        //       just 0xFF values
+        retval = SendGetCommodityRead(0xff, 0xff);
         HTTPcodeHandler(retval.httpCode);
     }
 	
@@ -534,16 +545,6 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         }
         HTTPcodeHandler(retval.httpCode);
     }    
-    // for messages associated with the /commodity page
-    else if(!memcmppgm2ram(filename,"commodity.cgi", 13))
-    {
-        CommodityRelayMsg retval;
-        
-        // TODO: Maybe add a filter here for commodity type instead of sending
-        //       just 0xFF values
-        retval = SendGetCommodityRead(0xFF, 0xFF);
-        HTTPcodeHandler(retval.httpCode);
-    }
     //for messages associated with the /price page
     else if(!memcmppgm2ram(filename,"price.cgi", 9))
     {
