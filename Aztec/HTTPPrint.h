@@ -74,8 +74,6 @@ void HTTPPrint_LoadResults(void);
 void HTTPPrint_code(void);
 void HTTPPrint_meaning(void);
 void HTTPPrint_commodity(void);
-void HTTPPrint_rate(void);
-void HTTPPrint_cumulative(void);
 void HTTPPrint_deviceInformation(void);
 
 void HTTPPrint(DWORD callbackID)
@@ -153,12 +151,6 @@ void HTTPPrint(DWORD callbackID)
 			break;
         case 0x00000017:
 			HTTPPrint_commodity();
-			break;
-        case 0x00000018:
-			HTTPPrint_rate();
-			break;
-        case 0x00000019:
-			HTTPPrint_cumulative();
 			break;
         case 0x0000001a:
 			HTTPPrint_deviceInformation();

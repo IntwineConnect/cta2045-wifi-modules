@@ -210,7 +210,7 @@ HTTP_IO_RESULT HTTPExecuteGet(void)
     /******************************************/
     // If it's the  scan.cgi scan file
     /******************************************/
-	if(!memcmppgm2ram(filename, "scan.cgi", 8))
+	else if(!memcmppgm2ram(filename, "scan.cgi", 8))
 	{
 		ptr = HTTPGetROMArg(curHTTP.data, (ROM BYTE *)"scan");
 		ptr1 = HTTPGetROMArg(curHTTP.data, (ROM BYTE *)"getBss");
@@ -263,11 +263,11 @@ HTTP_IO_RESULT HTTPExecuteGet(void)
             // impossible to get here
         } 
 	}
-    if(!memcmppgm2ram(filename, "temperature.cgi", 15))
+    else if(!memcmppgm2ram(filename, "temperature.cgi", 15))
     {
         //handles request for setpoint and setpoint offset queries
     }
-    if(!memcmppgm2ram(filename, "state_sgd.cgi", 13))
+    else if(!memcmppgm2ram(filename, "state_sgd.cgi", 13))
     {
         RelayMsg retval;
         
@@ -275,11 +275,22 @@ HTTP_IO_RESULT HTTPExecuteGet(void)
         
         HTTPcodeHandler(retval.httpCode);
     }
-    if(!memcmppgm2ram(filename,"info_sgd.cgi", 12))
+    else if(!memcmppgm2ram(filename,"info_sgd.cgi", 12))
     {
         DeviceInfoRelayMsg retval;
         
         retval = SendInfoRequest();
+        HTTPcodeHandler(retval.httpCode);
+    }
+    
+    // for messages associated with the /commodity page
+    else if(!memcmppgm2ram(filename,"commodity.cgi", 13))
+    {
+        CommodityRelayMsg retval;
+        
+        // TODO: Maybe add a filter here for commodity type instead of sending
+        //       just 0xFF values
+        retval = SendGetCommodityRead(0xff, 0xff);
         HTTPcodeHandler(retval.httpCode);
     }
 	
@@ -534,48 +545,6 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         }
         HTTPcodeHandler(retval.httpCode);
     }    
-    else if(!memcmppgm2ram(filename,"commodity.cgi", 13))
-    {
-        int i;
-        int itemCounter = 0;
-        RelayMsg retval;
-        long long vlintparam1;
-        long long vlintparam2;
-        unsigned char commodity;
-        char typeBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
-        char valueBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
-    
-        int good = 1;
-        
-        //get the parameters out of the buffer and strip their formatting
-        do{
-            good = readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]);
-            if(good){
-                // this line was good
-                itemCounter++;
-            }
-            // if this line was good, we may have another good item... but we don't know... try!
-        } while(good);
-        
-        for(i = 0; i <= itemCounter; i++)
-        {
-            if(!memcmp(typeBuffer[i], "commodity_code", 14))
-            {
-                commodity = (unsigned char*) atoi(valueBuffer[i]);
-            }
-            else if(!memcmp(typeBuffer[i], "rate", 14))
-            {
-                vlintparam1 = atoll(valueBuffer[i]);
-            }
-            else if(!memcmp(typeBuffer[i], "cumulative", 10))
-            {
-                vlintparam2 = atoll(valueBuffer[i]);
-            }
-        }
-        retval = SendSetCommodityRead(commodity, vlintparam1, vlintparam2);
-        
-        HTTPcodeHandler(retval.codeByte);
-    }
     //for messages associated with the /price page
     else if(!memcmppgm2ram(filename,"price.cgi", 9))
     {
@@ -661,10 +630,6 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         retval = SendTimeSync(intparam1, intparam2);
                 
         HTTPcodeHandler(retval.httpCode);
-    }
-    else if(!memcmppgm2ram(filename,"commodity.cgi", 13))
-    {
-        
     }
     else
     {
@@ -1141,7 +1106,25 @@ void HTTPPrint_meaning(void)
 
 void HTTPPrint_commodity(void)
 {
+    unsigned char buffer[500];
+    unsigned char comma[2];
+    int i=0;
+    char *cur = buffer, * const end = buffer + sizeof buffer;
     
+    snprintf(comma,2,",");
+    cur += snprintf(cur, end-cur, "{\"commodity\":[");
+    
+    // create a list of JSON objects using snprintf...fun fun!
+    for(i=0; i<nCommodities ; i++)
+    {
+        if(i == nCommodities-1)
+            snprintf(comma,2,"");
+        cur += snprintf(cur, end-cur, "{\"commodityCode\": %d,\"instantaneousRate\": %d,\"cumulativeAmount\": %d}%s",
+            commodityResponse[i].commodityCode, commodityResponse[i].instantaneousRate, commodityResponse[i].cumulativeAmount, comma);
+    }
+    snprintf(cur, end-cur, "]}");
+    
+    TCPPutString(sktHTTP, buffer);
 }
 
 void HTTPPrint_rate(void)
