@@ -109,7 +109,7 @@ void IntermediateDRMessageHandler(unsigned char *msg)
             
             
             //put data from message buffer into structure for each commodity type
-            for(i = 0; i <= nCommodities; i++)
+            for(i = 0; i < nCommodities; i++)
             {
                 commodityDataArray[i].commodityCode = msg[7+i*13];
                 commodityDataArray[i].instantaneousRate = msg[8+i*13] << 40 | msg[9+i*13] << 32 | msg[10+i*13] << 24 | msg[11+i*13] << 16 | msg[12+i*13] << 8 | msg[13+i*13];

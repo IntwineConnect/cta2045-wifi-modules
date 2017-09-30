@@ -1106,9 +1106,23 @@ void HTTPPrint_meaning(void)
 
 void HTTPPrint_commodity(void)
 {
-    unsigned char buffer[300];
-    snprintf(buffer, 300,"{[\"commodity_code\": %d,\n\"instantaneousRate\": %d,\n\"cumulativeAmount\": %d]}",
-            commodityResponse[0].commodityCode, commodityResponse[0].instantaneousRate, commodityResponse[0].cumulativeAmount);
+    unsigned char buffer[500];
+    unsigned char comma[2];
+    int i=0;
+    char *cur = buffer, * const end = buffer + sizeof buffer;
+    
+    snprintf(comma,2,",");
+    cur += snprintf(cur, end-cur, "{\"commodity\":[");
+    
+    // create a list of JSON objects using snprintf...fun fun!
+    for(i=0; i<nCommodities ; i++)
+    {
+        if(i == nCommodities-1)
+            snprintf(comma,2,"");
+        cur += snprintf(cur, end-cur, "{\"commodityCode\": %d,\"instantaneousRate\": %d,\"cumulativeAmount\": %d}%s",
+            commodityResponse[i].commodityCode, commodityResponse[i].instantaneousRate, commodityResponse[i].cumulativeAmount, comma);
+    }
+    snprintf(cur, end-cur, "]}");
     
     TCPPutString(sktHTTP, buffer);
 }
