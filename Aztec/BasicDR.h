@@ -93,6 +93,7 @@ typedef struct CommodityReadData_t{
     unsigned char commodityCode;
     long long instantaneousRate;
     long long cumulativeAmount;
+    int nCommodities;
 }CommodityReadData;
 
 typedef struct DeviceInformation_t{

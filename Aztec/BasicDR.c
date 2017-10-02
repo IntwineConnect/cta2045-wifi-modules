@@ -104,6 +104,7 @@ void IntermediateDRMessageHandler(unsigned char *msg)
             
             //this structure array holds response information for all commodity types in the message
             CommodityReadData commodityDataArray[nCommodities];
+            commodityDataArray[0].nCommodities = nCommodities;
             //figure out the length of the commodity data size for malloc
             //int datasize = nCommodities*sizeof(CommodityReadData);
             
