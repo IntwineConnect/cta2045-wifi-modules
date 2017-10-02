@@ -123,7 +123,7 @@ extern DeviceInformation DeviceInfo;
 typedef struct CommodityRelayMsg_t{
     short int httpCode;
     unsigned char responseCode;
-    unsigned char nCommodities;
+    int nCommodities;
     CommodityReadData *commodityResponse;
 }CommodityRelayMsg;
 

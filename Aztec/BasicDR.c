@@ -95,7 +95,7 @@ void IntermediateDRMessageHandler(unsigned char *msg)
         //is the message a Get Commodity Read Reply?
         if(opcode2 == GET_COMMODITY_READ_REPLY_CODE && RelayMsgState == RLY_WAITING_GET_COMMODITY_READ)
         {
-            int i = 1;
+            int i;
             int nCommodities = mlen/13;
             RelayMsgState = RLY_ACKED_GET_COMMODITY_READ;
             

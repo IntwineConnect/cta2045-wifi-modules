@@ -1113,13 +1113,13 @@ void HTTPPrint_commodity(void)
     
     snprintf(comma,2,",");
     cur += snprintf(cur, end-cur, "{\"commodity\":[");
-    
+    nCommodities = 2;
     // create a list of JSON objects using snprintf...fun fun!
     for(i=0; i<nCommodities ; i++)
     {
         if(i == nCommodities-1)
-            snprintf(comma,2,"");
-        cur += snprintf(cur, end-cur, "{\"commodityCode\": %d,\"instantaneousRate\": %d,\"cumulativeAmount\": %d}%s",
+            snprintf(comma,2," ");
+        cur += snprintf(cur, end-cur, "{\"code\": %d,\"iRate\": %d,\"cAmount\": %d}%s",
             commodityResponse[i].commodityCode, commodityResponse[i].instantaneousRate, commodityResponse[i].cumulativeAmount, comma);
     }
     snprintf(cur, end-cur, "]}");
