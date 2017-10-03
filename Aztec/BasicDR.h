@@ -91,8 +91,8 @@ typedef struct TempSetpointRelayMsg_t{
 
 typedef struct CommodityReadData_t{
     unsigned char commodityCode;
-    long long instantaneousRate;
-    long long cumulativeAmount;
+    unsigned long long instantaneousRate;
+    unsigned long long cumulativeAmount;
     int nCommodities;
 }CommodityReadData;
 

@@ -114,7 +114,7 @@ void IntermediateDRMessageHandler(unsigned char *msg)
             {
                 commodityDataArray[i].commodityCode = msg[7+i*13];
                 commodityDataArray[i].instantaneousRate = msg[8+i*13] << 40 | msg[9+i*13] << 32 | msg[10+i*13] << 24 | msg[11+i*13] << 16 | msg[12+i*13] << 8 | msg[13+i*13];
-                commodityDataArray[i].cumulativeAmount = msg[14+i*13] << 40 | msg[15+i*13] << 32 | msg[16+i*13] << 24 | msg[17+i*13] << 16 | msg[18+i*13] << 8 | msg[19+i*13];;
+                commodityDataArray[i].cumulativeAmount = msg[14+i*13] << 40 | msg[15+i*13] << 32 | msg[16+i*13] << 24 | msg[17+i*13] << 16 | msg[18+i*13] << 8 | msg[19+i*13];
             }
             
             /*zero memory in the commodity data buffer before copying so that no old data is left in case

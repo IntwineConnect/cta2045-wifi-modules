@@ -1117,7 +1117,7 @@ void HTTPPrint_commodity(void)
     // create a list of JSON objects using snprintf...fun fun!
     for(i=0; i<nCommodities ; i++)
     {
-        cur += snprintf(cur, end-cur, "{\"code\":%d,\"iRate\":%d,\"cAmount\":%d},",
+        cur += snprintf(cur, end-cur, "{\"code\":%d,\"iRate\":%llu,\"cAmount\":%llu},",
             commodityResponse[i].commodityCode, commodityResponse[i].instantaneousRate, commodityResponse[i].cumulativeAmount);
     }
     snprintf(cur-1, end-cur+1, "]}"); // remove the trailing comma
