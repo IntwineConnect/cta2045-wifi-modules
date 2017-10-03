@@ -960,6 +960,7 @@ RelayMsg SendSetCommodityRead(unsigned char code, long long rate, long long amou
     return retval;
 }
 
+// TODO: No API yet implemented
 CommodityRelayMsg SendGetCommodityRead(unsigned char measured, 
                                         unsigned char commodityCode)
 {
@@ -1008,7 +1009,6 @@ RelayMsg SendStartAutonomousCycling(UINT32 ID,         //event ID 32 bit uint
                                     UINT8 crit                //reserved for future use
                                     )
 {
-    LED2_ON()
     RelayMsg retval;
     unsigned char messageBuffer[22];
     memcpy(messageBuffer, StartAutonomousCycling, 22);
@@ -1037,6 +1037,7 @@ RelayMsg SendStartAutonomousCycling(UINT32 ID,         //event ID 32 bit uint
     return retval;
 }
 
+// TODO: no API yet implemented
 TempOffsetRelayMsg SendGetTemperatureOffset(void)
 {
     TempOffsetRelayMsg retval;
@@ -1053,6 +1054,7 @@ TempOffsetRelayMsg SendGetTemperatureOffset(void)
     return retval;
 }
 
+// TODO: no API yet implemented
 RelayMsg SendSetTemperatureOffset(unsigned char currentOffset,  //offset to be applied in degrees F or C
                                 unsigned char units)            //0 for F, 1 for C
 {
@@ -1102,6 +1104,7 @@ RelayMsg SendTerminateAutonomousCycling(UINT32 ID,
     return retval;
 }
 
+// TODO: no API yet implemented
 TempSetpointRelayMsg SendGetSetPoint(void)
 {
     TempSetpointRelayMsg retval;
@@ -1119,6 +1122,7 @@ TempSetpointRelayMsg SendGetSetPoint(void)
     return retval;
 }
 
+// TODO: no API yet implemented
 RelayMsg SendSetSetPoint(UINT16 deviceType,
                         UINT8 units,
                         UINT16 setpoint1,
@@ -1146,6 +1150,7 @@ RelayMsg SendSetSetPoint(UINT16 deviceType,
     return retval;
 }
 
+// TODO: no API yet implemented
 EnergyPriceRelayMsg SendGetEnergyPrice(void)
 {
     EnergyPriceRelayMsg retval;
@@ -1165,6 +1170,7 @@ EnergyPriceRelayMsg SendGetEnergyPrice(void)
     return retval;
 }
 
+// TODO: no API yet implemented
 RelayMsg SendSetEnergyPrice(UINT16 currentPrice,
                             UINT16 currencyCode,
                             UINT8 digitsAfterPoint,

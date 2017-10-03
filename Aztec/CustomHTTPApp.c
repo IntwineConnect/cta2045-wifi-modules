@@ -1120,22 +1120,13 @@ void HTTPPrint_commodity(void)
     for(i=0; i<nCommodities ; i++)
     {
         if(i == nCommodities-1) {    comma = ' ';   }
+        // TODO: remove n from JSON when debugging complete
         cur += snprintf(cur, end-cur, "{\"n\":%d,\"code\":%d,\"iRate\":%d,\"cAmount\":%d}%c",
             nCommodities, commodityResponse[i].commodityCode, commodityResponse[i].instantaneousRate, commodityResponse[i].cumulativeAmount, comma);
     }
     snprintf(cur, end-cur, "]}");
     
     TCPPutString(sktHTTP, buffer);
-}
-
-void HTTPPrint_rate(void)
-{
-    
-}
-
-void HTTPPrint_cumulative(void)
-{
-    
 }
 
 void HTTPPrint_deviceInformation(void)
