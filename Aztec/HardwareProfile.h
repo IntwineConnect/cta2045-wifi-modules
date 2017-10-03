@@ -22,6 +22,8 @@
 #ifndef __HARDWARE_PROFILE_H
 #define __HARDWARE_PROFILE_H
 
+#define _SUPPRESS_PLIB_WARNING 1
+
 #include "GenericTypeDefs.h"
 #include "Compiler.h"
 
