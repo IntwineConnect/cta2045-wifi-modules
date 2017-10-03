@@ -1108,18 +1108,18 @@ void HTTPPrint_commodity(void)
 {
     unsigned char buffer[500];
     char comma;
-    int i=0;
+    int i;
     int nCommodities = 0;
     char *cur = buffer, * const end = buffer + sizeof buffer;
     
-    comma = ",";
+    comma = ',';
     cur += snprintf(cur, end-cur, "{\"commodity\":[");
     nCommodities = commodityResponse[0].nCommodities;
+
     // create a list of JSON objects using snprintf...fun fun!
     for(i=0; i<nCommodities ; i++)
     {
-        if(i == nCommodities-1)
-            comma = "";
+        if(i == nCommodities-1) {    comma = ' ';   }
         cur += snprintf(cur, end-cur, "{\"n\":%d,\"code\":%d,\"iRate\":%d,\"cAmount\":%d}%c",
             nCommodities, commodityResponse[i].commodityCode, commodityResponse[i].instantaneousRate, commodityResponse[i].cumulativeAmount, comma);
     }
