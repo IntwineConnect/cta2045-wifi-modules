@@ -1107,24 +1107,20 @@ void HTTPPrint_meaning(void)
 void HTTPPrint_commodity(void)
 {
     unsigned char buffer[500];
-    char comma;
     int i;
     int nCommodities = 0;
     char *cur = buffer, * const end = buffer + sizeof buffer;
     
-    comma = ',';
     cur += snprintf(cur, end-cur, "{\"commodity\":[");
     nCommodities = commodityResponse[0].nCommodities;
 
     // create a list of JSON objects using snprintf...fun fun!
     for(i=0; i<nCommodities ; i++)
     {
-        if(i == nCommodities-1) {    comma = ' ';   }
-        // TODO: remove n from JSON when debugging complete
-        cur += snprintf(cur, end-cur, "{\"n\":%d,\"code\":%d,\"iRate\":%d,\"cAmount\":%d}%c",
-            nCommodities, commodityResponse[i].commodityCode, commodityResponse[i].instantaneousRate, commodityResponse[i].cumulativeAmount, comma);
+        cur += snprintf(cur, end-cur, "{\"code\":%d,\"iRate\":%d,\"cAmount\":%d},",
+            commodityResponse[i].commodityCode, commodityResponse[i].instantaneousRate, commodityResponse[i].cumulativeAmount);
     }
-    snprintf(cur, end-cur, "]}");
+    snprintf(cur-1, end-cur+1, "]}"); // remove the trailing comma
     
     TCPPutString(sktHTTP, buffer);
 }
