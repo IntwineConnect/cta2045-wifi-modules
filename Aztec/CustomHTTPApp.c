@@ -1151,7 +1151,22 @@ DeviceInfo.firmwareMonth,DeviceInfo.firmwareDay,DeviceInfo.firmwareMajor,DeviceI
 void HTTPPrint_setpointOutput(void)
 {
     unsigned char buffer[300];
-    snprintf(buffer, 300,"{\"setpoint1\": %d,\n\"setpoint2\": %d,\n\"units\": \"%d\"}",setpoint1,setpoint2,units);
+    char pretty_units;
+    char *cur = buffer, * const end = buffer + sizeof buffer;
+
+    pretty_units = (units==0) ? 'F': 'C';
+
+    cur += snprintf(cur, end-cur,"{\"units\":\"%c\", \"setpoint1\":%d",pretty_units, setpoint1);
+
+    // if setpoint2 is not supported...
+    if(setpoint2 > -32768)
+    {
+        snprintf(cur, end-cur, ", \"setpoint2\":%d}", setpoint2);
+    }
+    else
+    {
+        snprintf(cur, end-cur, "}");
+    }
     
     TCPPutString(sktHTTP, buffer);
 }
