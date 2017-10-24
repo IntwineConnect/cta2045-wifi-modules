@@ -265,7 +265,7 @@ HTTP_IO_RESULT HTTPExecuteGet(void)
 	}
     else if(!memcmppgm2ram(filename, "temperature.cgi", 15))
     {
-        //handles request for setpoint and setpoint offset queries
+        //handles request for setpoint offset queries and/or current temp
     }
     else if(!memcmppgm2ram(filename, "state_sgd.cgi", 13))
     {
@@ -291,6 +291,15 @@ HTTP_IO_RESULT HTTPExecuteGet(void)
         // TODO: Maybe add a filter here for commodity type instead of sending
         //       just 0xFF values
         retval = SendGetCommodityRead(0xff, 0xff);
+        HTTPcodeHandler(retval.httpCode);
+    }
+    
+    // for messages associated with the /setpoint page
+    else if(!memcmppgm2ram(filename,"setpoint.cgi", 12))
+    {
+        TempSetpointRelayMsg retval;
+        
+        retval = SendGetSetPoint();
         HTTPcodeHandler(retval.httpCode);
     }
 	
@@ -1135,6 +1144,14 @@ void HTTPPrint_deviceInformation(void)
 DeviceInfo.CTAver,DeviceInfo.vendorID,DeviceInfo.deviceType,DeviceInfo.deviceRev,
 DeviceInfo.capbmp,DeviceInfo.modelNumber,DeviceInfo.serialNumber,DeviceInfo.firmwareYear,
 DeviceInfo.firmwareMonth,DeviceInfo.firmwareDay,DeviceInfo.firmwareMajor,DeviceInfo.firmwareMinor);
+    
+    TCPPutString(sktHTTP, buffer);
+}
+
+void HTTPPrint_setpointOutput(void)
+{
+    unsigned char buffer[300];
+    snprintf(buffer, 300,"{\"setpoint1\": %d,\n\"setpoint2\": %d,\n\"units\": \"%d\"}",setpoint1,setpoint2,units);
     
     TCPPutString(sktHTTP, buffer);
 }
