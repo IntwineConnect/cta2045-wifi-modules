@@ -247,6 +247,13 @@ void IntermediateDRMessageHandler(unsigned char *msg)
             RelayMsgState = RLY_ACKED_GET_SET_POINT;
         }
     }
+    else if(opcode1 == SET_SET_POINT_CODE && opcode2 == SET_SET_POINT_REPLY_CODE)
+    {
+        if(RelayMsgState == RLY_WAITING_SET_SET_POINT)
+        {            
+            RelayMsgState = RLY_ACKED_SET_SET_POINT;            
+        }
+    }
     else if(opcode1 == SET_TEMPERATURE_OFFSET_CODE)
     {
         if(opcode2 == SET_TEMPERATURE_OFFSET_REPLY_CODE && RelayMsgState == RLY_WAITING_SET_TEMPERATURE_OFFSET)
@@ -262,13 +269,6 @@ void IntermediateDRMessageHandler(unsigned char *msg)
             currentOffset = msg[7];
             units = msg[8];
             RelayMsgState = RLY_ACKED_GET_TEMPERATURE_OFFSET;
-        }
-    }
-    else if(opcode1 == SET_SET_POINT_CODE)
-    {
-        if(opcode2 == SET_SET_POINT_REPLY_CODE && RelayMsgState == RLY_WAITING_SET_SET_POINT)
-        {            
-            RelayMsgState = RLY_ACKED_SET_SET_POINT;            
         }
     }
     else if(opcode1 == SET_ENERGY_PRICE_CODE && RelayMsgState == RLY_WAITING_SET_ENERGY_PRICE)
@@ -1119,7 +1119,6 @@ TempSetpointRelayMsg SendGetSetPoint(void)
     return retval;
 }
 
-// TODO: no API yet implemented
 RelayMsg SendSetSetPoint(UINT16 deviceType,
                         UINT8 units,
                         UINT16 setpoint1,
@@ -1134,6 +1133,7 @@ RelayMsg SendSetSetPoint(UINT16 deviceType,
     ReverseByteOrder(&setpoint2,2);
     
     memcpy(&messageBuffer[6],&deviceType,2);
+    memcpy(&messageBuffer[8],&units,1);
     memcpy(&messageBuffer[9],&setpoint1,2);
     memcpy(&messageBuffer[11],&setpoint2,2);
     

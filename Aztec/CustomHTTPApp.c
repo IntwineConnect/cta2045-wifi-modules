@@ -561,7 +561,6 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         char valueBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
         int itemCounter = 0; 
         int i;
-        unsigned char found = 0;
         RelayMsg retval;
         int intparam1;
         double doubleparam1;
@@ -609,7 +608,6 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         char valueBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
         int itemCounter = 0; 
         int i;
-        unsigned char found = 0;
         int intparam1;
         int intparam2;
         RelayMsg retval;
@@ -639,6 +637,56 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         retval = SendTimeSync(intparam1, intparam2);
                 
         HTTPcodeHandler(retval.httpCode);
+    }
+    else if(!memcmppgm2ram(filename,"setpoint.cgi", 12))
+    {
+        char typeBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+        char valueBuffer[MAX_ITEM_BUFFERS][ITEM_BUFFER_LENGTH];
+        RelayMsg retval;
+        int itemCounter = 0; 
+        int i;
+        int p_setpoint1 = -32768;
+        int p_setpoint2 = -32768;
+        int p_units = 0;
+        int p_devType;
+        
+        int good = 1;
+        //get the parameters out of the buffer and strip their formatting
+        do{
+            good = readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]);
+            if(good){
+                // this line was good
+                itemCounter++;
+            }
+            // if this line was good, we may have another good item... but we don't know... try!
+        } while(good);
+        
+        for(i = 0; i <= itemCounter; i++) 
+        {
+            if (!memcmp(typeBuffer[i], "deviceType", 10)) 
+            {
+                p_devType = atoi(valueBuffer[i]);
+            }
+            else if(!memcmp(typeBuffer[i], "units", 5))
+            {
+                p_units = atoi(valueBuffer[i]);
+            }
+            else if (!memcmp(typeBuffer[i], "setpoint1", 9)) 
+            {
+                p_setpoint1 = atoi(valueBuffer[i]);
+            }
+            else if(!memcmp(typeBuffer[i], "setpoint2", 9))
+            {
+                p_setpoint2 = atoi(valueBuffer[i]);
+            }
+        }        
+        
+        retval = SendSetSetPoint(p_devType, p_units, p_setpoint1, p_setpoint2);
+
+        deviceType = 0xFFFF;
+        
+        HTTPcodeHandler(retval.httpCode);        
+        
     }
     else
     {
@@ -1154,6 +1202,14 @@ void HTTPPrint_setpointOutput(void)
     char pretty_units;
     char *cur = buffer, * const end = buffer + sizeof buffer;
 
+    // If POST was used...
+    if(deviceType == 0xFFFF){
+        snprintf(buffer,300, "SETPOINT");
+        TCPPutString(sktHTTP, buffer);
+        return;
+    }
+    
+    // if GET was used...
     pretty_units = (units==0) ? 'F': 'C';
 
     cur += snprintf(cur, end-cur,"{\"units\":\"%c\", \"setpoint1\":%d",pretty_units, setpoint1);
