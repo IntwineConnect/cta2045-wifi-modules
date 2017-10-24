@@ -72,7 +72,6 @@ volatile enum _RelayMsgState
 } RelayMsgState;
 
 unsigned char ExpectedAckType;
-unsigned char nOptions = 0;
 unsigned char override = 0;
 
 //storage for commodity data
@@ -85,7 +84,7 @@ void IntermediateDRMessageHandler(unsigned char *msg)
     unsigned char opcode1 = msg[4];
     unsigned char opcode2 = msg[5];
     unsigned char responseCode = msg[6];
-    int mlen = msg[2]*256 + msg[3];
+    int mlen = msg[2] << 8 |  msg[3];
     
     ResponseReadyFlag = TRUE;
     httpCode = HandleIDRResponseCode(responseCode);
@@ -231,6 +230,23 @@ void IntermediateDRMessageHandler(unsigned char *msg)
             RelayMsgState = RLY_ACKED_TERMINATE_AUTONOMOUS_CYCLING;
         }
     }
+    else if(opcode1 == GET_SET_POINT_CODE && opcode2 == GET_SET_POINT_REPLY_CODE)
+    {
+        if(RelayMsgState == RLY_WAITING_GET_SET_POINT)
+        {            
+            setpoint2 = -32768;
+            
+            deviceType = msg[7] << 8 | msg[8];
+            units = msg[9];
+            setpoint1 = msg[10] << 8 | msg[11];
+            if(mlen > 8)
+            {
+                setpoint2 = msg[12] << 8 | msg[13];
+            }
+            
+            RelayMsgState = RLY_ACKED_GET_SET_POINT;
+        }
+    }
     else if(opcode1 == SET_TEMPERATURE_OFFSET_CODE)
     {
         if(opcode2 == SET_TEMPERATURE_OFFSET_REPLY_CODE && RelayMsgState == RLY_WAITING_SET_TEMPERATURE_OFFSET)
@@ -253,27 +269,6 @@ void IntermediateDRMessageHandler(unsigned char *msg)
         if(opcode2 == SET_SET_POINT_REPLY_CODE && RelayMsgState == RLY_WAITING_SET_SET_POINT)
         {            
             RelayMsgState = RLY_ACKED_SET_SET_POINT;            
-        }
-    }
-    else if(opcode1 == GET_SET_POINT_CODE)
-    {
-        if(opcode2 == GET_SET_POINT_REPLY_CODE && RelayMsgState == RLY_WAITING_GET_SET_POINT)
-        {            
-            int mlen = msg[2]*256 + msg[3];
-            deviceType = msg[7] << 8 | msg[8];
-            units = msg[9];
-            setpoint1 = msg[10] << 8 | msg[11];
-            if(mlen > 8)
-            {
-                setpoint2 = msg[12] << 8 | msg[13];
-                nOptions = 1;
-            }
-            else
-            {
-                nOptions = 0;
-            }
-            
-            RelayMsgState = RLY_ACKED_GET_SET_POINT;
         }
     }
     else if(opcode1 == SET_ENERGY_PRICE_CODE && RelayMsgState == RLY_WAITING_SET_ENERGY_PRICE)
@@ -1104,11 +1099,13 @@ RelayMsg SendTerminateAutonomousCycling(UINT32 ID,
     return retval;
 }
 
-// TODO: no API yet implemented
 TempSetpointRelayMsg SendGetSetPoint(void)
 {
     TempSetpointRelayMsg retval;
-    
+
+    RelayMsgState = RLY_WAITING_GET_SET_POINT;
+    ExpectedAckType = GET_SET_POINT_CODE;
+       
     httpCode = 500;
     MCISendNeutral(GetSetPoint);
     
