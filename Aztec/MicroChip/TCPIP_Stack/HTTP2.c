@@ -715,6 +715,16 @@ static void HTTPProcess(void)
 //				smHTTP = SM_HTTP_PROCESS_POST;
 			isDone = FALSE;
 			curHTTP.hasArgs = FALSE;
+
+            if(curHTTP.httpStatus == HTTP_POST)
+            {
+                smHTTP = SM_HTTP_PROCESS_POST;
+            }
+            else
+            {
+                smHTTP = SM_HTTP_PROCESS_GET;
+            }
+                  
 			break;
 
 		case SM_HTTP_PROCESS_GET:
