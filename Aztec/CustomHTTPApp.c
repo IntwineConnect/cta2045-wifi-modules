@@ -683,6 +683,7 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         
         retval = SendSetSetPoint(p_devType, p_units, p_setpoint1, p_setpoint2);
 
+        // attempting to distinguish a POST from a GET to better provide a response
         deviceType = 0xFFFF;
         
         HTTPcodeHandler(retval.httpCode);        
@@ -1205,25 +1206,21 @@ void HTTPPrint_setpointOutput(void)
     // If POST was used...
     if(deviceType == 0xFFFF){
         snprintf(buffer,300, "SETPOINT");
-        TCPPutString(sktHTTP, buffer);
-        return;
     }
-    
-    // if GET was used...
-    pretty_units = (units==0) ? 'F': 'C';
+    else {
+        // if GET was used...
+        pretty_units = (units==0) ? 'F': 'C';
 
-    cur += snprintf(cur, end-cur,"{\"units\":\"%c\", \"setpoint1\":%d",pretty_units, setpoint1);
+        cur += snprintf(cur, end-cur,"{\"units\":\"%c\", \"setpoint1\":%d",pretty_units, setpoint1);
 
-    // if setpoint2 is not supported...
-    if(setpoint2 > -32768)
-    {
-        snprintf(cur, end-cur, ", \"setpoint2\":%d}", setpoint2);
+        // if setpoint2 is not supported...
+        if(setpoint2 > -32768) {
+            snprintf(cur, end-cur, ", \"setpoint2\":%d}", setpoint2);
+        }
+        else {
+            snprintf(cur, end-cur, "}");
+        }
     }
-    else
-    {
-        snprintf(cur, end-cur, "}");
-    }
-    
     TCPPutString(sktHTTP, buffer);
 }
 

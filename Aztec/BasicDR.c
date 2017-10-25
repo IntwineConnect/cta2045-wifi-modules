@@ -76,7 +76,7 @@ unsigned char override = 0;
 
 //storage for commodity data
 CommodityReadData commodityResponse[10];
-
+unsigned char nOptions = 0;
 DeviceInformation DeviceInfo;
 
 void IntermediateDRMessageHandler(unsigned char *msg)
@@ -88,25 +88,20 @@ void IntermediateDRMessageHandler(unsigned char *msg)
     
     ResponseReadyFlag = TRUE;
     httpCode = HandleIDRResponseCode(responseCode);
-    //is the message Get Commodity Read message?
-    if(opcode1 == GET_COMMODITY_READ_CODE)
+    //is the message Get Commodity Read Reply message?
+    if(opcode1 == GET_COMMODITY_READ_CODE && opcode2 == GET_COMMODITY_READ_REPLY_CODE)
     {
-        //is the message a Get Commodity Read Reply?
-        if(opcode2 == GET_COMMODITY_READ_REPLY_CODE && RelayMsgState == RLY_WAITING_GET_COMMODITY_READ)
+        if(RelayMsgState == RLY_WAITING_GET_COMMODITY_READ)
         {
             int i;
             int nCommodities = mlen/13;
             RelayMsgState = RLY_ACKED_GET_COMMODITY_READ;
-            
-            responseCode = msg[6];
-            //set the http code in accordance with the intermediate DR response code
             
             //this structure array holds response information for all commodity types in the message
             CommodityReadData commodityDataArray[nCommodities];
             commodityDataArray[0].nCommodities = nCommodities;
             //figure out the length of the commodity data size for malloc
             //int datasize = nCommodities*sizeof(CommodityReadData);
-            
             
             //put data from message buffer into structure for each commodity type
             for(i = 0; i < nCommodities; i++)
@@ -124,12 +119,11 @@ void IntermediateDRMessageHandler(unsigned char *msg)
             
         }
     }
-    else if(opcode1 == INFO_REQUEST_CODE)
+    else if(opcode1 == INFO_REQUEST_CODE && opcode2 == INFO_REQUEST_REPLY_CODE)
     {
-        if(opcode2 == INFO_REQUEST_REPLY_CODE && RelayMsgState == RLY_WAITING_INFO_REQUEST)
+        if(RelayMsgState == RLY_WAITING_INFO_REQUEST)
         {
             RelayMsgState = RLY_ACKED_INFO_REQUEST;
-            responseCode = msg[6];
             unsigned char mnBuffer[17];
             unsigned char srBuffer[17];
             unsigned char ctaBuffer[3];
@@ -139,8 +133,6 @@ void IntermediateDRMessageHandler(unsigned char *msg)
             srBuffer[16] = '\0';
             memcpy(ctaBuffer,&msg[7],2);
             ctaBuffer[3] = '\0';
-                   
-            
             
             DeviceInfo.CTAver = (unsigned short int) atoi(ctaBuffer);
             DeviceInfo.vendorID = msg[9] << 8 | msg[10];
@@ -155,77 +147,75 @@ void IntermediateDRMessageHandler(unsigned char *msg)
             DeviceInfo.firmwareMajor = msg[55];
             DeviceInfo.firmwareMinor = msg[56];
         }
-        else if(opcode2 == INFO_REQUEST_CODE) //if the message is a request for info from the UCM
-        {
-            unsigned char msg[59];
-            int temp;
-            short int stemp;
-            
-            //IDR response
-            msg[0] = 0x08;
-            msg[1] = 0x02;
-            //payload length
-            msg[2] = 0x00;
-            msg[3] = 0x35; //53
-            //begin payload
-            msg[4] = INFO_REQUEST_CODE;
-            msg[5] = INFO_REQUEST_REPLY_CODE;
-            msg[6] = 0x00;
-            //cta version
-            msg[7] = 0x00;
-            msg[8] = 0x00;
-            //vendor ID
-            stemp = AztecUCMInfo.vendorID;
-            ReverseByteOrder(stemp, sizeof(stemp));
-            memcpy(&msg[9],&stemp,sizeof(stemp));
-            //device type
-            stemp = AztecUCMInfo.deviceType;
-            ReverseByteOrder(&stemp, sizeof(stemp));
-            memcpy(&msg[11],&stemp,sizeof(stemp));
-            //device revision
-            stemp = AztecUCMInfo.deviceRev;
-            ReverseByteOrder(&stemp, sizeof(stemp));
-            memcpy(&msg[13],&stemp,sizeof(stemp));
-            //capability bitmap
-            temp = AztecUCMInfo.capbmp;
-            ReverseByteOrder(&temp,sizeof(temp));
-            memcpy(&msg[15], &temp, sizeof(temp));
-            msg[19] = 0x00;  //reserved
-            snprintf(&msg[20], 16, "%016llu", AztecUCMInfo.modelNumber);
-            snprintf(&msg[36], 16,"%016llu", AztecUCMInfo.serialNumber);
-            msg[52] = AztecUCMInfo.firmwareYear;
-            msg[53] = AztecUCMInfo.firmwareMonth;
-            msg[54] = AztecUCMInfo.firmwareDay;
-            msg[55] = AztecUCMInfo.firmwareMajor;
-            msg[56] = AztecUCMInfo.firmwareMinor;
-            //checksum fields
-            msg[57] = 0xff;
-            msg[58] = 0xff;
-            
-            httpCode = 500;
-            MCISendNeutral(msg);       
-            
-        }
     }
-    else if(opcode1 == SET_COMMODITY_READ_CODE)
+    else if(opcode1 == INFO_REQUEST_CODE && opcode2 == INFO_REQUEST_CODE) //if the message is a request for info from the UCM
     {
-        if(opcode2 == SET_COMMODITY_READ_REPLY_CODE && RelayMsgState == RLY_WAITING_SET_COMMODITY_READ )
+        unsigned char msg[59];
+        int temp;
+        short int stemp;
+
+        //IDR response
+        msg[0] = 0x08;
+        msg[1] = 0x02;
+        //payload length
+        msg[2] = 0x00;
+        msg[3] = 0x35; //53
+        //begin payload
+        msg[4] = INFO_REQUEST_CODE;
+        msg[5] = INFO_REQUEST_REPLY_CODE;
+        msg[6] = 0x00;
+        //cta version
+        msg[7] = 0x00;
+        msg[8] = 0x00;
+        //vendor ID
+        stemp = AztecUCMInfo.vendorID;
+        ReverseByteOrder(stemp, sizeof(stemp));
+        memcpy(&msg[9],&stemp,sizeof(stemp));
+        //device type
+        stemp = AztecUCMInfo.deviceType;
+        ReverseByteOrder(&stemp, sizeof(stemp));
+        memcpy(&msg[11],&stemp,sizeof(stemp));
+        //device revision
+        stemp = AztecUCMInfo.deviceRev;
+        ReverseByteOrder(&stemp, sizeof(stemp));
+        memcpy(&msg[13],&stemp,sizeof(stemp));
+        //capability bitmap
+        temp = AztecUCMInfo.capbmp;
+        ReverseByteOrder(&temp,sizeof(temp));
+        memcpy(&msg[15], &temp, sizeof(temp));
+        msg[19] = 0x00;  //reserved
+        snprintf(&msg[20], 16, "%016llu", AztecUCMInfo.modelNumber);
+        snprintf(&msg[36], 16,"%016llu", AztecUCMInfo.serialNumber);
+        msg[52] = AztecUCMInfo.firmwareYear;
+        msg[53] = AztecUCMInfo.firmwareMonth;
+        msg[54] = AztecUCMInfo.firmwareDay;
+        msg[55] = AztecUCMInfo.firmwareMajor;
+        msg[56] = AztecUCMInfo.firmwareMinor;
+        //checksum fields
+        msg[57] = 0xff;
+        msg[58] = 0xff;
+
+        httpCode = 500;
+        MCISendNeutral(msg);       
+
+    }
+    else if(opcode1 == SET_COMMODITY_READ_CODE && opcode2 == SET_COMMODITY_READ_REPLY_CODE)
+    {
+        if(RelayMsgState == RLY_WAITING_SET_COMMODITY_READ )
         {
             RelayMsgState = RLY_ACKED_SET_COMMODITY_READ;
-            responseCode = msg[6];
         }
     }
-    else if(opcode1 == START_AUTONOMOUS_CYCLING_CODE)
+    else if(opcode1 == START_AUTONOMOUS_CYCLING_CODE && opcode2 == START_AUTONOMOUS_CYCLING_REPLY_CODE)
     {
-        if(opcode2 == START_AUTONOMOUS_CYCLING_REPLY_CODE && RelayMsgState == RLY_WAITING_START_AUTONOMOUS_CYCLING)
+        if(RelayMsgState == RLY_WAITING_START_AUTONOMOUS_CYCLING)
         {
             RelayMsgState = RLY_ACKED_START_AUTONOMOUS_CYCLING;
         }
     }
-    else if(opcode1 == TERMINATE_AUTONOMOUS_CYCLING_CODE)
+    else if(opcode1 == TERMINATE_AUTONOMOUS_CYCLING_CODE && opcode2 == TERMINATE_AUTONOMOUS_CYCLING_REPLY_CODE)
     {
-        //if this is a response and we are expecting a response to this message type
-        if(opcode2 == TERMINATE_AUTONOMOUS_CYCLING_REPLY_CODE && RelayMsgState == RLY_WAITING_TERMINATE_AUTONOMOUS_CYCLING)
+        if(RelayMsgState == RLY_WAITING_TERMINATE_AUTONOMOUS_CYCLING)
         {
             RelayMsgState = RLY_ACKED_TERMINATE_AUTONOMOUS_CYCLING;
         }
@@ -254,35 +244,32 @@ void IntermediateDRMessageHandler(unsigned char *msg)
             RelayMsgState = RLY_ACKED_SET_SET_POINT;            
         }
     }
-    else if(opcode1 == SET_TEMPERATURE_OFFSET_CODE)
+    else if(opcode1 == SET_TEMPERATURE_OFFSET_CODE && opcode2 == SET_TEMPERATURE_OFFSET_REPLY_CODE)
     {
-        if(opcode2 == SET_TEMPERATURE_OFFSET_REPLY_CODE && RelayMsgState == RLY_WAITING_SET_TEMPERATURE_OFFSET)
+        if(RelayMsgState == RLY_WAITING_SET_TEMPERATURE_OFFSET)
         {
             RelayMsgState = RLY_ACKED_SET_TEMPERATURE_OFFSET;
-                        
         }
     }
-    else if(opcode1 == GET_TEMPERATURE_OFFSET_CODE)
+    else if(opcode1 == GET_TEMPERATURE_OFFSET_CODE && opcode2 == GET_TEMPERATURE_OFFSET_REPLY_CODE)
     {
-        if(opcode2 == GET_TEMPERATURE_OFFSET_REPLY_CODE && RelayMsgState == RLY_WAITING_GET_TEMPERATURE_OFFSET)
+        if(RelayMsgState == RLY_WAITING_GET_TEMPERATURE_OFFSET)
         {
             currentOffset = msg[7];
             units = msg[8];
             RelayMsgState = RLY_ACKED_GET_TEMPERATURE_OFFSET;
         }
     }
-    else if(opcode1 == SET_ENERGY_PRICE_CODE && RelayMsgState == RLY_WAITING_SET_ENERGY_PRICE)
+    else if(opcode1 == SET_ENERGY_PRICE_CODE && opcode2 == SET_ENERGY_PRICE_REPLY_CODE)
     {
-        if(opcode2 == SET_ENERGY_PRICE_REPLY_CODE)
-        {
+        if(RelayMsgState == RLY_WAITING_SET_ENERGY_PRICE) {
             RelayMsgState = RLY_ACKED_SET_ENERGY_PRICE;
         }
     }
-    else if(opcode1 == GET_ENERGY_PRICE_CODE)
+    else if(opcode1 == GET_ENERGY_PRICE_CODE && opcode2 == GET_ENERGY_PRICE_REPLY_CODE)
     {
-        if(opcode2 == GET_ENERGY_PRICE_REPLY_CODE && RelayMsgState == RLY_WAITING_GET_ENERGY_PRICE)
+        if(RelayMsgState == RLY_WAITING_GET_ENERGY_PRICE)
         {
-            int mlen = msg[2]*256 + msg[3];
             currentPrice = msg[7] << 8 | msg[8];
             currencyCode = msg[9] << 8 | msg[10];
             digitsAfterPoint = msg[11];
@@ -333,7 +320,6 @@ void BasicDRMessageHandler(unsigned char * msg)
     }
     else if (opcode1 == RESPONSE_OP_STATE_CODE) //opstate response
     {
-        
         if(RelayMsgState == RLY_WAITING_OP_STATE)
         {
             RelayMsgState = RLY_ACKED_OP_STATE;
