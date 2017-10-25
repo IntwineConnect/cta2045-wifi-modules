@@ -661,30 +661,35 @@ HTTP_IO_RESULT HTTPExecutePost(void)
             // if this line was good, we may have another good item... but we don't know... try!
         } while(good);
         
-        for(i = 0; i <= itemCounter; i++) 
-        {
-            if (!memcmp(typeBuffer[i], "deviceType", 10)) 
+        if(itemCounter < 3){
+            retval.httpCode = 400;
+        }
+        else {
+            for(i = 0; i <= itemCounter; i++) 
             {
-                p_devType = atoi(valueBuffer[i]);
-            }
-            else if(!memcmp(typeBuffer[i], "units", 5))
-            {
-                p_units = atoi(valueBuffer[i]);
-            }
-            else if (!memcmp(typeBuffer[i], "setpoint1", 9)) 
-            {
-                p_setpoint1 = atoi(valueBuffer[i]);
-            }
-            else if(!memcmp(typeBuffer[i], "setpoint2", 9))
-            {
-                p_setpoint2 = atoi(valueBuffer[i]);
-            }
-        }        
-        
-        retval = SendSetSetPoint(p_devType, p_units, p_setpoint1, p_setpoint2);
+                if (!memcmp(typeBuffer[i], "deviceType", 10)) 
+                {
+                    p_devType = atoi(valueBuffer[i]);
+                }
+                else if(!memcmp(typeBuffer[i], "units", 5))
+                {
+                    p_units = atoi(valueBuffer[i]);
+                }
+                else if (!memcmp(typeBuffer[i], "setpoint1", 9)) 
+                {
+                    p_setpoint1 = atoi(valueBuffer[i]);
+                }
+                else if(!memcmp(typeBuffer[i], "setpoint2", 9))
+                {
+                    p_setpoint2 = atoi(valueBuffer[i]);
+                }
+            }        
 
-        // attempting to distinguish a POST from a GET to better provide a response
-        deviceType = 0xFFFF;
+            retval = SendSetSetPoint(p_devType, p_units, p_setpoint1, p_setpoint2);
+        }
+        
+        // distinguish a POST from a GET to better provide a response
+        deviceType = -32768;
         
         HTTPcodeHandler(retval.httpCode);        
         
@@ -1204,7 +1209,7 @@ void HTTPPrint_setpointOutput(void)
     char *cur = buffer, * const end = buffer + sizeof buffer;
 
     // If POST was used...
-    if(deviceType == 0xFFFF){
+    if(deviceType == -32768){
         snprintf(buffer,300, "SETPOINT");
     }
     else {
