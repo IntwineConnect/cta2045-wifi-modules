@@ -648,51 +648,43 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         int p_setpoint1 = -32768;
         int p_setpoint2 = -32768;
         int p_units = 0;
-        int p_devType;
-        
+        int p_devType;      
         int good = 1;
-        //get the parameters out of the buffer and strip their formatting
-        do{
-            good = readLine(typeBuffer[itemCounter], valueBuffer[itemCounter]);
-            if(good){
-                // this line was good
-                itemCounter++;
-            }
-            // if this line was good, we may have another good item... but we don't know... try!
-        } while(good);
-        
-        if(itemCounter < 3){
-            retval.httpCode = 400;
-        }
-        else {
-            for(i = 0; i <= itemCounter; i++) 
-            {
-                if (!memcmp(typeBuffer[i], "deviceType", 10)) 
-                {
-                    p_devType = atoi(valueBuffer[i]);
-                }
-                else if(!memcmp(typeBuffer[i], "units", 5))
-                {
-                    p_units = atoi(valueBuffer[i]);
-                }
-                else if (!memcmp(typeBuffer[i], "setpoint1", 9)) 
-                {
-                    p_setpoint1 = atoi(valueBuffer[i]);
-                }
-                else if(!memcmp(typeBuffer[i], "setpoint2", 9))
-                {
-                    p_setpoint2 = atoi(valueBuffer[i]);
-                }
-            }        
 
-            retval = SendSetSetPoint(p_devType, p_units, p_setpoint1, p_setpoint2);
+        memset(typeBuffer, 0, sizeof(typeBuffer));
+        memset(valueBuffer, 0, sizeof(valueBuffer));
+        
+        //get the parameters out of the buffer and strip their formatting
+        while(readLine(typeBuffer[itemCounter], valueBuffer[itemCounter])){
+            itemCounter++;  // this line was good
         }
+        
+        for(i = 0; i < itemCounter; i++) 
+        {
+            if (!memcmp(typeBuffer[i], "deviceType", 10)) 
+            {
+                p_devType = atoi(valueBuffer[i]);
+            }
+            else if(!memcmp(typeBuffer[i], "units", 5))
+            {
+                p_units = atoi(valueBuffer[i]);
+            }
+            else if (!memcmp(typeBuffer[i], "setpoint1", 9)) 
+            {
+                p_setpoint1 = atoi(valueBuffer[i]);
+            }
+            else if(!memcmp(typeBuffer[i], "setpoint2", 9))
+            {
+                p_setpoint2 = atoi(valueBuffer[i]);
+            }
+        }        
+
+        retval = SendSetSetPoint(p_devType, p_units, p_setpoint1, p_setpoint2);
         
         // distinguish a POST from a GET to better provide a response
         deviceType = -32768;
         
         HTTPcodeHandler(retval.httpCode);        
-        
     }
     else
     {
@@ -1635,7 +1627,7 @@ int readLine(char *typeBuffer, char *valueBuffer)
         } else {
             // found the closing brace
             end = lenC;
-            good = 0;
+            good = 1;
         }
     } else {
         // found the comma
@@ -1708,9 +1700,7 @@ int readLine(char *typeBuffer, char *valueBuffer)
     TCPGetArray(sktHTTP, valueBuffer, quote4Pos);
     end -= quote4Pos;
     
-    if(end > 0){
-        TCPGetArray(sktHTTP, trashBuffer, end);
-    }
+    TCPGetArray(sktHTTP, trashBuffer, end + 1);
     
     return good;
 }
