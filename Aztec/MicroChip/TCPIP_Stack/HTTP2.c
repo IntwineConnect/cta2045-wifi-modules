@@ -117,7 +117,7 @@
 	{
 		"HTTP/1.1 200 OK\r\nConnection: close\r\n",
 		"HTTP/1.1 200 OK\r\nConnection: close\r\n",
-		"HTTP/1.1 400 Bad Request\r\nConnection: close\r\n\r\n400 Bad Request: can't handle Content-Length\r\n",
+		"HTTP/1.1 400 Bad Request\r\nConnection: close\r\n\r\n400 Bad Request\r\n",
 		"HTTP/1.1 401 Unauthorized\r\nWWW-Authenticate: Basic realm=\"Protected\"\r\nConnection: close\r\n\r\n401 Unauthorized: Password required\r\n",
 		#if defined(HTTP_MPFS_UPLOAD)
 		"HTTP/1.1 404 Not found\r\nConnection: close\r\nContent-Type: text/html\r\n\r\n404: File not found<br>Use <a href=\"/" HTTP_MPFS_UPLOAD "\">MPFS Upload</a> to program web pages\r\n",
@@ -715,6 +715,16 @@ static void HTTPProcess(void)
 //				smHTTP = SM_HTTP_PROCESS_POST;
 			isDone = FALSE;
 			curHTTP.hasArgs = FALSE;
+
+            if(curHTTP.httpStatus == HTTP_POST)
+            {
+                smHTTP = SM_HTTP_PROCESS_POST;
+            }
+            else
+            {
+                smHTTP = SM_HTTP_PROCESS_GET;
+            }
+                  
 			break;
 
 		case SM_HTTP_PROCESS_GET:
