@@ -170,6 +170,8 @@ int     RequestedPriceRel = 0;
 int     SupportsPriceRel = 0;
 int     PriceRelSupportKnown = 0;
 
+int     MAX_PAYLOAD_SGD = 2;        // maximum number of Bytes in payload - default is 2
+
 int     ResetSGD = 0;
 
 // drEventData
@@ -351,6 +353,12 @@ void InitOpenADRComm( void )
     // Send EndShed at start-up
     //RsBuf = MCISendNeutral(EndShedCommand);
     SendEndShedCommand();
+    
+    DelayMs(100);
+    SendQueryMaximumPayloadLength();
+    
+    // Send Maximum Payload Query at start-up
+    MAX_PAYLOAD_SGD = 2;
     
     // clear the event queue
     for (i = 0; i < OPENADR_QSIZE; i++)
