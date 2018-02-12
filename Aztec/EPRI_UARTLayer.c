@@ -437,6 +437,13 @@ void rxMessageHandler(MCIResponse * lastSentPacket)
                 LED2_ON()
                 if (rxmessage[0] < 0xF0)
                 {
+                    if(rxmessage[0] == 0x08 && rxmessage[1] == 0x03)
+                    {
+                        //some other link layer message
+                        LinkLayerMessageHandler(rxmessage);
+                        //link layer ack/nak is sent from handler
+                    }
+                
                     // Per Chuck Thomas use override as define in CEA-2045 Draft v08
                     // OptOutEvent and OptInEvent get set on change of state and 
                     // get cleared in OpenADRClient.c
