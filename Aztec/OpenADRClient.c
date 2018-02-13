@@ -409,7 +409,6 @@ int OpenADRClient( void )
     if (!ResetSGD)
     {
         ResetSGD = 1;
-        TimeMonitorRegisterI(0, 990, MCI_One_Second_Callback);
     }
 
     // send comm status on change of state
@@ -2025,72 +2024,6 @@ time_t ISO8601time( char *datestr )
     utctime -= tzsec;
 
     return utctime;
-
-}
-
-/*****************************************************************************
-    void MCI_One_Second_Callback()
-        Description:
-            Set as a repeating 1 second Timer 2 interrupt callback
-            Must keep all calls here Non-blocking.
-            Keep SGD messages to no more than 8 bytes and they will fit
-            in the UART TX buffer.
-  ***************************************************************************/
-void MCI_One_Second_Callback()
-{
-    struct tm *localtm;
-    int tm_sec, tm_min, tm_hour;
-
-    // UTCTime stays at zero until first valid time parsed from HTTP response
-    if (UTCTime)
-    {
-        UTCTime++;
-    }
-
-
-    // Local_Time stays at zero until first valid EventState parsed from server
-    if (Local_Time)
-    {
-        Local_Time++;
-        localtm = localtime(&Local_Time);
-        tm_sec = localtm->tm_sec;
-        tm_min = localtm->tm_min;
-        tm_hour = localtm->tm_hour;
-
-        // Reset stats every hour
-        // Send timesync every 4AM
-        if (!tm_min && !tm_sec)
-        {
-            if (!IdleNormal && !RunningNormal)
-            {
-                LoadFactor = 0;
-            }
-            else
-            {
-                LoadFactor = 1000 * RunningNormal / (IdleNormal + RunningNormal); // 1000 adds precision
-                LoadFactor = (LoadFactor + 5) / 10; // Round and bring back to percentage
-            }
-            IdleNormal = 0;
-            RunningNormal = 0;
-
-            if (tm_hour == TIME_SYNC_HOUR)
-                SendTimeSync(localtm->tm_wday, tm_hour);
-        }
-        // Status Query every 15 seconds
-        else if ((tm_sec % 15) == 0)
-        {
-            //SendQueryOpState(DebugCnt);
-//            DebugCnt++;
-        }
-
-        // TCP blackout period = sync time - 1 min
-        // Prevents events from being processed and updating Local_time
-        // Guarantees Local_time is monotonic and continuous during this period
-        if ((tm_hour == TIME_SYNC_HOUR) && (tm_min == 59))
-            TCP_blackout = 1;
-        else
-            TCP_blackout = 0;
-    }
 
 }
 
