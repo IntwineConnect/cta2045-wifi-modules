@@ -162,20 +162,6 @@ int main(void)
     // Read ID register
     si7005Reg = 17;
     ReadI2C( I2C_BUS, SI7005_ADDRESS, si7005Reg, Si7005Data, 1);
-//    SI7005_IO = 1;      // Si7005 CS inactive. Power down
-//    SI7005_IO = 0;
-//    DelayMs(15);
-//    ReadI2C( I2C_BUS, SI7005_ADDRESS, si7005Reg, &Si7005Data[1], 1);
-//    // Start temp conversion
-//    SI7005_IO = 1;      // Si7005 CS inactive. Power down
-//    SI7005_IO = 0;
-//    si7005Reg = 3;
-//    Si7005Data[0] = 0x10 | 0x01;
-//    DelayMs(15);
-//    WriteI2CByte( I2C_BUS, SI7005_ADDRESS, si7005Reg, Si7005Data[0]);
-//    DelayMs(40);
-//    ReadI2C( I2C_BUS, SI7005_ADDRESS, 1, Si7005Data, 2);
-//    Temp = Si7005Data[0] << 8 + Si7005Data[1];
 
     // 1ms tick for timed callback functions
     TimeMonitorInit();
