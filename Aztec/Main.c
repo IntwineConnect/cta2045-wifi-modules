@@ -270,74 +270,16 @@ int main(void)
     while(1)
     {
         ClearWDT();
-        
+              
 #ifdef DC_CEA2045
         SPI_Driver_Task();  
 #endif
         
         if(FirstTime == TRUE)
         {
-          /*
-            //DL_Nak(0x89);
-            DelayMs(100);
-            retval = SendShedCommand(247);
-            DelayMs(100);
-            LED1_OFF()
-            LED2_OFF()
-            retval = SendEndShedCommand();
-            DelayMs(100);
-            LED1_OFF()
-            LED2_OFF()
-            retval = SendRequestForPowerLevel(76.1,1);
-            DelayMs(100);
-            LED1_OFF()
-            LED2_OFF()
-            retval = SendPresentRelativePrice(8.2);
-            DelayMs(100);
-            LED1_OFF()
-            LED2_OFF()
-            //retval = SendTimeRemainingInPresentPricePeriod(356);
-            DelayMs(100);
-            LED1_OFF()
-            LED2_OFF()
-            retval = SendCriticalPeakEvent(465);
-            DelayMs(100);
-            LED1_OFF()
-            LED2_OFF()
-            retval = SendGridEmergency(222);
-            DelayMs(100);
-            LED1_OFF()
-            LED2_OFF()
-            retval = SendLoadUp(2889);            
-            DelayMs(100);
-            LED1_OFF()
-            LED2_OFF()
-            retval = SendQueryOpState();*/
             LED0_INV()
                                            
-            
-            
-            /*
-            DelayMs(100);
-            SendSendNextCommandToSlot(2);
-            DelayMs(100);
-            SendQueryGetAvailableSlotNumbers();
-            DelayMs(100);
-            SendQueryGetSGDSlotNumber();
-            DelayMs(100);
-            SendQueryMaximumPayloadLength();
-            DelayMs(100);
-            SendResponseMaximumPayloadLength();
-            DelayMs(100);
-            SendRequestDifferentPowerMode(2);
-            DelayMs(100);
-            SendRequestDifferentBitRate(0);
-            
-            
-            */
             FirstTime = FALSE;
-            
-        
         }        
          
          if (AppConfig.networkType == WF_SOFT_AP || AppConfig.networkType == WF_INFRASTRUCTURE) {
@@ -610,50 +552,6 @@ static void InitializeBoard(void)
     SPI_Driver_Task();
 #endif
 
-#ifdef INTWINE_CONNECTED_OUTLET
-    ICO_LED_RED_TRIS = 0;
-    ICO_RED_OFF();
-    ICO_LED_GRN_TRIS = 0;
-    ICO_GRN_OFF();
-#endif
-
-#ifdef INTWINE_PROGRAMMABLE_THERMOSTAT
-    TRISFSET = BIT_4 | BIT_5;    // Tri-state the F4 and F5 pins (set as input) so as not to interfere with thermostat
-#endif
-
-#ifdef INTWINE_CONNECTED_LOAD_CONTROL
-    // Since some coil control is RS232 based, set default after board setup and UART setup
-    EntekInitialize();      // Enable spi and setup GPIO
-#endif
-#if defined(INTWINE_CONNECTED_OUTLET) || defined(INTWINE_CONNECTED_LOAD_CONTROL)
-    // quick coil switching seems to cause problem with EEPROM
-    PlugStripRestoreState();
-    #ifdef INTWINE_CONNECTED_OUTLET
-        TRISBCLR = BIT_2;
-        PlugStripOneTimeSetup();
-
-        TRISEbits.TRISE8 = 1;   // RE8 - set as input for user push button (logic low = button pressed)
-    #endif
-#endif
-
-//#if defined(STACK_USE_UART)
-//    UARTTX_TRIS = 0;
-//    UARTRX_TRIS = 1;
-//    UMODE = 0x8000;   // Set UARTEN.  Note: this must be done before setting UTXEN
-//    USTA = 0x00001400;  // RXEN set, TXEN set
-//    #define BAUD_RATE   19200
-//    #define CLOSEST_UBRG_VALUE ((GetPeripheralClock()+8ul*BAUD_RATE)/16/BAUD_RATE-1)
-//    #define BAUD_ACTUAL (GetPeripheralClock()/16/(CLOSEST_UBRG_VALUE+1))
-//    #define BAUD_ERROR ((BAUD_ACTUAL > BAUD_RATE) ? BAUD_ACTUAL-BAUD_RATE : BAUD_RATE-BAUD_ACTUAL)
-//    #define BAUD_ERROR_PRECENT ((BAUD_ERROR*100+BAUD_RATE/2)/BAUD_RATE)
-//    #if (BAUD_ERROR_PRECENT > 3)
-//            #warning UART frequency error is worse than 3%
-//    #elif (BAUD_ERROR_PRECENT > 2)
-//            #warning UART frequency error is worse than 2%
-//    #endif
-//        UBRG = CLOSEST_UBRG_VALUE;
-//#endif
-
     SI7005_IO = 0;  // Enable Si7005 and delay 15 ms
     DelayMs(15);
 
@@ -694,12 +592,6 @@ static void InitAppConfig(void)
             AppConfig.Flags.bIsDHCPEnabled = TRUE;
             AppConfig.Flags.bInConfigMode = TRUE;
             memcpypgm2ram((void*)&AppConfig.MyMACAddr, (ROM void*)SerializedMACAddress, sizeof(AppConfig.MyMACAddr));
-    //      {
-    //          _prog_addressT MACAddressAddress;
-    //          MACAddressAddress.next = 0x157F8;
-    //          _memcpy_p2d24((char*)&AppConfig.MyMACAddr, MACAddressAddress, sizeof(AppConfig.MyMACAddr));
-    //      }
-
 
             // SoftAP on certain setups with IP 192.168.1.1 has problem with DHCP client assigning new IP address on redirection.
             // 192.168.1.1 is a common IP address with most APs. This is still under investigation.

@@ -351,11 +351,11 @@ void InitOpenADRComm( void )
     commGoodOld = 0;
 
     // Send EndShed at start-up
-    DelayMs(100);
+    DelayMs(1000);
     SendEndShedCommand();
     
     // Send Maximum Payload Query at start-up - will modify MAX_PAYLOAD_SGD
-    DelayMs(100);
+    DelayMs(1000);
     SendQueryMaximumPayloadLength();
     
     // clear the event queue
