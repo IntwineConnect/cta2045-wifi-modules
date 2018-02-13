@@ -262,6 +262,17 @@ void IntermediateDRMessageHandler(unsigned char *msg)
             RelayMsgState = RLY_ACKED_GET_TEMPERATURE_OFFSET;
         }
     }
+    else if(opcode1 == GET_PRESENT_TEMPERATURE_CODE && opcode2 == GET_PRESENT_TEMPERATURE_REPLY_CODE)
+    {
+        if(RelayMsgState == RLY_WAITING_GET_PRESENT_TEMPERATURE)
+        {            
+            deviceType = msg[7] << 8 | msg[8];
+            units = msg[9];
+            setpoint1 = msg[10] << 8 | msg[11];
+            
+            RelayMsgState = RLY_ACKED_GET_PRESENT_TEMPERATURE;
+        }
+    }    
     else if(opcode1 == SET_ENERGY_PRICE_CODE && opcode2 == SET_ENERGY_PRICE_REPLY_CODE)
     {
         if(RelayMsgState == RLY_WAITING_SET_ENERGY_PRICE) {
