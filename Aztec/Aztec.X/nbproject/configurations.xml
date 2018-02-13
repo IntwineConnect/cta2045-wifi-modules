@@ -13,10 +13,7 @@
       <itemPath>../TCPIPConfig.h</itemPath>
       <itemPath>../WF_Config.h</itemPath>
       <itemPath>../i2c_master.h</itemPath>
-      <itemPath>../app.h</itemPath>
       <itemPath>../EPRI_UARTLayer.h</itemPath>
-      <itemPath>../OpenADRClient.h</itemPath>
-      <itemPath>../EPRI_Queue.h</itemPath>
       <itemPath>../INTiAPI.h</itemPath>
       <itemPath>../UARTiAPI.h</itemPath>
       <itemPath>../TimeMonitor.h</itemPath>
@@ -117,12 +114,10 @@
       <itemPath>../WF_Config.c</itemPath>
       <itemPath>../WifiGDemoMPFSImg.c</itemPath>
       <itemPath>../i2c_master.c</itemPath>
-      <itemPath>../OpenADRClient.c</itemPath>
       <itemPath>../INTiMain.c</itemPath>
       <itemPath>../UARTiMain.c</itemPath>
       <itemPath>../TimeMonitor.c</itemPath>
       <itemPath>../EPRI_UARTLayer.c</itemPath>
-      <itemPath>../app_UCM.c</itemPath>
       <itemPath>../Assert.c</itemPath>
       <itemPath>../EPRI_SPILayer.c</itemPath>
       <itemPath>../MCI_Common.c</itemPath>
@@ -634,6 +629,7 @@
         <property key="UART6" value="true"/>
         <property key="USB" value="true"/>
         <property key="debugoptions.useswbreakpoints" value="false"/>
+        <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="false"/>

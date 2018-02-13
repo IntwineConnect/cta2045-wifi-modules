@@ -81,6 +81,18 @@ CommodityReadData commodityResponse[10];
 unsigned char nOptions = 0;
 DeviceInformation DeviceInfo;
 
+// sends a "comm good" packet to the end device
+MCIResponse TransmitCommGoodPacket()
+{
+    return MCISendNeutral(OutsideCommGood);    
+}
+
+// sends a "comm bad" packet to the end device
+MCIResponse TransmitCommBadPacket()
+{
+    return MCISendNeutral(OutsideCommLost);    
+}
+
 void IntermediateDRMessageHandler(unsigned char *msg)
 {
     unsigned char opcode1 = msg[4];
@@ -506,6 +518,8 @@ void BasicDRMessageHandler(unsigned char * msg)
     }
     
 }
+
+
 
 /**
  * This will cause a send function to stop blocking and return a failure code if

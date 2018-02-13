@@ -6,6 +6,7 @@
 #ifndef __GENERIC_TYPE_DEFS_H_
 #include "GenericTypeDefs.h"
 #endif
+#include "MCI_Common.h"
 
 #define BASICDR
 
@@ -133,6 +134,9 @@ extern unsigned char override;
 
 void BasicDRMessageHandler(unsigned char * msg);
 void IntermediateDRMessageHandler(unsigned char *msg);
+
+MCIResponse TransmitCommGoodPacket( void );
+MCIResponse TransmitCommBadPacket( void );
 
 RelayMsg SendShedCommand(int eventDuration);
 RelayMsg SendEndShedCommand(void);

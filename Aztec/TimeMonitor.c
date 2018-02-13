@@ -9,7 +9,6 @@
 #include "HardwareProfile.h"
 #include "Assert.h"
 #include "Metrics.h"
-#include "Power.h"
 #include "TimeMonitor.h"
 
 int tmMillisecondsPerTick = (TIME_MONITOR_TICK_PER_SECOND / 1000);
