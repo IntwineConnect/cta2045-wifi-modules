@@ -32,6 +32,8 @@ unsigned char LINKMSG_QueryGetSGDSlotNumber[8] = {0x08, 0x03, 0x00, 0x02, 0x1A, 
 unsigned char LINKMSG_QueryGetAvailableSlotNumbers[8] = {0x08, 0x03, 0x00, 0x02, 0x1C, 0x00, 0x00, 0x00};
 unsigned char LINKMSG_SendNextCommandToSlot[8] = {0x08, 0x03, 0x00, 0x02, 0x1E, 0x00, 0x00, 0x00};
 
+int MAXIMUM_PAYLOAD_LENGTH_INDICATOR[14] = { 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 1280, 1500, 2048, 4096};
+extern int MAX_PAYLOAD_SGD;
 
 volatile enum _LL_MsgState LL_MsgState;
 
@@ -68,12 +70,9 @@ void SendResponseMaximumPayloadLength(void)
     unsigned char messageBuffer[8];
     memcpy(messageBuffer,LINKMSG_ResponseMaximumPayloadLength,8);      
     
-    /**
-         * max payload length = 2^(opcode2 + 1)
-         * up to 4096
-         */
-    messageBuffer[5] = 0x00;   //payload length 2
-    LL_MsgState = LL_WAITING_RESPONSE_MAXIMUM_PAYLOAD_LENGTH;
+    /* See Table 7-2 of the CTA spec for details on message length encoding 
+       Using 0x06 = 128 bit max payload here */
+    messageBuffer[5] = 0x06;   //payload length   
     MCISendNeutral(messageBuffer);
 }
 
@@ -199,13 +198,10 @@ void LinkLayerMessageHandler(unsigned char * msg)
     unsigned char opcode1 = msg[4];
     unsigned char opcode2 = msg[5];
     
-    if(opcode1 == QUERY_MAXIMUM_PAYLOAD_LENGTH)    //handler for maximum payload length query
+    if(opcode1 == QUERY_MAXIMUM_PAYLOAD_LENGTH && opcode2 == 0x00)    //handler for maximum payload length query
     {
-        DL_Ack();
-        
-        //have to wait for 100ms here
-        
-        
+        // Got a request for MAX playload length...let's respond!
+        SendResponseMaximumPayloadLength();      
     }
     else if(opcode1 == RESPONSE_MAXIMUM_PAYLOAD_LENGTH)
     {
@@ -213,6 +209,7 @@ void LinkLayerMessageHandler(unsigned char * msg)
         if(LL_MsgState == LL_WAITING_RESPONSE_MAXIMUM_PAYLOAD_LENGTH) //if we were expecting a payload length response
         {
             DL_Ack();            
+            MAX_PAYLOAD_SGD = MAXIMUM_PAYLOAD_LENGTH_INDICATOR[opcode2];
         }
         else
         {

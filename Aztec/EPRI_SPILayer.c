@@ -603,10 +603,10 @@ int SPI_Link_Layer_Task(void){
                             IntermediateDRMessageHandler(linkLayerInternals.rxMessage);
                         }
                     } else if(linkLayerInternals.rxMessage[0] == 0x08 && linkLayerInternals.rxMessage[1] == 0x03){
-                        // ToDo: In the future, this is where we should call back the link layer message handler... (Baud Rate, max payload length, etc...))
-                        // For now, unsupported.
-                        linkLayerInternals.txMessage[0] = 0x15; // NAK
-                        linkLayerInternals.txMessage[1] = 0x06; // Unsupported message type
+                        // Link Layer message handler
+                        linkLayerInternals.txMessage[0] = 0x06; // ACK
+                        linkLayerInternals.txMessage[1] = 0x00; 
+                        LinkLayerMessageHandler(linkLayerInternals.rxMessage);
                     } else {
                         linkLayerInternals.txMessage[0] = 0x15; // NAK
                         linkLayerInternals.txMessage[1] = 0x06; // Unsupported message type                        
