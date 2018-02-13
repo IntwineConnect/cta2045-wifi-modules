@@ -19,12 +19,9 @@
 #define RX_BUF_SIZE 300
 #define TX_MSG_SIZE 30
 
-//#include "EPRI_SPILayer.h"
-
 #include "plib.h"
 #include "MCI_Common.h"
 #include "BasicDR.h"
-//#include "Compiler.h"
 
 #if defined(DC_CEA2045)
 
@@ -135,7 +132,7 @@ void SPI_Link_Layer_Reply_Timeout_Callback(){
 #define SPI_CANCEL_LINK_LAYER_REPLY_TIMER { TimeMonitorCancelI(SPI_LINK_LAYER_REPLY_TIME_MONITOR_IDX); }
 
 #define TIME_MIN_WAIT_TIME_TO_SEND_ACK_NAK_IN_MS 40                 // T_ma, min
-#define TIME_MAX_WAIT_TIME_FOR_ACK_NAK_IN_MS 500                    // T_ma, max
+#define TIME_MAX_WAIT_TIME_FOR_ACK_NAK_IN_MS 200                    // T_ma, max
 #define TIME_MIN_WAIT_TIME_TO_SEND_RESPONSE_AFTER_ACK_NAK_IN_MS 100 // T_ar, min
 #define TIME_MIN_WAIT_TIME_TO_SEND_ANOTHER_MESSAGE_IN_MS 100        // T_im, min
 #define TIME_MAX_MESSAGE_DURATION_IN_MS 500                         // T_ml, max
@@ -331,7 +328,7 @@ int SPI_Physical_Layer_Task(void){
                 // We have to wait for one full byte to transfer at the slowest
                 // speed of 19.2 kbps.
                 // To be safe, I choose a delay of 2ms
-                SPI_START_PHYSICAL_LAYER_TIMER(2)
+                SPI_START_PHYSICAL_LAYER_TIMER(1)
             }
             
             if(physicalLayerInternals.timerTimeout){
@@ -587,7 +584,7 @@ int SPI_Link_Layer_Task(void){
                             // Payload length is non-zero, this is a real message
                             linkLayerInternals.txMessage[0] = 0x06; // ACK
                             linkLayerInternals.txMessage[1] = 0x00;
-                            BasicDRMessageHandler(linkLayerInternals.rxMessage); 
+                            BasicDRMessageHandler(linkLayerInternals.rxMessage);
                         }
                     } else if(linkLayerInternals.rxMessage[0] == 0x08 && linkLayerInternals.rxMessage[1] == 0x02){
                         if(linkLayerInternals.rxMessage[2] == 0x00 && linkLayerInternals.rxMessage[3] == 0x00){
@@ -605,7 +602,7 @@ int SPI_Link_Layer_Task(void){
                     } else if(linkLayerInternals.rxMessage[0] == 0x08 && linkLayerInternals.rxMessage[1] == 0x03){
                         // Link Layer message handler
                         linkLayerInternals.txMessage[0] = 0x06; // ACK
-                        linkLayerInternals.txMessage[1] = 0x00; 
+                        linkLayerInternals.txMessage[1] = 0x01; 
                         LinkLayerMessageHandler(linkLayerInternals.rxMessage);
                     } else {
                         linkLayerInternals.txMessage[0] = 0x15; // NAK
@@ -825,7 +822,6 @@ void SPI_Driver_Task(void){
 UINT16 MakeChecksumSPI(volatile unsigned char * message, int len)
 {
     // see MCI-V1-6.pdf page 68 for explanation
-    //putsUART("in MakeChecksumSPI \r\n");
 
     int check1 = 0xAA;
     int check2 = 0;
@@ -928,7 +924,6 @@ void MCISendAsyncSPI(unsigned char * msg)
 
 void SPI_Driver_Send_ACK_NAK(unsigned char * msg)
 {
-    int i;
     if(linkLayerInternals.state == LINK_LAYER_IDLE){
         linkLayerInternals.txMessage[0] = msg[0];
         linkLayerInternals.txMessage[1] = msg[1]; // Checksum error
@@ -938,22 +933,5 @@ void SPI_Driver_Send_ACK_NAK(unsigned char * msg)
         // Wat do?
     }
 }
-
-
-/*
- * Send a time sync to SGD, non-blocking
- * 
- */
-//BOOL SendTimeSyncSPI(int weekday, int hour)
-//{
-//    if(linkLayerInternals.state == LINK_LAYER_IDLE){
-//        TimeSyncMsg[5] = (weekday << 4) + hour;
-//        MCISendAsyncSPI(TimeSyncMsg);
-//        return TRUE;
-//    } else {
-//        return FALSE; // BH: ToDo: look for all other callers and verify this policy change.
-//    }
-//
-//}
 
 #endif
