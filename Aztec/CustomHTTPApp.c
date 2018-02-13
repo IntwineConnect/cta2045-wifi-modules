@@ -60,7 +60,7 @@
 #include "TCPIP_Stack/TCPIP.h"
 #include "TCPIP_Stack/WFConsoleMsgHandler.h"
 #include "MainDemo.h"        // Needed for SaveAppConfig() prototype
-#include "UpgradeClient.h"   // Firmware version stored here
+#include "fw_version.h"      // Firmware version stored here
 
 
 // Differences to wifi comm demo board (MRF24WB0MA) :

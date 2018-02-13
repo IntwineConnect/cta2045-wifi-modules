@@ -55,8 +55,6 @@
 
 #include "TCPIP_Stack/TCPIP.h"
 
-#include "debugging.h"
-
 #if defined( WF_CS_TRIS )
     #if defined( WF_CONFIG_CONSOLE )
         #include "TCPIP_Stack/WFConsole.h"

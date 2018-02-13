@@ -62,8 +62,6 @@
 #include "MCI_Common.h"
 #include "BasicDR.h"
 
-#include "debugging.h"
-
 #if defined( WF_CONSOLE )
 #include "TCPIP_Stack/WFConsole.h"
 #include "IperfApp.h"

@@ -22,7 +22,6 @@
       <itemPath>../MCI_Common.h</itemPath>
       <itemPath>../LinkLayerMessaging.h</itemPath>
       <itemPath>../BasicDR.h</itemPath>
-      <itemPath>../debugging.h</itemPath>
       <itemPath>../RESTAPI.h</itemPath>
       <itemPath>../DeviceInfo.h</itemPath>
     </logicalFolder>
@@ -123,7 +122,6 @@
       <itemPath>../MCI_Common.c</itemPath>
       <itemPath>../LinkLayerMessaging.c</itemPath>
       <itemPath>../BasicDR.c</itemPath>
-      <itemPath>../debugging.c</itemPath>
       <itemPath>../RESTAPI.c</itemPath>
       <itemPath>../DeviceInfo.c</itemPath>
     </logicalFolder>

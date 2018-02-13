@@ -8,8 +8,8 @@
  ********************************************************************/
 #include "HardwareProfile.h"
 #include "Assert.h"
-#include "Metrics.h"
 #include "TimeMonitor.h"
+#include "Metrics.h"
 
 int tmMillisecondsPerTick = (TIME_MONITOR_TICK_PER_SECOND / 1000);
 unsigned long tmTimeMonitorClock = 0;
