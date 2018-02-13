@@ -58,6 +58,8 @@ volatile enum _RelayMsgState
             RLY_ACKED_SET_TEMPERATURE_OFFSET,
     RLY_WAITING_GET_TEMPERATURE_OFFSET,
             RLY_ACKED_GET_TEMPERATURE_OFFSET,
+    RLY_WAITING_GET_PRESENT_TEMPERATURE,
+            RLY_ACKED_GET_PRESENT_TEMPERATURE,
     RLY_WAITING_GET_SET_POINT,
             RLY_ACKED_GET_SET_POINT,
     RLY_WAITING_SET_SET_POINT,
@@ -260,6 +262,17 @@ void IntermediateDRMessageHandler(unsigned char *msg)
             RelayMsgState = RLY_ACKED_GET_TEMPERATURE_OFFSET;
         }
     }
+    else if(opcode1 == GET_PRESENT_TEMPERATURE_CODE && opcode2 == GET_PRESENT_TEMPERATURE_REPLY_CODE)
+    {
+        if(RelayMsgState == RLY_WAITING_GET_PRESENT_TEMPERATURE)
+        {            
+            deviceType = msg[7] << 8 | msg[8];
+            units = msg[9];
+            setpoint1 = msg[10] << 8 | msg[11];
+            
+            RelayMsgState = RLY_ACKED_GET_PRESENT_TEMPERATURE;
+        }
+    }    
     else if(opcode1 == SET_ENERGY_PRICE_CODE && opcode2 == SET_ENERGY_PRICE_REPLY_CODE)
     {
         if(RelayMsgState == RLY_WAITING_SET_ENERGY_PRICE) {
@@ -1132,6 +1145,26 @@ RelayMsg SendSetSetPoint(UINT16 deviceType,
     retval.codeByte = responseCode;
     return retval;
 }
+
+TempSetpointRelayMsg SendGetPresentTemperature(void)
+{
+    TempSetpointRelayMsg retval;
+
+    RelayMsgState = RLY_WAITING_GET_PRESENT_TEMPERATURE;
+    ExpectedAckType = GET_PRESENT_TEMPERATURE_REPLY_CODE;
+       
+    httpCode = 500;
+    MCISendNeutral(GetPresentTemperature);
+    
+    BlockUntilReady();
+    
+    retval.httpCode = httpCode;
+    retval.responseCode = responseCode;
+    retval.units = units;
+    retval.setpoint1 = setpoint1;
+    return retval;
+}
+
 
 // TODO: no API yet implemented
 EnergyPriceRelayMsg SendGetEnergyPrice(void)

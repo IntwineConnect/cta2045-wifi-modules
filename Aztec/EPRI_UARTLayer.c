@@ -373,7 +373,6 @@ void rxMessageHandler(MCIResponse * lastSentPacket)
     // if it wasn't a data link ack/nak...
     else
     {
-        
         // check the checksum
         if (ChecksumDecode(rxmessage, len) == 0) // bad shape
         {
@@ -382,7 +381,7 @@ void rxMessageHandler(MCIResponse * lastSentPacket)
         }
         else // Message good
         {   
-            if ( rxmessage[0] < 0xF0 && (TxMsgState != TX_IDLE))
+            if ( rxmessage[0] < 0xF0 )
 			// Save the application response
 			// In most cases, it should be an application ack
             // put our received packet in lastSentPacket and throw the flag
@@ -401,16 +400,6 @@ void rxMessageHandler(MCIResponse * lastSentPacket)
                     BasicDRMessageHandler(rxmessage); 
                     // data link ack
                     DL_Ack();
-                    
-                    // Stats for PGE hourly Load Factor
-                    // IdleNormal & RunningNormal cleared hourly by MCI_One_Second_Callback()
-                    if (rxmessage[4] == OPSTATE_OPCODE1)
-                    {
-                        if (rxmessage[5] == IDLE_NORMAL)
-                            IdleNormal++;
-                        else if (rxmessage[5] == RUNNING_NORMAL)
-                            RunningNormal++;
-                    }
                 }
                 else if(rxmessage[0] == 0x08 && rxmessage[1] == 0x02) // if the message is an intermediate DR function
                 {
@@ -427,49 +416,13 @@ void rxMessageHandler(MCIResponse * lastSentPacket)
                 }
 
             }
-            else if (RxMsgState == RX_SEND_LL_ACK)
+            else if (rxmessage[0] == INTWINE_MSG)
             {
-                DL_Ack();
-            }
-            else if (RxMsgState == RX_SEND_APP_ACK)
-            {
-                if (rxmessage[0] < 0xF0)
-                {
-                    if(rxmessage[0] == 0x08 && rxmessage[1] == 0x03)
-                    {
-                        //some other link layer message
-                        
-                        // for some reason need to force this ... ?
-                        RxMsgState = RX_IDLE;
-                        
-                        LinkLayerMessageHandler(rxmessage);
-                        //link layer ack/nak is sent from handler
-                    }
-                
-                    // Per Chuck Thomas use override as define in CEA-2045 Draft v08
-                    // OptOutEvent and OptInEvent get set on change of state and 
-                    // get cleared in OpenADRClient.c
-                    if (rxmessage[4] == OVERRIDE_OPCODE1)
-                    {
-                        if(rxmessage[5] == 0)
-                        {
-                            override = 0;
-                        }
-                        else
-                        {
-                            override = 1;
-                            TimeMonitorRegisterI(10,OVERRIDE_DURATION, OverrideTimeoutCallback);
-                        }
-                    }
-                }
-                else if (rxmessage[0] == INTWINE_MSG)
-                {
-//                    EPRI_Config( rxmessage, len );
-                }
-
+                // Possibly do something here at some point...
             }
 
         }
+
     }
 
     numBytes = 0;

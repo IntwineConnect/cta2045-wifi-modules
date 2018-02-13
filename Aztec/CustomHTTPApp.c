@@ -263,9 +263,13 @@ HTTP_IO_RESULT HTTPExecuteGet(void)
             // impossible to get here
         } 
 	}
-    else if(!memcmppgm2ram(filename, "temperature.cgi", 15))
+    else if(!memcmppgm2ram(filename,"temperature.cgi", 15))
     {
-        //handles request for setpoint offset queries and/or current temp
+        TempSetpointRelayMsg retval;
+
+        retval = SendGetPresentTemperature();
+              
+        HTTPcodeHandler(retval.httpCode);                
     }
     else if(!memcmppgm2ram(filename, "state_sgd.cgi", 13))
     {
@@ -684,7 +688,7 @@ HTTP_IO_RESULT HTTPExecutePost(void)
         // distinguish a POST from a GET to better provide a response
         deviceType = -32768;
         
-        HTTPcodeHandler(retval.httpCode);        
+        HTTPcodeHandler(retval.httpCode);     
     }
     else
     {
@@ -1218,6 +1222,19 @@ void HTTPPrint_setpointOutput(void)
             snprintf(cur, end-cur, "}");
         }
     }
+    TCPPutString(sktHTTP, buffer);
+}
+
+void HTTPPrint_temperatureOutput(void)
+{
+    unsigned char buffer[300];
+    char pretty_units;
+    char *cur = buffer, * const end = buffer + sizeof buffer;
+
+    pretty_units = (units==0) ? 'F': 'C';
+
+    cur += snprintf(cur, end-cur,"{\"units\":\"%c\", \"temperature\":%d}",pretty_units, setpoint1);
+
     TCPPutString(sktHTTP, buffer);
 }
 

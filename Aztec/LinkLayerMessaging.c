@@ -215,12 +215,14 @@ void LinkLayerMessageHandler(unsigned char * msg)
         {
             DL_Nak(NO_REASON);
         }
-        // = opcode2;
     }
     else if(opcode1 == REQUEST_DIFFERENT_BIT_RATE)   //handler for bit rate change request
     {
-        if(opcode2 != 0x00)
+        if(opcode2 == 0x00) // we support only the default bit rate (0x00 = 19200)
         {
+            DL_Ack();
+        }
+        else {
             DL_Nak(REQUEST_NOT_SUPPORTED);
         }
     }    

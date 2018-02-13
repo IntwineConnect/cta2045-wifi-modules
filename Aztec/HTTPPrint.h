@@ -76,6 +76,7 @@ void HTTPPrint_meaning(void);
 void HTTPPrint_commodity(void);
 void HTTPPrint_deviceInformation(void);
 void HTTPPrint_setpointOutput(void);
+void HTTPPrint_temperatureOutput(void);
 
 void HTTPPrint(DWORD callbackID)
 {
@@ -158,6 +159,9 @@ void HTTPPrint(DWORD callbackID)
 			break;
         case 0x0000001c:
 			HTTPPrint_setpointOutput();
+			break;
+        case 0x0000001d:
+			HTTPPrint_temperatureOutput();
 			break;
 		default:
 			// Output notification for undefined values
