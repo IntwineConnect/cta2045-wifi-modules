@@ -70,12 +70,9 @@ void SendResponseMaximumPayloadLength(void)
     unsigned char messageBuffer[8];
     memcpy(messageBuffer,LINKMSG_ResponseMaximumPayloadLength,8);      
     
-    /**
-         * max payload length = 2^(opcode2 + 1)
-         * up to 4096
-         */
-    messageBuffer[5] = 0x06;   //payload length
-    LL_MsgState = LL_WAITING_RESPONSE_MAXIMUM_PAYLOAD_LENGTH;
+    /* See Table 7-2 of the CTA spec for details on message length encoding 
+       Using 0x06 = 128 bit max payload here */
+    messageBuffer[5] = 0x06;   //payload length   
     MCISendNeutral(messageBuffer);
 }
 
@@ -201,14 +198,10 @@ void LinkLayerMessageHandler(unsigned char * msg)
     unsigned char opcode1 = msg[4];
     unsigned char opcode2 = msg[5];
     
-    if(opcode1 == QUERY_MAXIMUM_PAYLOAD_LENGTH)    //handler for maximum payload length query
+    if(opcode1 == QUERY_MAXIMUM_PAYLOAD_LENGTH && opcode2 == 0x00)    //handler for maximum payload length query
     {
-        //DL_Ack();
-        
-        //have to wait for 100ms here
-        //DelayMs(100);
-        SendResponseMaximumPayloadLength();
-        
+        // Got a request for MAX playload length...let's respond!
+        SendResponseMaximumPayloadLength();      
     }
     else if(opcode1 == RESPONSE_MAXIMUM_PAYLOAD_LENGTH)
     {

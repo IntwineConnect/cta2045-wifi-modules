@@ -429,17 +429,19 @@ void rxMessageHandler(MCIResponse * lastSentPacket)
             }
             else if (RxMsgState == RX_SEND_LL_ACK)
             {
-                LED1_ON()
                 DL_Ack();
             }
             else if (RxMsgState == RX_SEND_APP_ACK)
             {
-                LED2_ON()
                 if (rxmessage[0] < 0xF0)
                 {
                     if(rxmessage[0] == 0x08 && rxmessage[1] == 0x03)
                     {
                         //some other link layer message
+                        
+                        // for some reason need to force this ... ?
+                        RxMsgState = RX_IDLE;
+                        
                         LinkLayerMessageHandler(rxmessage);
                         //link layer ack/nak is sent from handler
                     }
@@ -459,15 +461,6 @@ void rxMessageHandler(MCIResponse * lastSentPacket)
                             TimeMonitorRegisterI(10,OVERRIDE_DURATION, OverrideTimeoutCallback);
                         }
                     }
-    
-                    AppAckMsg[2] = 0;
-                    AppAckMsg[3] = 0x02;
-                    AppAckMsg[4] = 0x03;
-                    AppAckMsg[5] = rxmessage[4];
-                    MakeChecksum(AppAckMsg, 6);
-
-                    App_Ack(AppAckMsg, 8);
-
                 }
                 else if (rxmessage[0] == INTWINE_MSG)
                 {
@@ -620,7 +613,6 @@ void MCI_Wait_Callback()
             break;
 
         case RX_WAIT_APP_ACK_DLY:
-            LED2_ON()
             RxMsgState = RX_SEND_APP_ACK;
             rxMessageHandler(&AsyncRxRSBuf);
 
