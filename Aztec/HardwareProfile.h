@@ -27,8 +27,8 @@
 #include "GenericTypeDefs.h"
 #include "Compiler.h"
 
-#define AC_CEA2045
-//#define DC_CEA2045
+//#define AC_CEA2045
+#define DC_CEA2045
 
 //#define DFW                         // Enable downloadable firmware
 

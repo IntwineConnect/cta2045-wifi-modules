@@ -328,7 +328,7 @@ int SPI_Physical_Layer_Task(void){
                 // We have to wait for one full byte to transfer at the slowest
                 // speed of 19.2 kbps.
                 // To be safe, I choose a delay of 2ms
-                SPI_START_PHYSICAL_LAYER_TIMER(2)
+                SPI_START_PHYSICAL_LAYER_TIMER(1)
             }
             
             if(physicalLayerInternals.timerTimeout){
@@ -822,7 +822,6 @@ void SPI_Driver_Task(void){
 UINT16 MakeChecksumSPI(volatile unsigned char * message, int len)
 {
     // see MCI-V1-6.pdf page 68 for explanation
-    //putsUART("in MakeChecksumSPI \r\n");
 
     int check1 = 0xAA;
     int check2 = 0;
