@@ -56,24 +56,28 @@
 #include "HardwareProfile.h"
 #include "MainDemo.h"
 #include "i2c_master.h"
-#include "app.h"
 #include "INTiAPI.h"
 #include "UARTiAPI.h"
 #include "TimeMonitor.h"
-#include "Device_ICO_ICL.h"
 #include "MCI_Common.h"
 #include "BasicDR.h"
-
-#include "debugging.h"
 
 #if defined( WF_CONSOLE )
 #include "TCPIP_Stack/WFConsole.h"
 #include "IperfApp.h"
 #endif
 
+#ifdef AC_CEA2045
+  #include "EPRI_UARTLayer.h"
+#else
+  #include "EPRI_SPILayer.h"
+#endif
+
 APP_CONFIG AppConfig;
 
-
+int commGood; // flag to indicate if communication with the outside world is working. needed for MCI comm with SGD
+int commGoodOld;  // change of state indicator
+int MAX_PAYLOAD_SGD = 2;        // maximum number of Bytes in payload - default is 2
 
 static unsigned short wOriginalAppConfigChecksum;    // Checksum of the ROM defaults for AppConfig
 
@@ -250,7 +254,6 @@ int main(void)
     // job.
     // If a task needs very long time to do its job, it must be broken
     // down into smaller pieces so that other tasks can have CPU time.
-    AppTaskInit();
     LED1_OFF()
     LED2_OFF()
     while(1)
@@ -260,10 +263,23 @@ int main(void)
 #ifdef DC_CEA2045
         SPI_Driver_Task();  
 #endif
-        
+#ifdef AC_CEA2045        
+        EPRI_UART_init();
+#endif        
         if(FirstTime == TRUE)
         {
             LED0_INV()
+
+            commGood = 0;
+            commGoodOld = 0;
+
+            // Send EndShed at start-up
+            DelayMs(500);
+            SendEndShedCommand();
+
+            // Send Maximum Payload Query at start-up - will modify MAX_PAYLOAD_SGD
+            DelayMs(500);
+            SendQueryMaximumPayloadLength();                    
                                            
             FirstTime = FALSE;
         }        

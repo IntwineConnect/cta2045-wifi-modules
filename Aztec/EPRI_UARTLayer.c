@@ -15,13 +15,10 @@
 #include "TimeMonitor.h"
 #include "UARTiAPI.h"
 #include "INTiAPI.h"
-#include "EPRI_Queue.h"
 #include "MCI_Common.h"
 #include "EPRI_UARTLayer.h"
 #include "LinkLayerMessaging.h"
 #include "DeviceInfo.h"
-
-#include "debugging.h"
 
 int OK_TO_READ_232 = 0;
 int position_counter = 0;

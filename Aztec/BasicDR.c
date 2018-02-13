@@ -8,7 +8,6 @@
 #include "BasicDR.h"
 #include <math.h>
 
-#include "debugging.h"
 #include "DeviceInfo.h"
 
 volatile enum _RelayMsgState
@@ -80,6 +79,18 @@ unsigned char override = 0;
 CommodityReadData commodityResponse[10];
 unsigned char nOptions = 0;
 DeviceInformation DeviceInfo;
+
+// sends a "comm good" packet to the end device
+MCIResponse TransmitCommGoodPacket()
+{
+    return MCISendNeutral(OutsideCommGood);    
+}
+
+// sends a "comm bad" packet to the end device
+MCIResponse TransmitCommBadPacket()
+{
+    return MCISendNeutral(OutsideCommLost);    
+}
 
 void IntermediateDRMessageHandler(unsigned char *msg)
 {
@@ -506,6 +517,8 @@ void BasicDRMessageHandler(unsigned char * msg)
     }
     
 }
+
+
 
 /**
  * This will cause a send function to stop blocking and return a failure code if
