@@ -47,6 +47,8 @@
 #define SET_TEMPERATURE_OFFSET_REPLY_CODE       0x82
 #define GET_TEMPERATURE_OFFSET_CODE             0x03
 #define GET_TEMPERATURE_OFFSET_REPLY_CODE       0x82
+#define GET_PRESENT_TEMPERATURE_CODE            0x03
+#define GET_PRESENT_TEMPERATURE_REPLY_CODE      0x84
 #define SET_SET_POINT_CODE                      0x03
 #define SET_SET_POINT_REPLY_CODE                0x83
 #define GET_SET_POINT_CODE                      0x03
@@ -97,6 +99,7 @@ extern unsigned char StartAutonomousCycling[22];
 extern unsigned char TerminateAutonomousCycling[13];
 extern unsigned char SetTemperatureOffset[10];
 extern unsigned char GetTemperatureOffset[8];
+extern unsigned char GetPresentTemperature[8];
 extern unsigned char GetSetPoint[8];
 extern unsigned char SetSetPoint[16];
 extern unsigned char InfoRequest[8];

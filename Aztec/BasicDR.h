@@ -152,6 +152,7 @@ RelayMsg SendSetCommodityRead(unsigned char, long long, long long);
 CommodityRelayMsg SendGetCommodityRead(unsigned char, unsigned char);
 RelayMsg SendStartAutonomousCycling(UINT32 ID, UINT32 startTime, UINT16 duration, UINT8 dutyCycle, UINT8 startRand, UINT8 endRand, UINT8 crit);
 TempOffsetRelayMsg SendGetTemperatureOffset(void);
+TempSetpointRelayMsg SendGetPresentTemperature(void);
 RelayMsg SendSetTemperatureOffset(unsigned char currentOffset, unsigned char units);
 RelayMsg SendTerminateAutonomousCycling(UINT32 ID, UINT8 endRand);
 TempSetpointRelayMsg SendGetSetPoint(void);
