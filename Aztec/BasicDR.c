@@ -329,7 +329,7 @@ void BasicDRMessageHandler(unsigned char * msg)
     unsigned char opcode2 = msg[5];
     
     ResponseReadyFlag = TRUE;
-    
+   
     if(opcode1 == CUSTOMER_OVERRIDE_CODE) //customer override
     {
         if(opcode2 == 0)

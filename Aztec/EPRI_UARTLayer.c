@@ -393,23 +393,41 @@ void rxMessageHandler(MCIResponse * lastSentPacket)
 
                 if(rxmessage[0] == 0x08 && rxmessage[1] == 0x01) // if the message is a basic DR function
                 {
-                    //basic DR application handler goes here
-                    BasicDRMessageHandler(rxmessage); 
-                    // data link ack
-                    DL_Ack();
+                    if(rxmessage[2] == 0x00 && rxmessage[3] == 0x00) {
+                        // handle Supported Message Query
+                        DL_Ack();
+                    }
+                    else {
+                        //basic DR application handler goes here
+                        BasicDRMessageHandler(rxmessage); 
+                        // data link ack
+                        DL_Ack();
+                    }
                 }
                 else if(rxmessage[0] == 0x08 && rxmessage[1] == 0x02) // if the message is an intermediate DR function
                 {
-                    //intermediate DR application handler goes here
-                    IntermediateDRMessageHandler(rxmessage);
-                    // data link ack
-                    DL_Ack();
+                    if(rxmessage[2] == 0x00 && rxmessage[3] == 0x00) {
+                        // handle Supported Message Query
+                        DL_Ack();
+                    }                 
+                    else {
+                        //intermediate DR application handler goes here
+                        IntermediateDRMessageHandler(rxmessage);
+                        // data link ack
+                        DL_Ack();
+                    }
                 }
                 else if(rxmessage[0] == 0x08 && rxmessage[1] == 0x03)
                 {
-                    //some other link layer message
-                    LinkLayerMessageHandler(rxmessage);
-                    //link layer ack/nak is sent from handler
+                    if(rxmessage[2] == 0x00 && rxmessage[3] == 0x00) {
+                        // handle Supported Message Query
+                        DL_Ack();
+                    }                
+                    else {
+                        //some other link layer message
+                        LinkLayerMessageHandler(rxmessage);
+                        //link layer ack/nak is sent from handler
+                    }
                 }
 
             }
