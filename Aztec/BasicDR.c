@@ -163,6 +163,8 @@ void IntermediateDRMessageHandler(unsigned char *msg)
     }
     else if(opcode1 == INFO_REQUEST_CODE && opcode2 == INFO_REQUEST_CODE) //if the message is a request for info from the UCM
     {
+        DL_Nak(0x07);
+/*        
         unsigned char msg[59];
         int temp;
         short int stemp;
@@ -209,7 +211,7 @@ void IntermediateDRMessageHandler(unsigned char *msg)
         msg[58] = 0xff;
 
         httpCode = 500;
-        MCISendNeutral(msg);       
+        MCISendNeutral(msg);       */
 
     }
     else if(opcode1 == SET_COMMODITY_READ_CODE && opcode2 == SET_COMMODITY_READ_REPLY_CODE)

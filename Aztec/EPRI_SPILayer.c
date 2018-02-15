@@ -601,9 +601,30 @@ int SPI_Link_Layer_Task(void){
                         }
                     } else if(linkLayerInternals.rxMessage[0] == 0x08 && linkLayerInternals.rxMessage[1] == 0x03){
                         // Link Layer message handler
-                        linkLayerInternals.txMessage[0] = 0x06; // ACK
-                        linkLayerInternals.txMessage[1] = 0x00;
-                        LinkLayerMessageHandler(linkLayerInternals.rxMessage);
+//                        linkLayerInternals.txMessage[0] = 0x06; // ACK
+//                        linkLayerInternals.txMessage[1] = 0x00;
+                        if(linkLayerInternals.rxMessage[2] == 0x00 && linkLayerInternals.rxMessage[3] == 0x00){
+                            // This was a zero-payload message, which is a "message supported query"
+                            // Messages of type 0x08 0x03 are supported; reply with Link Layer ACK
+                            linkLayerInternals.txMessage[0] = 0x06; // ACK
+                            linkLayerInternals.txMessage[1] = 0x00;
+                        } 
+                        else if(linkLayerInternals.rxMessage[4] == 0x17){
+                            if(linkLayerInternals.rxMessage[5] == 0x00){
+                                linkLayerInternals.txMessage[0] = 0x06; // ACK
+                                linkLayerInternals.txMessage[1] = 0x00;                                
+                            }
+                            else {
+                                linkLayerInternals.txMessage[0] = 0x15; // NAK
+                                linkLayerInternals.txMessage[1] = 0x07; // Request not supported
+                            }
+                        }
+                        else {
+                            // Payload length is non-zero, this is a real message
+                            linkLayerInternals.txMessage[0] = 0x06; // ACK
+                            linkLayerInternals.txMessage[1] = 0x00;
+                            LinkLayerMessageHandler(linkLayerInternals.rxMessage);
+                        }                        
                     } else {
                         linkLayerInternals.txMessage[0] = 0x15; // NAK
                         linkLayerInternals.txMessage[1] = 0x06; // Unsupported message type                        

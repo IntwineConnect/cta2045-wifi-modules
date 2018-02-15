@@ -200,7 +200,7 @@ void LinkLayerMessageHandler(unsigned char * msg)
     
     if(opcode1 == QUERY_MAXIMUM_PAYLOAD_LENGTH && opcode2 == 0x00)    //handler for maximum payload length query
     {
-        // Got a request for MAX playload length...let's respond!
+        // Got a request for MAX payload length...let's respond!
         SendResponseMaximumPayloadLength();      
     }
     else if(opcode1 == RESPONSE_MAXIMUM_PAYLOAD_LENGTH)
