@@ -91,7 +91,7 @@ int nextPrice;
 volatile BOOL ResponseReadyFlag = 0;
 
 unsigned char dl_ack[2] = {0x06, 0x00};
-unsigned char dl_nak[2] = {0x15, 0x03};
+unsigned char dl_nak[2] = {0x15, 0x00};
 
 /**
  * Construct and send a MCI packet either UART or SPI (whichever is enabled) blocking.
