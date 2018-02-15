@@ -602,7 +602,7 @@ int SPI_Link_Layer_Task(void){
                     } else if(linkLayerInternals.rxMessage[0] == 0x08 && linkLayerInternals.rxMessage[1] == 0x03){
                         // Link Layer message handler
                         linkLayerInternals.txMessage[0] = 0x06; // ACK
-                        linkLayerInternals.txMessage[1] = 0x01; 
+                        linkLayerInternals.txMessage[1] = 0x00;
                         LinkLayerMessageHandler(linkLayerInternals.rxMessage);
                     } else {
                         linkLayerInternals.txMessage[0] = 0x15; // NAK
