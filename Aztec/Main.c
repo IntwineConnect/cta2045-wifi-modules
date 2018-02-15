@@ -77,7 +77,7 @@ APP_CONFIG AppConfig;
 
 int commGood; // flag to indicate if communication with the outside world is working. needed for MCI comm with SGD
 int commGoodOld;  // change of state indicator
-int MAX_PAYLOAD_SGD = 2;        // maximum number of Bytes in payload - default is 2
+int MAX_PAYLOAD_SGD = 0;        // maximum number of Bytes in payload - default is 2
 
 static unsigned short wOriginalAppConfigChecksum;    // Checksum of the ROM defaults for AppConfig
 
@@ -140,6 +140,7 @@ int main(void)
     //test variables
     BOOL FirstTime = TRUE;
     RelayMsg retval;
+    int i = 0;
     
     
     // end test variables
@@ -269,19 +270,6 @@ int main(void)
         if(FirstTime == TRUE)
         {
             LED0_INV()
-
-            commGood = 0;
-            commGoodOld = 0;
-
-            // Send EndShed at start-up
-            DelayMs(500);
-            SendEndShedCommand();
-
-            // Send Maximum Payload Query at start-up - will modify MAX_PAYLOAD_SGD
-            DelayMs(500);
-            SendQueryMaximumPayloadLength();                    
-                                           
-            FirstTime = FALSE;
         }        
          
          if (AppConfig.networkType == WF_SOFT_AP || AppConfig.networkType == WF_INFRASTRUCTURE) {
@@ -392,6 +380,30 @@ int main(void)
             #if defined(STACK_USE_ZEROCONF_MDNS_SD)
             mDNSFillHostRecord();
             #endif
+        }
+        
+        if(FirstTime == TRUE) {           
+            commGood = 0;
+            commGoodOld = 0;
+
+            // Send EndShed at start-up
+            SendEndShedCommand();           
+                                           
+            FirstTime = FALSE;
+        }
+        
+        if(MAX_PAYLOAD_SGD < 2) {
+            
+            if(i < 200) {
+                DelayMs(2);
+                i++;
+            }
+            else {
+                MAX_PAYLOAD_SGD = 2;
+            
+                // Send Maximum Payload Query at start-up - will modify MAX_PAYLOAD_SGD
+                SendQueryMaximumPayloadLength();                   
+            }
         }
 
     }
