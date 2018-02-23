@@ -25,8 +25,6 @@
 		<span style="float:right;font-size:9px;font-weight:normal;padding-top:8px;text-indent:0px">(Click LED to Toggle)</span>
 		<p>LEDs:<br><span class="leds"><font size="6">
 		<a id="led0" onclick="newAJAXCommand('leds.cgi?led=0');">•</a>
-		<a id="led1" onclick="newAJAXCommand('leds.cgi?led=1');">•</a>
-		<a id="led2" onclick="newAJAXCommand('leds.cgi?led=2');">•</a>
 		</font></span></p>
 		<p>Button Status:<br>
 		<span id="btn0">?</span></p>
@@ -41,6 +39,7 @@
 <li>WLAN type: <b>~wlan~</b></li>
 <li>IP Address: <b>~ipaddr~</b></li>
 <li>RF module FW version: <b>~fwver~</b></li>
+<li>Wifi MAC Address: <b>~macaddr~</b></li>
 </ul>
 
 
@@ -53,7 +52,7 @@
 setTimeout("newAJAXCommand('status.xml', updateStatus, true)",500);
 //-->
 </script>
-<div id="footer">Copyright &copy; 2014 Intwine Connect, LLC</div>
+<div id="footer">Copyright &copy; 2014-2018 Intwine Connect, LLC</div>
 </div> <!--container-->
 
 

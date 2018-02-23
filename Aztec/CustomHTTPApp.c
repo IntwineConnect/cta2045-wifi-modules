@@ -1131,6 +1131,18 @@ void HTTPPrint_ipaddr(void)
     TCPPutString(sktHTTP, (BYTE *)ipAddr);
 }
 
+// ======================================
+// = Sends the MAC Address    =
+// ======================================
+void HTTPPrint_macaddr(void)
+{
+    char macAddr[17];
+    
+    sprintf(macAddr,"%02x:%02x:%02x:%02x:%02x:%02x", AppConfig.MyMACAddr.v[0], AppConfig.MyMACAddr.v[1], AppConfig.MyMACAddr.v[2], AppConfig.MyMACAddr.v[3], AppConfig.MyMACAddr.v[4], AppConfig.MyMACAddr.v[5]);
+    
+    TCPPutString(sktHTTP, (BYTE *)macAddr);
+}
+
 // ================================
 // = Kick-off a WiFi Scan Process =
 // ================================
