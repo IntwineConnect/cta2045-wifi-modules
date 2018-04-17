@@ -337,7 +337,16 @@ int main(void)
             t = TickGet();
             LED0_INV();
         }
-
+        
+        if(AppConfig.networkType == WF_INFRASTRUCTURE)  {
+            if(!MACIsLinked())
+            { // not connected
+                WF_CMConnect(1);
+            } else { 
+               // connected
+            }
+        }
+        
         // This task performs normal stack task including checking
         // for incoming packet, type of packet and calling
         // appropriate stack entity to process it.
