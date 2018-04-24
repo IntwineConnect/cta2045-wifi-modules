@@ -131,9 +131,9 @@ void StackInit(void)
 	}
 
     MACInit();
-
-#if defined (WF_AGGRESSIVE_PS) && defined (WF_CS_TRIS)
-	WFEnableAggressivePowerSave();
+    
+#if defined(WF_CS_TRIS)
+    SetAppPowerSaveMode(FALSE);
 #endif
 
 #if defined(WF_CS_TRIS) && defined(STACK_USE_EZ_CONFIG) && !defined(__18CXX)
