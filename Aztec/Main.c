@@ -341,7 +341,10 @@ int main(void)
         if(AppConfig.networkType == WF_INFRASTRUCTURE)  {
             if(!MACIsLinked())
             { // not connected
-                WF_CMConnect(1);
+                UINT8 connState;
+                UINT8 connID;
+                WF_CMGetConnectionState(&connState, &connID);
+                WF_CMConnect(connID);
             } else { 
                // connected
             }
@@ -354,9 +357,6 @@ int main(void)
 
         // This task invokes each of the core stack application tasks
         StackApplications();
-
-        // Enable WF_USE_POWER_SAVE_FUNCTIONS
-        WiFiTask();
 
         #if defined(STACK_USE_ZEROCONF_LINK_LOCAL)
         ZeroconfLLProcess();
