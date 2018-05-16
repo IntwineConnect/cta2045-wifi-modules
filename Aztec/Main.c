@@ -344,6 +344,7 @@ int main(void)
                 UINT8 connState;
                 UINT8 connID;
                 WF_CMGetConnectionState(&connState, &connID);
+                WF_CPSetNetworkType(connID, WF_INFRASTRUCTURE);
                 WF_CMConnect(connID);
             } else { 
                // connected
