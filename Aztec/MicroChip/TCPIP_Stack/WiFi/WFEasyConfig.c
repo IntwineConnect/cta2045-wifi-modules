@@ -216,19 +216,23 @@ static int WFEasyConfigProcess(void)
             }
             break;
     }
- 
+
+    
+    /* Set wlan mode */
+    WF_CPSetNetworkType(ConnectionProfileID, CFGCXT.type);
+
+    
+    if (AppConfig.networkType == WF_INFRASTRUCTURE) 
+        WF_CASetListRetryCount(MY_DEFAULT_LIST_RETRY_COUNT_INFRASTRUCTURE);    
+    
     #if defined (EZ_CONFIG_STORE)
     SaveAppConfig(&AppConfig);
     #endif
 
-    /* Set wlan mode */
-    WF_CPSetNetworkType(ConnectionProfileID, CFGCXT.type);
 
-    if (AppConfig.networkType == WF_INFRASTRUCTURE) 
-        WF_CASetListRetryCount(MY_DEFAULT_LIST_RETRY_COUNT_INFRASTRUCTURE);
     
 #if defined(DISABLE_MODULE_FW_CONNECT_MANAGER_IN_INFRASTRUCTURE)
-        WF_DisableModuleConnectionManager();
+        //WF_DisableModuleConnectionManager();
 #endif
     
 #if MY_DEFAULT_NETWORK_TYPE == WF_SOFT_AP
