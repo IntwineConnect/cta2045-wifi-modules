@@ -239,6 +239,7 @@ void WF_ProcessEvent(UINT8 event, UINT16 eventInfo, UINT8 *extraInfo)
 			/*--------------------------------------*/
 			case WF_EVENT_CONNECTION_SUCCESSFUL:
 			/*--------------------------------------*/	 	
+            AppConfig.connected = TRUE;
             #if defined(EZ_CONFIG_STORE)
 				AppConfig.saveSecurityInfo = TRUE;
             #endif	
@@ -249,6 +250,7 @@ void WF_ProcessEvent(UINT8 event, UINT16 eventInfo, UINT8 *extraInfo)
 			case WF_EVENT_CONNECTION_TEMPORARILY_LOST:
 			case WF_EVENT_CONNECTION_PERMANENTLY_LOST:			  
 			/*--------------------------------------*/
+                AppConfig.connected = FALSE;
 				break;
 	
 			/*--------------------------------------*/	  

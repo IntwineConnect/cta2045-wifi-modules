@@ -116,6 +116,7 @@ typedef struct __attribute__((__packed__)) appConfigStruct
     BYTE        WepKeyIndex;            // WEP key index (only valid for WEP)
     BYTE        dataValid;
     BYTE        networkType;
+    BYTE        connected;           
     #if defined(EZ_CONFIG_STORE)        // WLAN configuration data stored to NVM
     BYTE        saveSecurityInfo;       // Save 32-byte PSK
     #endif

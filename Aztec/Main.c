@@ -339,18 +339,20 @@ int main(void)
         }
         
         if(AppConfig.networkType == WF_INFRASTRUCTURE)  {
-            if(!MACIsLinked())
+            if(AppConfig.connected == FALSE)
             { // not connected
-                UINT8 connState;
+                WF_Connect();
+/*                UINT8 connState;
                 UINT8 connID;
                 WF_CMGetConnectionState(&connState, &connID);
                 WF_CPSetNetworkType(connID, WF_INFRASTRUCTURE);
                 WF_CMConnect(connID);
+ */
             } else { 
                // connected
             }
         }
-        
+       
         // This task performs normal stack task including checking
         // for incoming packet, type of packet and calling
         // appropriate stack entity to process it.
